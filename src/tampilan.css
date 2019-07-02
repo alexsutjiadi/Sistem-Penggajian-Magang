@@ -1,0 +1,67 @@
+main {
+  display: flex;
+}
+.logo,
+.navigasi,
+.konten,
+.sidebar,
+.footer {
+  margin-bottom: 5px;
+  padding: 15px 0;
+}
+.logo {
+  width: 100%;
+  height: auto;
+  background: #ffffff;
+  text-align: left;
+}
+.navigasi {
+  width: 100%;
+  height: auto;
+  background: #99D9EA;
+  text-align: left;
+}
+.text1{
+  color: #000000;
+  size: 10px;
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
+.footer {
+  width: 100%;
+  background: #C3C3C3;
+  text-align: center;
+}
+.mainmenubtn {
+    background-color: #99D9EA;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    padding:5px;
+    margin-top:10px;
+    margin-left: 30px;
+}
+ 
+.mainmenubtn:hover {
+    background-color: #E0FFFF;
+    }
+ 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-child {
+    display: none;
+    background-color: black;
+    min-width: 200px;
+    margin-left: 45px;
+}
+.dropdown-child a {
+    color: white;
+    padding: 20px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown:hover .dropdown-child {
+    display: block;
+}
