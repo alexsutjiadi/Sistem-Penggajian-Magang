@@ -1,25 +1,27 @@
 <?php
 if (isset($_POST['addNew'])) {
-	$nama = $_POST['nama'];
+	$nama = strtoupper($_POST['nama']);
 	$nik = $_POST['nik'];
 	$dept = $_POST['dept'];
-	$alamat = $_POST['alamat'];
+	$alamat = strtoupper($_POST['alamat']);
 	$npwp = $_POST['npwp'];
-	$jabatan = $_POST['jabatan'];
-	$kotaLahir =$_POST['kotaLahir'];
-	$tglLahir = $_POST['tglLahir'];
-	$pangkat = $_POST['pangkat'];
+	$jabatan = strtoupper($_POST['jabatan']);
+	$kotaLahir =strtoupper($_POST['kotaLahir']);
+	$tglLahir = date("Ymd",strtotime($_POST['tglLahir']));
+	//$pangkat = $_POST['pangkat'];
 	$status = $_POST['status'];
 	$jenisKelamin = $_POST['jenisKelamin'];
 	$keluarga =$_POST['keluarga'];
 	$kodeBank =$_POST['kodeBank'];
 	$gajiDasar = $_POST['gaji'];
-    $kotaAsal = $_POST['kotaAsal'];
-	$tglAktif = $_POST['tglAktif'];
+    $kotaAsal = $_POST['kotaAsal']; // kota aktif
+    $tglMasuk = date("Ymd",strtotime($_POST['tglMasuk']));
+	$tglAktif = date("Ymd",strtotime($_POST['tglAktif']));
 
     //pangkat
     if ($kotaAsal == 'B') {
         $db = dbase_open('../B/GAJI.DBF', 2);} //buka db sesuai kota aktif/asal.
+        $db2 = dbase_open('../B/TGL_MASUK.DBF', 2);
     // }else if (){
 
     // }else if(){
@@ -103,6 +105,8 @@ if (isset($_POST['addNew'])) {
     //input ke db
     //no urut, nik, deptcode, nama, alamat,npwp, jabatan, noktp, kotalahir, tgl lahir, pangkat, status, kelamin, keluarga, kode bank, kode bank, gajidasar, 0 0 0 0 0 0 0 0 0 0 1 Y Y, bln aktiv 0
     dbase_add_record($db, array($no,$nik,$dept,$nama,$alamat,$npwp,$jabatan,$nik,$kotaLahir,$tglLahir,$pangkat,$status,$jenisKelamin,$keluarga,$kodeBank,$kodeBank,$gajiDasar,0,0,0,0,0,0,0,0,0,0,1,'Y','Y',$tglAktif,""));
+    dbase_add_record($db2, array($dept,$nama,$tglMasuk));
+    dbase_close($db2);
     dbase_close($db);
     
 
@@ -165,13 +169,16 @@ if (isset($_POST['addNew'])) {
             <label>Tgl Lahir:</label>
             <input type="date" name="tglLahir" />
         </p>
-        <p>
+        <!-- <p>
             <label>Pangkat:</label>
             <input type="text" name="pangkat" placeholder="Pangkat..." />
-        </p>
+        </p> -->
         <p>
             <label>Status:</label>
-            <input type="text" name="status" placeholder="Status..." />
+            <select name="status">
+                <option value="K">KAWIN</option>
+                <option value="T">BELUM KAWIN</option>
+            </select>
         </p>
         <p>
             <label>Jenis Kelamin:</label>
@@ -182,11 +189,19 @@ if (isset($_POST['addNew'])) {
         </p>
         <p>
             <label>Keluarga:</label>
-            <input type="text" name="keluarga" placeholder="Keluarga..." />
+            <select name="keluarga">
+                <option value="TK-">TK-</option>
+                <option value="KT-">KT-</option>
+                <option value="K/1">K/1</option>
+                <option value="K/2">K/2</option>
+                <option value="K/3">K/3</option>
+            </select>
         </p>
         <p>
             <label>Kode Bank:</label>
-            <input type="text" name="kodeBank" placeholder="KodeBank..." />
+            <select name="kodeBank">
+                <option value="1">1</option>
+            </select>
         </p>
         <p>
             <label>Gaji Dasar:</label>
@@ -204,6 +219,10 @@ if (isset($_POST['addNew'])) {
                 <option value="U">MAKASSAR (U)</option>
                 <option value="W">PALEMBANG (W)</option>
             </select>
+        </p>
+        <p>
+            <label>Tgl Masuk:</label>
+            <input type="date" name="tglMasuk" />
         </p>
         <p>
             <label>Tgl Aktif:</label>
