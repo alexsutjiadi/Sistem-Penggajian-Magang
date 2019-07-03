@@ -1,22 +1,16 @@
 <?php
+$db1 = dbase_open('../B/PANGKAT_K1.DBF', 2);
+$db2 = dbase_open('../B/PANGKAT_K2.DBF', 2);
+$db3 = dbase_open('../B/PANGKAT_K3.DBF', 2);
+$n = dbase_numrecords($db1);
 
-$db = dbase_open("GAJI.DBF", 0);
-$db2 = dbase_open("WAKTU_MASUK.DBF", 2);
-$num_record = dbase_numrecords($db);
-$num_record2 = dbase_numrecords($db2);
-
-for ($i=1; $i <=$num_record; $i++) { 
-    $row = dbase_get_record_with_names($db2, $i);
-    echo $row['TGL_MASUK'];
-    
+for ($i=1; $i < $n ; $i++) {
+  $s = dbase_get_record_with_names($db1, $i);
+  dbase_add_record($db2, array($s['PANGKAT'],$s['MIN'],$s['MAX']));
+  dbase_add_record($db3, array($s['PANGKAT'],$s['MIN'],$s['MAX']));
 }
-dbase_close($db);
+dbase_close($db1);
 dbase_close($db2);
-
-
-
-
-
-
+dbase_close($db3);
 
 ?>
