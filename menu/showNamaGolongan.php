@@ -3,22 +3,21 @@
 if (isset($_POST['edit'])) {
 	$kode = strtoupper($_POST['kode']);
 	$nama = strtoupper($_POST['nama']);
-	$kodeLama = strtoupper($_POST['kodeLama']);
+	$rowId = $_POST['rowId'];
 
 	$db = dbase_open('../B/GOLONGAN.DBF', 2);
 	if ($db) {
 		$record_numbers = dbase_numrecords($db);
-		for ($i = 1; $i <= $record_numbers; $i++) {
-			$row = dbase_get_record_with_names($db, $i);
-			//echo $row['NAMA'];
-			if ($row['KODE'] == $kodeLama) {
-				unset($row['deleted']);
-				$row['KODE'] == $kode;
-				$row['NAMA'] = $nama;
-				$row = array_values($row);
-				dbase_replace_record($db, $row, $i);
-			}
-		}
+
+		$row = dbase_get_record_with_names($db, $rowId);
+		//echo $row['NAMA'];
+
+		unset($row['deleted']);
+		$row['KODE'] = $kode;
+		$row['NAMA'] = $nama;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
+
 		dbase_close($db);
 	}
 }
@@ -115,7 +114,7 @@ if ($db) {
 							<div class="col-lg-12">
 								<label for="kode">KODE</label>
 								<input type="text" class="kode" name="kode" placeholder="">
-								<input type="hidden" name="kodeLama" class="kodeLama" value="">
+								<input type="hidden" name="rowId" class="rowId" value="">
 							</div>
 							<div class="col-lg-12">
 								<label for="nama">NAMA GOLONGAN</label>
@@ -140,7 +139,7 @@ if ($db) {
 			var namaValue = $("#nama" + clickId).val();
 			$(".modal-body .kode").val(kodeValue);
 			$(".modal-body .nama").val(namaValue);
-			$(".modal-body .kodeLama").val(kodeValue);
+			$(".modal-body .rowId").val(clickId);
 		});
 
 		function isValidForm() {

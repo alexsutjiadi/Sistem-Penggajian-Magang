@@ -1,6 +1,7 @@
 <?php
-//edit data golongan
+//edit data master
 if (isset($_POST['edit'])) {
+	$rowId = $_POST['rowId'];
 	$no = $_POST['no'];
 	$nama = strtoupper($_POST['nama']);
 	$nik = $_POST['nik'];
@@ -26,41 +27,42 @@ if (isset($_POST['edit'])) {
 	$db = dbase_open('../B/GAJI.DBF', 2);
 	$db2 = dbase_open('../B/WAKTU_MASUK.DBF', 2);
 	if ($db) {
-		$record_numbers = dbase_numrecords($db);
-		for ($i = 1; $i <= $record_numbers; $i++) {
-			$row = dbase_get_record_with_names($db, $i);
-			$row2 = dbase_get_record_with_names($db2, $i);
-			//echo $row['NAMA'];
-			if ($row['NIK'] == $nik) {
-				//echo "masuk";
-				unset($row['deleted']);
-				$no = $_POST['no'];
-				$row['NAMA'] = $nama;
-				$row['NIK'] = $nik;
-				$row['DEPT'] = $dept;
-				$row['TGL_LAHIR'] = $tglLahir;
-				$row['ALAMAT'] = $alamat;
-				$row['STATUS'] = $status;
-				$row['KELAMIN'] = $kelamin;
-				$row['GOLONGAN'] = $golongan;
-				$row['KELUARGA'] = $tanggungan;
-				$row2['TGL_MASUK'] = $tglMasuk;
-				$row['BLN_AKTIV'] = $aktifFiskal;
-				$row['NPWP'] = $npwp;
-				$row['JAMSOSFLG'] = $jamsos;
-				$row['GAJI_DASAR'] = $gajiDasar;
-				$row['PANGKAT'] = $pangkat;
-				//$row['PREMI']=$premiKesehatan;
-				$row['TUNJ_KES'] = $tunjanganKesehatan;
-				$row['KODE_BANK'] = $pilihanBank;
-				$row['KODE_BANK1'] = $pilihanBank;
-				$row = array_values($row);
-				dbase_replace_record($db, $row, $i);
-			}
-		}
-		dbase_close($db2);
-		dbase_close($db);
+		// $record_numbers = dbase_numrecords($db);
+		$row = dbase_get_record_with_names($db, $rowId);
+		$row2 = dbase_get_record_with_names($db2, $rowId);
+		//echo "masuk";
+		unset($row['deleted']);
+		unset($row2['deleted']);
+		// $no = $_POST['no'];
+		$row['NO_URUT'] = $no; 
+		$row['NAMA'] = $nama;
+		$row['NIK'] = $nik;
+		$row['DEPT'] = $dept;
+		$row['TGL_LAHIR'] = $tglLahir;
+		$row['ALAMAT'] = $alamat;
+		$row['STATUS'] = $status;
+		$row['KELAMIN'] = $kelamin;
+		$row['GOLONGAN'] = $golongan;
+		$row['KELUARGA'] = $tanggungan;
+		$row['BLN_AKTIV'] = $aktifFiskal;
+		$row['NPWP'] = $npwp;
+		$row['JAMSOSFLG'] = $jamsos;
+		$row['GAJI_DASAR'] = $gajiDasar;
+		$row['PANGKAT'] = $pangkat;
+		$row['JPK']=$premiKesehatan;
+		$row['TUNJ_KES'] = $tunjanganKesehatan;
+		$row['KODE_BANK'] = $pilihanBank;
+		$row['KODE_BANK1'] = $pilihanBank;
+		$row2['TGL_MASUK'] = $tglMasuk;
+
+		$row = array_values($row);
+		$row2 = array_values($row2);
+		dbase_replace_record($db, $row, $rowId);
+		dbase_replace_record($db2, $row2, $rowId);
+
 	}
+	dbase_close($db2);
+	dbase_close($db);
 }
 //add data golongan
 // else if (isset($_POST['add'])) {
@@ -78,7 +80,6 @@ if (isset($_POST['edit'])) {
 // }
 else if (isset($_POST['delete']) == 1) {
 	$idDelete = $_POST['idDelete'];
-	//echo "string";
 
 	$db = dbase_open('../B/GAJI.DBF', 2);
 	$db2 = dbase_open('../B/WAKTU_MASUK.DBF', 2);
@@ -148,7 +149,7 @@ if ($db) {
 						<input type="hidden" name="jamsos" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsos" . $i; ?>>
 						<input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
 						<input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
-						<input type="hidden" name="premiKesehatan" value=<?php echo "0"; ?> id=<?php echo "premiKesehatan" . $i; ?>>
+						<input type="hidden" name="premiKesehatan" value=<?php echo $row['JPK']; ?> id=<?php echo "premiKesehatan" . $i; ?>>
 						<input type="hidden" name="tunjanganKesehatan" value=<?php echo $row['TUNJ_KES']; ?> id=<?php echo "tunjanganKesehatan" . $i; ?>>
 						<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK']; ?> id=<?php echo "pilihanBank" . $i; ?>>
 
@@ -188,6 +189,7 @@ if ($db) {
 							<div class="col-lg-12">
 								<label for="no">NO. URUT</label>
 								<input type="text" class="no" name="no" placeholder="">
+								<input type="hidden" class="rowId" name="rowId">
 							</div>
 							<div class="col-lg-12">
 								<label for="nik">NO. ID</label>
@@ -299,6 +301,7 @@ if ($db) {
 			var pilihanBankValue = $("#pilihanBank" + clickId).val();
 			//var bruto = gajiDasar+tunjanganKesehatan+premiKesehatan;
 
+			$(".modal-body .rowId").val(clickId);
 			$(".modal-body .no").val(noValue);
 			$(".modal-body .nik").val(nikValue);
 			$(".modal-body .dept").val(deptValue);

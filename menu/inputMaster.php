@@ -64,43 +64,22 @@ if (isset($_POST['addNew'])) {
     }
 
     //pangkat
-    $pangkat = "";
-    //kode kota / cluster
+    //buka db sesuai cluster kota
     if ($kotaAsal == 'V' || $kotaAsal == 'H0' || $kotaAsal == 'S') {
-        $pangkat = $pangkat . "K1";
+        $dbPangkat = dbase_open('../B/PANGKAT_K1.DBF',0);
     } else if ($kotaAsal == 'R' || $kotaAsal == 'B') {
-        $pangkat = $pangkat . "K3";
+        $dbPangkat = dbase_open('../B/PANGKAT_K3.DBF', 0);
     } else {
-        $pangkat = $pangkat . "K2";
+        $dbPangkat = dbase_open('../B/PANGKAT_K2.DBF',0);
     }
 
-    //kode gaji
-    if ($gajiDasar > 0 && $gajiDasar <= 500000) {
-        $pangkat = $pangkat . "-C4";
-    } else if ($gajiDasar > 500000 && $gajiDasar <= 1000000) {
-        $pangkat = $pangkat . "-C3";
-    } else if ($gajiDasar > 1000000 && $gajiDasar <= 2000000) {
-        $pangkat = $pangkat . "-C2";
-    } else if ($gajiDasar > 2000000 && $gajiDasar <= 3000000) {
-        $pangkat = $pangkat . "-C1";
-    } else if ($gajiDasar > 3000000 && $gajiDasar <= 5000000) {
-        $pangkat = "4B";
-    } else if ($gajiDasar > 5000000 && $gajiDasar <= 7000000) {
-        $pangkat = "4A";
-    } else if ($gajiDasar > 7000000 && $gajiDasar <= 10000000) {
-        $pangkat = "3B";
-    } else if ($gajiDasar > 10000000 && $gajiDasar <= 12000000) {
-        $pangkat = "3A";
-    } else if ($gajiDasar > 12000000 && $gajiDasar <= 14000000) {
-        $pangkat = "2B";
-    } else if ($gajiDasar > 14000000 && $gajiDasar <= 16000000) {
-        $pangkat = "2A";
-    } else if ($gajiDasar > 18000000 && $gajiDasar <= 20000000) {
-        $pangkat = "1B";
-    } else if ($gajiDasar > 20000000 && $gajiDasar <= 22000000) {
-        $pangkat = "1B";
-    } else if ($gajiDasar > 22000000 && $gajiDasar <= 20000000) {
-        $pangkat = "TM";
+    $n = dbase_numrecords($dbPangkat);
+    for ($i=1; $i <= $n  ; $i++) { 
+        $row = dbase_get_record_with_names($dbPangkat, $i);
+        if ($gajiDasar>=$row['MIN'] && $gajiDasar<=$row['MAX']) {
+            $pangkat = $row['PANGKAT'];
+            break;
+        }
     }
 
     //jamsostek & tunjangan kes
