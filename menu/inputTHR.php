@@ -1,25 +1,22 @@
 <?php
 //thr
 if (isset($_POST['edit'])) {
-	$nik = strtoupper($_POST['nik']);
-	$nama = strtoupper($_POST['nama']);
-	$gaji = strtoupper($_POST['gaji_dasar']);
-	$tunjangan_jab = strtoupper($_POST['tunjangan_jab']);
-	$thr = strtoupper($_POST['thr']);
+	$thr = $_POST['thr'];
+	$rowId = $_POST['rowId'];
 
 	$db = dbase_open('../B/GAJI.DBF', 2);
 	if ($db) {
 		$record_numbers = dbase_numrecords($db);
-		for ($i = 1; $i <= $record_numbers; $i++) {
-			$row = dbase_get_record_with_names($db, $i);
-			//echo $row['NAMA'];
-			if ($row['NIK'] == $nik) {
-				unset($row['deleted']);
-				$row['THR'] = $thr;
-				$row = array_values($row);
-				dbase_replace_record($db, $row, $i);
-			}
-		}
+
+		$row = dbase_get_record_with_names($db, $rowId);
+		//echo $row['NAMA'];
+
+		unset($row['deleted']);
+		$row['THR'] = $thr;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
+
+
 		dbase_close($db);
 	}
 }
@@ -50,15 +47,17 @@ if ($db) {
 				<th onclick="sortTable(1)">Nama</th>
 				<th onclick="sortTable(2)">Gaji</th>
 				<th onclick="sortTable(3)">Tunjangan Jabatan</th>
-				<th onclick="sortTable(4)">THR</th>
+				<th onclick="sortTable(4)" colspan="2">THR</th>
 			</tr>
 		</thead>
 		<tbody>
 
 			<?php
+			$totalThr = 0;
 			for ($i = 1; $i <= $record_numbers; $i++) { ?>
 				<tr>
-					<?php $row = dbase_get_record_with_names($db, $i); ?>
+					<?php $row = dbase_get_record_with_names($db, $i);
+					?>
 					<td>
 						<input type="text" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?> disabled>
 					</td>
@@ -72,14 +71,20 @@ if ($db) {
 						<input type="text" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?> disabled>
 					</td>
 					<td>
-						<input type="text" name="thr" value=<?php echo "'" . $row['THR'] . "'"; ?> id=<?php echo "thr" . $i; ?> disabled>
+						<input type="text" name="thr" value=<?php echo "'" . $row['THR'] . "'";
+															$totalThr += $row['THR']; ?> id=<?php echo "thr" . $i; ?> disabled>
 					</td>
 					<td>
 						<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+						<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
+						<input name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
 					</td>
 				</tr>
 			<?php }
 			dbase_close($db); ?>
+			<tr>
+				<td colspan="6">Total THR Yang Dibayar : <?php echo $totalThr ?></td>
+			</tr>
 		</tbody>
 	</table>
 
@@ -96,19 +101,24 @@ if ($db) {
 					<div class="modal-body">
 						<div class="col-lg-12">
 							<label for="nik">NIK</label>
-							<input type="text" class="nik" name="nik" placeholder="">
+							<input type="text" class="nik" name="nik" placeholder="" disabled>
+							<input type="hidden" id="rowId" class="rowId" name="rowId">
 						</div>
 						<div class="col-lg-12">
 							<label for="nama">NAMA</label>
-							<input type="text" class="nama" name="nama" placeholder="">
+							<input type="text" class="nama" name="nama" placeholder="" disabled>
 						</div>
 						<div class="col-lg-12">
 							<label for="gaji">GAJI</label>
-							<input type="text" class="gaji" name="gaji" placeholder="">
+							<input type="text" class="gaji" name="gaji" placeholder="" disabled>
 						</div>
 						<div class="col-lg-12">
 							<label for="tunjangan_jab">TUNJANGAN JABATAN</label>
-							<input type="text" class="tunjangan_jab" name="tunjangan_jab" placeholder="">
+							<input type="text" class="tunjangan_jab" name="tunjangan_jab" placeholder="" disabled>
+						</div>
+						<div class="col-lg-12">
+							<label for="total">TOTAL</label>
+							<input type="text" class="total" name="total" placeholder="" disabled>
 						</div>
 						<div class="col-lg-12">
 							<label for="kode">THR</label>
@@ -132,11 +142,15 @@ if ($db) {
 			var gajiValue = $("#gaji" + clickId).val();
 			var tunjangan_jabValue = $("#tunjangan_jab" + clickId).val();
 			var thrValue = $("#thr" + clickId).val();
+			var total = $("#total" + clickId).val();
+
 			$(".modal-body .nik").val(nikValue);
 			$(".modal-body .nama").val(namaValue);
 			$(".modal-body .gaji").val(gajiValue);
 			$(".modal-body .tunjangan_jab").val(tunjangan_jabValue);
 			$(".modal-body .thr").val(thrValue);
+			$(".modal-body .total").val(total);
+			$(".modal-body .rowId").val(clickId);
 		});
 
 		function sortTable(n) {

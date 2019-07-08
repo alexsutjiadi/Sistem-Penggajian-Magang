@@ -1,24 +1,20 @@
 <?php
 //thr
 if (isset($_POST['edit'])) {
-	$nik = strtoupper($_POST['nik']);
-	$nama = strtoupper($_POST['nama']);
-	$gaji = strtoupper($_POST['gaji']);
-	$bonus = strtoupper($_POST['bonus']);
+	$bonus = $_POST['bonus'];
+	$rowId = $_POST['rowId'];
+	$pphBonus = $_POST['pphBonus'];
 
 	$db = dbase_open('../B/GAJI.DBF', 2);
 	if ($db) {
 		$record_numbers = dbase_numrecords($db);
-		for ($i = 1; $i <= $record_numbers; $i++) {
-			$row = dbase_get_record_with_names($db, $i);
-			//echo $row['NAMA'];
-			if ($row['NIK'] == $nik) {
-				unset($row['deleted']);
-				$row['BONUS'] = $bonus;
-				$row = array_values($row);
-				dbase_replace_record($db, $row, $i);
-			}
-		}
+		$row = dbase_get_record_with_names($db, $rowId);
+		unset($row['deleted']);
+		$row['BONUS'] = $bonus;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
+
+
 		dbase_close($db);
 	}
 }
@@ -45,7 +41,7 @@ if ($db) {
 	<table cellspacing='0' id="myTable">
 		<thead>
 			<tr>
-				<th onclick="sortTable(0)">NIK</th>
+				<th onclick="sortTable(0)">DEPT</th>
 				<th onclick="sortTable(1)">Nama</th>
 				<th onclick="sortTable(2)">Gaji</th>
 				<th onclick="sortTable(3)">BONUS</th>
@@ -57,7 +53,7 @@ if ($db) {
 				<tr>
 					<?php $row = dbase_get_record_with_names($db, $i); ?>
 					<td>
-						<input type="text" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?> disabled>
+						<input type="text" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?> disabled>
 					</td>
 					<td>
 						<input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
@@ -82,7 +78,7 @@ if ($db) {
 			<div class="modal-content">
 				<form action="" method="post">
 					<div class="modal-header">
-						<h5 class="modal-title">Add Jumlah THR</h5>
+						<h5 class="modal-title">Masukan Bonus Karywan</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -90,19 +86,24 @@ if ($db) {
 					<div class="modal-body">
 						<div class="col-lg-12">
 							<label for="nik">NIK</label>
-							<input type="text" class="nik" name="nik" placeholder="">
+							<input type="text" class="nik" name="nik" placeholder="" disabled>
+							<input type="hidden" class="rowId" name="rowId">
 						</div>
 						<div class="col-lg-12">
 							<label for="nama">NAMA</label>
-							<input type="text" class="nama" name="nama" placeholder="">
+							<input type="text" class="nama" name="nama" placeholder="" disabled>
 						</div>
 						<div class="col-lg-12">
 							<label for="gaji">GAJI</label>
-							<input type="text" class="gaji" name="gaji" placeholder="">
+							<input type="text" class="gaji" name="gaji" placeholder="" disabled>
 						</div>
 						<div class="col-lg-12">
 							<label for="bonus">BONUS</label>
 							<input type="text" class="bonus" name="bonus" placeholder="">
+						</div>
+						<div class="col-lg-12">
+							<label for="pphBonus">PPH BONUS</label>
+							<input type="text" class="pphBonus" name="pphBonus" placeholder="">
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -125,6 +126,7 @@ if ($db) {
 			$(".modal-body .nama").val(namaValue);
 			$(".modal-body .gaji").val(gajiValue);
 			$(".modal-body .bonus").val(bonusValue);
+			$(".modal-body .rowId").val(clickId);
 		});
 
 		function sortTable(n) {
