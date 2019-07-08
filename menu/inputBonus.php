@@ -3,6 +3,7 @@
 if (isset($_POST['edit'])) {
 	$nik = strtoupper($_POST['nik']);
 	$nama = strtoupper($_POST['nama']);
+	$gaji = strtoupper($_POST['gaji']);
 	$bonus = strtoupper($_POST['bonus']);
 
 	$db = dbase_open('../B/GAJI.DBF', 2);
@@ -46,7 +47,8 @@ if ($db) {
 			<tr>
 				<th onclick="sortTable(0)">NIK</th>
 				<th onclick="sortTable(1)">Nama</th>
-				<th onclick="sortTable(2)">BONUS</th>
+				<th onclick="sortTable(2)">Gaji</th>
+				<th onclick="sortTable(3)">BONUS</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -59,6 +61,9 @@ if ($db) {
 					</td>
 					<td>
 						<input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
+					</td>
+					<td>
+						<input type="text" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?> disabled>
 					</td>
 					<td>
 						<input type="text" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'"; ?> id=<?php echo "bonus" . $i; ?> disabled>
@@ -92,6 +97,10 @@ if ($db) {
 							<input type="text" class="nama" name="nama" placeholder="">
 						</div>
 						<div class="col-lg-12">
+							<label for="gaji">GAJI</label>
+							<input type="text" class="gaji" name="gaji" placeholder="">
+						</div>
+						<div class="col-lg-12">
 							<label for="bonus">BONUS</label>
 							<input type="text" class="bonus" name="bonus" placeholder="">
 						</div>
@@ -110,9 +119,11 @@ if ($db) {
 			var clickId = $(this).data('id');
 			var nikValue = $("#nik" + clickId).val();
 			var namaValue = $("#nama" + clickId).val();
+			var gajiValue = $("#gaji" + clickId).val();
 			var bonusValue = $("#bonus" + clickId).val();
 			$(".modal-body .nik").val(nikValue);
 			$(".modal-body .nama").val(namaValue);
+			$(".modal-body .gaji").val(gajiValue);
 			$(".modal-body .bonus").val(bonusValue);
 		});
 

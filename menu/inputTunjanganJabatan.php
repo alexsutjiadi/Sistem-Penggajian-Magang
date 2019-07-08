@@ -4,6 +4,7 @@ if(isset($_POST['edit'])){
 		$nik = strtoupper($_POST['nik']);
 		$nama = strtoupper($_POST['nama']);
 		$tunj_jab = strtoupper($_POST['tunj_jab']);
+		$jabatan = strtoupper($_POST['jabatan']);
 
 		$db = dbase_open('../B/GAJI.DBF', 2);
 		if ($db) {
@@ -44,8 +45,10 @@ if(isset($_POST['edit'])){
         <thead>
             <tr>
                 <th>NIK</th>
+                <th>Jabatan</th>
                 <th>Nama</th>
                 <th>TUNJANGAN JABATAN</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -58,11 +61,15 @@ if(isset($_POST['edit'])){
 							<input type="text" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik".$i; ?> disabled>
 						</td>
 						<td> 
+							<input type="text" name="jabatan" value=<?php echo "'".$row['JABATAN']."'"; ?> id=<?php echo "jabatan".$i; ?> disabled> 
+						</td>
+						<td> 
 							<input type="text" name="nama" value=<?php echo "'".$row['NAMA']."'"; ?> id=<?php echo "nama".$i; ?> disabled> 
 						</td>
 						<td> 
 							<input type="text" name="tunj_jab" value=<?php echo "'".$row['TUNJ_JAB']."'"; ?> id=<?php echo "tunj_jab".$i; ?> disabled> 
 						</td>
+						
 						<td> 
 							<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?> >
 						</td>
@@ -90,13 +97,18 @@ if(isset($_POST['edit'])){
 								<input type="text" class="nik" name="nik" placeholder="">
 							</div>
 							<div class="col-lg-12">
+								<label for="jabatan">JABATAN</label>
+								<input type="text" class="jabatan" name="jabatan" placeholder="">
+							</div>
+							<div class="col-lg-12">
 								<label for="nama">NAMA</label>
 								<input type="text" class="nama" name="nama" placeholder="">
 							</div>
 							<div class="col-lg-12">
-								<label for="kode">TUNGJANGAN JABATAN</label>
+								<label for="tunj_jab">TUNGJANGAN JABATAN</label>
 								<input type="text" class="tunj_jab" name="tunj_jab" placeholder="">
 							</div>
+							
 						</div>
 						<div class="modal-footer">
 							<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
@@ -111,11 +123,14 @@ if(isset($_POST['edit'])){
 	$(document).on("click", ".btnUpdate", function () {
      	var clickId = $(this).data('id');
      	var nikValue = $("#nik"+clickId).val();
+     	var jabatanValue = $("#jabatan"+clickId).val();
      	var namaValue = $("#nama"+clickId).val();
      	var tunj_jabValue = $("#tunj_jab"+clickId).val();
      	$(".modal-body .nik").val( nikValue );
+     	$(".modal-body .jabatan").val( jabatanValue );
      	$(".modal-body .nama").val( namaValue );
      	$(".modal-body .tunj_jab").val( tunj_jabValue );
+
 	});
 </script>
 

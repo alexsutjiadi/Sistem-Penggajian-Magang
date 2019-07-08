@@ -3,6 +3,8 @@
 if (isset($_POST['edit'])) {
 	$nik = strtoupper($_POST['nik']);
 	$nama = strtoupper($_POST['nama']);
+	$gaji = strtoupper($_POST['gaji_dasar']);
+	$tunjangan_jab = strtoupper($_POST['tunjangan_jab']);
 	$thr = strtoupper($_POST['thr']);
 
 	$db = dbase_open('../B/GAJI.DBF', 2);
@@ -46,7 +48,9 @@ if ($db) {
 			<tr>
 				<th onclick="sortTable(0)">NIK</th>
 				<th onclick="sortTable(1)">Nama</th>
-				<th onclick="sortTable(2)">THR</th>
+				<th onclick="sortTable(2)">Gaji</th>
+				<th onclick="sortTable(3)">Tunjangan Jabatan</th>
+				<th onclick="sortTable(4)">THR</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -60,6 +64,12 @@ if ($db) {
 					</td>
 					<td>
 						<input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
+					</td>
+					<td>
+						<input type="text" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?> disabled>
+					</td>
+					<td>
+						<input type="text" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?> disabled>
 					</td>
 					<td>
 						<input type="text" name="thr" value=<?php echo "'" . $row['THR'] . "'"; ?> id=<?php echo "thr" . $i; ?> disabled>
@@ -93,6 +103,14 @@ if ($db) {
 							<input type="text" class="nama" name="nama" placeholder="">
 						</div>
 						<div class="col-lg-12">
+							<label for="gaji">GAJI</label>
+							<input type="text" class="gaji" name="gaji" placeholder="">
+						</div>
+						<div class="col-lg-12">
+							<label for="tunjangan_jab">TUNJANGAN JABATAN</label>
+							<input type="text" class="tunjangan_jab" name="tunjangan_jab" placeholder="">
+						</div>
+						<div class="col-lg-12">
 							<label for="kode">THR</label>
 							<input type="text" class="thr" name="thr" placeholder="">
 						</div>
@@ -111,9 +129,13 @@ if ($db) {
 			var clickId = $(this).data('id');
 			var nikValue = $("#nik" + clickId).val();
 			var namaValue = $("#nama" + clickId).val();
+			var gajiValue = $("#gaji" + clickId).val();
+			var tunjangan_jabValue = $("#tunjangan_jab" + clickId).val();
 			var thrValue = $("#thr" + clickId).val();
 			$(".modal-body .nik").val(nikValue);
 			$(".modal-body .nama").val(namaValue);
+			$(".modal-body .gaji").val(gajiValue);
+			$(".modal-body .tunjangan_jab").val(tunjangan_jabValue);
 			$(".modal-body .thr").val(thrValue);
 		});
 
