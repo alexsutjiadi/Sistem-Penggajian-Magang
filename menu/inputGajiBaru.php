@@ -3,6 +3,8 @@
 if (isset($_POST['edit'])) {
     $gaji = $_POST['gajiDasar'];
     $rowId = $_POST['rowId'];
+    $tunjReg = $_POST['tunjReg'];
+    $pangkat = $_POST['pangkatValue'];
 
     $db = dbase_open('../B/GAJI.DBF', 2);
     if ($db) {
@@ -11,6 +13,8 @@ if (isset($_POST['edit'])) {
 
         unset($row['deleted']);
         $row['GAJI_DASAR'] = $gaji;
+        $row['TUNJ_REG'] = $tunjReg;
+        $row['PANGKAT'] = $pangkat;
         $row = array_values($row);
         dbase_replace_record($db, $row, $rowId);
 
@@ -33,6 +37,26 @@ if ($db) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#gajiId').change(function() {
+                var inputValue = $(this).val();
+                var kotaValue = $("#kotaId").val();
+                //alert("value in js " + inputValue + kotaValue);
+
+                //Ajax for calling php function
+                $.post('../src/cekPangkat.php', {
+                    gajiV: inputValue,
+                    kotaV: "B"
+                }, function(data) {
+                    //alert('ajax completed. Response:  ' + data);
+                    //do after submission operation in DOM
+                    $("#pangkatId").val(data);
+                    $("#pangkatValue").val(data);
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -40,8 +64,8 @@ if ($db) {
         <table border="1" id="myTable">
             <tr>
                 <th onclick="sortTable(0)">NO. DEPT</th>
-                <th onclick="sortTable(1)">NAMA</th>
-                <th onclick="sortTable(2)">GAJI DASAR</th>
+                <th onclick="sortTable(1)">NO. URUT</th>
+                <th onclick="sortTable(2)">NAMA</th>
             </tr>
             <?php
             for ($i = 1; $i <= $record_numbers; $i++) { ?>
@@ -49,12 +73,15 @@ if ($db) {
                     <?php $row = dbase_get_record_with_names($db, $i); ?>
                     <td>
                         <input type="text" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?> disabled>
+                        <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
+                        <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
+                        <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
+                    </td>
+                    <td>
+                        <input type="text" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?> disabled>
                     </td>
                     <td>
                         <input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
-                    </td>
-                    <td>
-                        <input type="text" name="gajiDasar" value=<?php echo $row['GAJI_DASAR'] ?> id=<?php echo "gajiDasar" . $i ?> disabled>
                     </td>
                     <td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                     </td>
@@ -68,13 +95,17 @@ if ($db) {
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">PEMELIHARAAN DATA GAJI</h5>
+                        <h5 class="modal-title">INPUT GAJI BARU</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <form action="" method="POST">
                         <div class="modal-body">
+                            <div class="col-lg-12">
+                                <label for="no">NOMER URUT</label>
+                                <input type="text" class="no" name="no" placeholder="" disabled>
+                            </div>
                             <div class="col-lg-12">
                                 <label for="dept">NO. DEPT</label>
                                 <input type="text" class="dept" name="dept" placeholder="" disabled>
@@ -85,8 +116,17 @@ if ($db) {
                                 <input type="text" class="nama" name="nama" placeholder="" disabled>
                             </div>
                             <div class="col-lg-12">
-                                <label for="gajiDasar">GAJI</label>
-                                <input type="text" class="gajiDasar" name="gajiDasar" placeholder="">
+                                <label for="pangkat">PANGKAT</label>
+                                <input type="text" class="pangkat" name="pangkat" id="pangkatId" placeholder="" disabled>
+                                <input type="hidden" class="pangkatValue" name="pangkatValue" id="pangkatValue">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="gajiDasar">GAJI DASAR</label>
+                                <input type="text" class="gajiDasar" name="gajiDasar" id="gajiId" placeholder="">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="tunjReg">TUNJANGAN REGIONAL</label>
+                                <input type="text" class="tunjReg" name="tunjReg" placeholder="">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -105,11 +145,18 @@ if ($db) {
             var deptValue = $("#dept" + clickId).val();
             var namaValue = $("#nama" + clickId).val();
             var gajiDasarValue = $("#gajiDasar" + clickId).val();
+            var tunjRegValue = $("#tunjReg" + clickId).val();
+            var pangkat = $("#pangkat" + clickId).val();
+            var no = $("#no" + clickId).val();
 
             $(".modal-body .dept").val(deptValue);
             $(".modal-body .nama").val(namaValue);
             $(".modal-body .gajiDasar").val(gajiDasarValue);
             $(".modal-body .rowId").val(clickId);
+            $(".modal-body .tunjReg").val(tunjRegValue);
+            $(".modal-body .no").val(no);
+            $(".modal-body .pangkat").val(pangkat);
+
         });
 
         function isValidForm() {
