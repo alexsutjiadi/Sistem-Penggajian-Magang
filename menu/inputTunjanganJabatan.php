@@ -5,6 +5,8 @@ if(isset($_POST['edit'])){
 		$nama = strtoupper($_POST['nama']);
 		$tunj_jab = strtoupper($_POST['tunj_jab']);
 		$jabatan = strtoupper($_POST['jabatan']);
+		$extra_ll = strtoupper($_POST['extra_ll']);
+		$pinjaman = strtoupper($_POST['pinjaman']);
 
 		$db = dbase_open('../B/GAJI.DBF', 2);
 		if ($db) {
@@ -33,14 +35,14 @@ if(isset($_POST['edit'])){
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Input TUNJANGAN JABATAN</title>
+    <title>EXTRA LAIN-LAIN</title>
         <link rel="stylesheet" type="text/css" href="../src/View.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1> INPUT TUNJANGAN JABATAN</h1>
+    <h1>EXTRA LAIN-LAIN</h1>
     <table cellspacing='0'>
         <thead>
             <tr>
@@ -48,6 +50,8 @@ if(isset($_POST['edit'])){
                 <th>Jabatan</th>
                 <th>Nama</th>
                 <th>TUNJANGAN JABATAN</th>
+                <th>EXTRA LAIN-LAIN</th>
+                <th>Pinjaman</th>
                 
             </tr>
         </thead>
@@ -69,6 +73,12 @@ if(isset($_POST['edit'])){
 						<td> 
 							<input type="text" name="tunj_jab" value=<?php echo "'".$row['TUNJ_JAB']."'"; ?> id=<?php echo "tunj_jab".$i; ?> disabled> 
 						</td>
+						<td> 
+							<input type="text" name="extra_ll" value=<?php echo "'".$row['EXTRA_LAIN']."'"; ?> id=<?php echo "extra_ll".$i; ?> disabled> 
+						</td>
+						<td> 
+							<input type="text" name="pinjaman" value=<?php echo "'".$row['PINJAMAN']."'"; ?> id=<?php echo "pinjaman".$i; ?> disabled> 
+						</td>
 						
 						<td> 
 							<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?> >
@@ -76,7 +86,7 @@ if(isset($_POST['edit'])){
 				</tr>
 				<?php } dbase_close($db); ?>
 				<tr>
-					<th colspan="2">TOTAL TUNJANGAN JABATAN</th>
+					<th colspan="3">TOTAL </th>
 				</tr>
         </tbody>
     </table>
@@ -108,6 +118,14 @@ if(isset($_POST['edit'])){
 								<label for="tunj_jab">TUNGJANGAN JABATAN</label>
 								<input type="text" class="tunj_jab" name="tunj_jab" placeholder="">
 							</div>
+							<div class="col-lg-12">
+								<label for="extra_ll">EXTRA LAIN-LAIN</label>
+								<input type="text" class="extra_ll" name="extra_ll" placeholder="">
+							</div>
+							<div class="col-lg-12">
+								<label for="pinjaman">PINJAMAN</label>
+								<input type="text" class="pinjaman" name="pinjaman" placeholder="">
+							</div>
 							
 						</div>
 						<div class="modal-footer">
@@ -126,11 +144,14 @@ if(isset($_POST['edit'])){
      	var jabatanValue = $("#jabatan"+clickId).val();
      	var namaValue = $("#nama"+clickId).val();
      	var tunj_jabValue = $("#tunj_jab"+clickId).val();
+     	var extra_llValue = $("#extra_ll"+clickId).val();
+     	var pinjamanValue = $("#pinjaman"+clickId).val();
      	$(".modal-body .nik").val( nikValue );
      	$(".modal-body .jabatan").val( jabatanValue );
      	$(".modal-body .nama").val( namaValue );
      	$(".modal-body .tunj_jab").val( tunj_jabValue );
-
+		$(".modal-body .extra_ll").val( extra_llValue );
+		$(".modal-body .pinjaman").val( pinjamanValue );
 	});
 </script>
 
