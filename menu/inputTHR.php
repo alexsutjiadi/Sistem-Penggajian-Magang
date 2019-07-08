@@ -3,6 +3,8 @@
 if (isset($_POST['edit'])) {
 	$thr = $_POST['thr'];
 	$rowId = $_POST['rowId'];
+	$pilihanBank = $_POST['pilihanBank'];
+
 
 	$db = dbase_open('../B/GAJI.DBF', 2);
 	if ($db) {
@@ -12,6 +14,7 @@ if (isset($_POST['edit'])) {
 		//echo $row['NAMA'];
 
 		unset($row['deleted']);
+		$row['KODE_BANK'] = $pilihanBank;
 		$row['THR'] = $thr;
 		$row = array_values($row);
 		dbase_replace_record($db, $row, $rowId);
@@ -43,11 +46,11 @@ if ($db) {
 	<table cellspacing='0' id="myTable">
 		<thead>
 			<tr>
-				<th onclick="sortTable(0)">NIK</th>
+				<th onclick="sortTable(0)">DEPT</th>
 				<th onclick="sortTable(1)">Nama</th>
 				<th onclick="sortTable(2)">Gaji</th>
 				<th onclick="sortTable(3)">Tunjangan Jabatan</th>
-				<th onclick="sortTable(4)" colspan="2">THR</th>
+				<th onclick="sortTable(4)colspan=" 2">THR</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -59,7 +62,7 @@ if ($db) {
 					<?php $row = dbase_get_record_with_names($db, $i);
 					?>
 					<td>
-						<input type="text" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?> disabled>
+						<input type="text" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?> disabled>
 					</td>
 					<td>
 						<input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
@@ -77,16 +80,15 @@ if ($db) {
 					<td>
 						<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
 						<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
-						<input name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
+						<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK'] ?> id=<?php echo "pilihanBank" . $i; ?>>
+
 					</td>
 				</tr>
 			<?php }
 			dbase_close($db); ?>
-			<tr>
-				<td colspan="6">Total THR Yang Dibayar : <?php echo $totalThr ?></td>
-			</tr>
 		</tbody>
 	</table>
+	<p>Total THR yang dibayarkan : <?php echo $totalThr ?></p>
 
 	<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -100,7 +102,7 @@ if ($db) {
 					</div>
 					<div class="modal-body">
 						<div class="col-lg-12">
-							<label for="nik">NIK</label>
+							<label for="nik">DEPT</label>
 							<input type="text" class="nik" name="nik" placeholder="" disabled>
 							<input type="hidden" id="rowId" class="rowId" name="rowId">
 						</div>
@@ -124,6 +126,10 @@ if ($db) {
 							<label for="kode">THR</label>
 							<input type="text" class="thr" name="thr" placeholder="">
 						</div>
+						<div class="col-lg-12">
+							<label for="pilihanBank">Pilihan Bank (1. BCA, 2. Tunai)</label>
+							<input type="text" class="pilihanBank" name="pilihanBank" placeholder="">
+						</div>
 					</div>
 					<div class="modal-footer">
 						<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
@@ -135,6 +141,7 @@ if ($db) {
 	</div>
 	</div>
 	<script>
+		
 		$(document).on("click", ".btnUpdate", function() {
 			var clickId = $(this).data('id');
 			var nikValue = $("#nik" + clickId).val();
@@ -143,6 +150,7 @@ if ($db) {
 			var tunjangan_jabValue = $("#tunjangan_jab" + clickId).val();
 			var thrValue = $("#thr" + clickId).val();
 			var total = $("#total" + clickId).val();
+			var pilihanBankValue = $("#pilihanBank" + clickId).val();
 
 			$(".modal-body .nik").val(nikValue);
 			$(".modal-body .nama").val(namaValue);
@@ -151,6 +159,7 @@ if ($db) {
 			$(".modal-body .thr").val(thrValue);
 			$(".modal-body .total").val(total);
 			$(".modal-body .rowId").val(clickId);
+			$(".modal-body .pilihanBank").val(pilihanBankValue);
 		});
 
 		function sortTable(n) {

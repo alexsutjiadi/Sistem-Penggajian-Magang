@@ -49,6 +49,7 @@ if ($db) {
 		</thead>
 		<tbody>
 			<?php
+			$totalBonus = 0;
 			for ($i = 1; $i <= $record_numbers; $i++) { ?>
 				<tr>
 					<?php $row = dbase_get_record_with_names($db, $i); ?>
@@ -62,7 +63,8 @@ if ($db) {
 						<input type="text" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?> disabled>
 					</td>
 					<td>
-						<input type="text" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'"; ?> id=<?php echo "bonus" . $i; ?> disabled>
+						<input type="text" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'";
+																$totalBonus += $row['BONUS'] ?> id=<?php echo "bonus" . $i; ?> disabled>
 					</td>
 					<td>
 						<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
@@ -72,6 +74,7 @@ if ($db) {
 			dbase_close($db); ?>
 		</tbody>
 	</table>
+	<p>Total Bonus Yang dibayarkan : <?php echo $totalBonus ?></p>
 
 	<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -153,17 +156,21 @@ if ($db) {
 					/*check if the two rows should switch place,
 					based on the direction, asc or desc:*/
 					if (dir == "asc") {
-						if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+						if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
 							//if so, mark as a switch and break the loop:
 							shouldSwitch = true;
 							break;
+
 						}
+
 					} else if (dir == "desc") {
 						if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
 							//if so, mark as a switch and break the loop:
 							shouldSwitch = true;
 							break;
 						}
+
+
 					}
 				}
 				if (shouldSwitch) {

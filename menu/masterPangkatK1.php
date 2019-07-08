@@ -8,20 +8,17 @@ if (isset($_POST['edit'])) {
 
     $db = dbase_open('../B/PANGKAT_K1.DBF', 2);
     if ($db) {
-            $row = dbase_get_record_with_names($db, $rowId);
-            unset($row['deleted']);
+        $row = dbase_get_record_with_names($db, $rowId);
+        unset($row['deleted']);
 
-            $row['PANGKAT'] = $pangkat;
-            $row['MIN'] = $min;
-            $row['MAX'] = $max;
-            $row = array_values($row);
-            dbase_replace_record($db, $row, $rowId);
-            
-        }
-        dbase_close($db);
+        $row['PANGKAT'] = $pangkat;
+        $row['MIN'] = $min;
+        $row['MAX'] = $max;
+        $row = array_values($row);
+        dbase_replace_record($db, $row, $rowId);
     }
-
-else if (isset($_POST['add'])) {
+    dbase_close($db);
+} else if (isset($_POST['add'])) {
     $pangkat = strtoupper($_POST['pangkat']);
     $min = strtoupper($_POST['min']);
     $max = $_POST['max'];
@@ -82,28 +79,34 @@ if ($db) {
                     </td>
                     <td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                     </td>
-                    <td>
+                    <!-- <td>
                         <form action="" method="post">
                             <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
                             <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
                         </form>
-                    </td>
+                    </td> -->
                 </tr>
             <?php }
             dbase_close($db); ?>
-            <tr>
-                <td><form action="masterPangkatK1.php" method="post"><input type="submit" name="k1" value="K1"></form></td>
-                <td><form action="masterPangkatK2.php" method="post"><input type="submit" name="k2" value="K2"></form></td>
-                <td><form action="masterPangkatK3.php" method="post"><input type="submit" name="k3" value="K3"></form></td>
-            </tr>
-            <tr>
+            <!-- <tr>
+                <td>
+                    <form action="masterPangkatK1.php" method="post"><input type="submit" name="k1" value="K1"></form>
+                </td>
+                <td>
+                    <form action="masterPangkatK2.php" method="post"><input type="submit" name="k2" value="K2"></form>
+                </td>
+                <td>
+                    <form action="masterPangkatK3.php" method="post"><input type="submit" name="k3" value="K3"></form>
+                </td>
+            </tr> -->
+            <!-- <tr>
                 <td colspan="5">
                     <center><input type="submit" name="add" class="btnAdd" data-toggle="modal" data-target="#mdl-add" value="ADD"></center>
                     </form>
                 </td>
-            </tr>
-            
-           
+            </tr> -->
+
+
 
 
         </table>
@@ -174,6 +177,7 @@ if ($db) {
         </div>
     </div>
     <script>
+        sortTable(1);
         $(document).on("click", ".btnUpdate", function() {
             var clickId = $(this).data('id');
             var pangkatValue = $("#pangkat" + clickId).val();
@@ -198,11 +202,9 @@ if ($db) {
         }
 
         function sortTable(n) {
-            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            var table, rows, switching, i, x, y, shouldSwitch;
             table = document.getElementById("myTable");
             switching = true;
-            //Set the sorting direction to ascending:
-            dir = "asc";
             /*Make a loop that will continue until
             no switching has been done:*/
             while (switching) {
@@ -218,20 +220,11 @@ if ($db) {
                     one from current row and one from the next:*/
                     x = rows[i].getElementsByTagName("TD")[n];
                     y = rows[i + 1].getElementsByTagName("TD")[n];
-                    /*check if the two rows should switch place,
-                    based on the direction, asc or desc:*/
-                    if (dir == "asc") {
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                            //if so, mark as a switch and break the loop:
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else if (dir == "desc") {
-                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                            //if so, mark as a switch and break the loop:
-                            shouldSwitch = true;
-                            break;
-                        }
+                    //check if the two rows should switch place:
+                    if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
                     }
                 }
                 if (shouldSwitch) {
@@ -239,15 +232,6 @@ if ($db) {
                     and mark that a switch has been done:*/
                     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                     switching = true;
-                    //Each time a switch is done, increase this count by 1:
-                    switchcount++;
-                } else {
-                    /*If no switching has been done AND the direction is "asc",
-                    set the direction to "desc" and run the while loop again.*/
-                    if (switchcount == 0 && dir == "asc") {
-                        dir = "desc";
-                        switching = true;
-                    }
                 }
             }
         }

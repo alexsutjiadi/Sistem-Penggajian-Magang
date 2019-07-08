@@ -241,10 +241,10 @@ if ($db) {
 								<label for="pilihanBank">PILIHAN BANK (1=BCA, 2=TUNAI)</label>
 								<input type="text" class="pilihanBank" name="pilihanBank" placeholder="">
 							</div>
-							<div class="col-lg-12">
+							<!-- <div class="col-lg-12">
 								<label for="bruto">BRUTO</label>
 								<input type="text" class="bruto" name="bruto" placeholder="">
-							</div>
+							</div> -->
 						</div>
 						<div class="modal-footer">
 							<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
@@ -298,7 +298,7 @@ if ($db) {
 			$(".modal-body .premiKesehatan").val(premiKesehatanValue);
 			$(".modal-body .tunjanganKesehatan").val(tunjanganKesehatanValue);
 			$(".modal-body .pilihanBank").val(pilihanBankValue);
-			$(".modal-body .bruto").val(bruto);
+			//$(".modal-body .bruto").val(bruto);
 
 		});
 
