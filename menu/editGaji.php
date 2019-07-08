@@ -18,7 +18,7 @@ if (isset($_POST['edit'])) {
     }
 }
 
-//fetch data golongan dri db
+//fetch data gaji dri db
 $db = dbase_open('../B/GAJI.DBF', 0);
 if ($db) {
     $record_numbers = dbase_numrecords($db);

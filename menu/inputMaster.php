@@ -8,7 +8,7 @@ if (isset($_POST['addNew'])) {
     $jabatan = strtoupper($_POST['jabatan']);
     $kotaLahir = strtoupper($_POST['kotaLahir']);
     $tglLahir = date("Ymd", strtotime($_POST['tglLahir']));
-    //$pangkat = $_POST['pangkat'];
+    $pangkat = $_POST['pangkatValue'];
     $status = $_POST['status'];
     $jenisKelamin = $_POST['jenisKelamin'];
     $keluarga = $_POST['keluarga'];
@@ -66,20 +66,11 @@ if (isset($_POST['addNew'])) {
     //pangkat
     //buka db sesuai cluster kota
     if ($kotaAsal == 'V' || $kotaAsal == 'H0' || $kotaAsal == 'S') {
-        $dbPangkat = dbase_open('../B/PANGKAT_K1.DBF',0);
+        $dbPangkat = dbase_open('../B/PANGKAT_K1.DBF', 0);
     } else if ($kotaAsal == 'R' || $kotaAsal == 'B') {
         $dbPangkat = dbase_open('../B/PANGKAT_K3.DBF', 0);
     } else {
-        $dbPangkat = dbase_open('../B/PANGKAT_K2.DBF',0);
-    }
-
-    $n = dbase_numrecords($dbPangkat);
-    for ($i=1; $i <= $n  ; $i++) { 
-        $row = dbase_get_record_with_names($dbPangkat, $i);
-        if ($gajiDasar>=$row['MIN'] && $gajiDasar<=$row['MAX']) {
-            $pangkat = $row['PANGKAT'];
-            break;
-        }
+        $dbPangkat = dbase_open('../B/PANGKAT_K2.DBF', 0);
     }
 
     //jamsostek & tunjangan kes
@@ -112,6 +103,27 @@ if (isset($_POST['addNew'])) {
 
 <head>
     <title>Form Input</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#gajiId').change(function() {
+                var inputValue = $(this).val();
+                var kotaValue = $("#kotaId").val();
+                //alert("value in js " + inputValue + kotaValue);
+
+                //Ajax for calling php function
+                $.post('../src/cekPangkat.php', {
+                    gajiV: inputValue,
+                    kotaV: kotaValue
+                }, function(data) {
+                    //alert('ajax completed. Response:  ' + data);
+                    //do after submission operation in DOM
+                    $("#pangkatId").val(data);
+                    $("#pangkatValue").val(data);
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -161,16 +173,13 @@ if (isset($_POST['addNew'])) {
                 </p>
                 <p>
                     <label>Kota Lahir:</label>
-                    <input type="text" name="kotaLahir" placeholder="Kota Lahir..." />
+                    <input type="text" name="kotaLahir" placeholder="Kota Lahir..."/>
                 </p>
                 <p>
                     <label>Tgl Lahir:</label>
                     <input type="date" name="tglLahir" />
                 </p>
-                <!-- <p>
-            <label>Pangkat:</label>
-            <input type="text" name="pangkat" placeholder="Pangkat..." />
-        </p> -->
+
                 <p>
                     <label>Status:</label>
                     <select name="status">
@@ -202,12 +211,8 @@ if (isset($_POST['addNew'])) {
                     </select>
                 </p>
                 <p>
-                    <label>Gaji Dasar:</label>
-                    <input type="text" name="gaji" placeholder="Rp..." />
-                </p>
-                <p>
                     <label>Kota:</label>
-                    <select name="kotaAsal">
+                    <select name="kotaAsal" id="kotaId">
                         <option value="V">JAKARTA (V)</option>
                         <option value="H0">PUSAT (H0)</option>
                         <option value="S">SURABAYA (S)</option>
@@ -218,6 +223,16 @@ if (isset($_POST['addNew'])) {
                         <option value="W">PALEMBANG (W)</option>
                     </select>
                 </p>
+                <p>
+                    <label>Pangkat:</label>
+                    <input type="text" name="pangkat" id="pangkatId" placeholder="Pangkat..." disabled/>
+                    <input type="hidden" name="pangkatValue" id="pangkatValue">
+                </p>
+                <p>
+                    <label>Gaji Dasar:</label>
+                    <input type="text" name="gaji" id="gajiId" placeholder="Rp..." />
+                </p>
+
                 <p>
                     <label>Tgl Masuk:</label>
                     <input type="date" name="tglMasuk" />

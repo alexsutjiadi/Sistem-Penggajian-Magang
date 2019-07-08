@@ -1,5 +1,5 @@
 <?php
-//edit data golongan
+
 if (isset($_POST['edit'])) {
 	$dept = strtoupper($_POST['dept']);
 	$nama = strtoupper($_POST['nama']);
@@ -12,9 +12,9 @@ if (isset($_POST['edit'])) {
 		$record_numbers = dbase_numrecords($db);
 		for ($i = 1; $i <= $record_numbers; $i++) {
 			$row = dbase_get_record_with_names($db, $i);
-			//echo $row['NAMA'];
+
 			if ($row['NO_INDUK'] == $dept) {
-				//echo "masuk";
+
 				unset($row['deleted']);
 				$row['NO_REK'] = $rekening;
 				$row['SEQ'] = $seq;
@@ -26,7 +26,7 @@ if (isset($_POST['edit'])) {
 		dbase_close($db);
 	}
 }
-//add data golongan
+
 else if (isset($_POST['add'])) {
 	$dept = strtoupper($_POST['dept']);
 	$nama = strtoupper($_POST['nama']);
@@ -41,7 +41,7 @@ else if (isset($_POST['add'])) {
 	dbase_close($db);
 } else if (isset($_POST['delete']) == 1) {
 	$idDelete = $_POST['idDelete'];
-	//echo "string";
+
 
 	$db = dbase_open('../B/BCA.DBF', 2);
 	if ($db) {
@@ -51,7 +51,7 @@ else if (isset($_POST['add'])) {
 	dbase_close($db);
 }
 
-//fetch data golongan dri db
+
 $db = dbase_open('../B/BCA.DBF', 0);
 if ($db) {
 	$record_numbers = dbase_numrecords($db);

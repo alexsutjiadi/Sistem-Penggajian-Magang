@@ -1,5 +1,5 @@
 <?php
-//edit data master
+//edit data master gaji
 if (isset($_POST['edit'])) {
 	$rowId = $_POST['rowId'];
 	$no = $_POST['no'];
@@ -27,13 +27,12 @@ if (isset($_POST['edit'])) {
 	$db = dbase_open('../B/GAJI.DBF', 2);
 	$db2 = dbase_open('../B/WAKTU_MASUK.DBF', 2);
 	if ($db) {
-		// $record_numbers = dbase_numrecords($db);
 		$row = dbase_get_record_with_names($db, $rowId);
 		$row2 = dbase_get_record_with_names($db2, $rowId);
-		//echo "masuk";
+		
 		unset($row['deleted']);
 		unset($row2['deleted']);
-		// $no = $_POST['no'];
+		
 		$row['NO_URUT'] = $no; 
 		$row['NAMA'] = $nama;
 		$row['NIK'] = $nik;
@@ -64,20 +63,6 @@ if (isset($_POST['edit'])) {
 	dbase_close($db2);
 	dbase_close($db);
 }
-//add data golongan
-// else if (isset($_POST['add'])) {
-// 	$dept = strtoupper($_POST['dept']);
-// 	$nama = strtoupper($_POST['nama']);
-// 	$rekening = $_POST['rekening'];
-// 	$seq = $_POST['seq'];
-// 	$pemilik = $_POST['pemilik'];
-
-// 	$db = dbase_open('../B/GAJI.DBF', 2);
-// 	if ($db) {
-//  			dbase_add_record($db, array($dept,$nama,$rekening,$seq,$pemilik,0,0));
-//  		}
-//  		dbase_close($db);
-// }
 else if (isset($_POST['delete']) == 1) {
 	$idDelete = $_POST['idDelete'];
 
@@ -166,13 +151,6 @@ if ($db) {
 			<?php }
 			dbase_close($db);
 			dbase_close($db2); ?>
-			<!-- <tr>
-				<td colspan="5">
-					<center><input type="submit" name="add" class="btnAdd" data-toggle="modal" data-target="#mdl-add" value="ADD"></center>
-					</form>
-				</td>
-			</tr> -->
-
 
 		</table>
 		<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
@@ -299,7 +277,6 @@ if ($db) {
 			var premiKesehatanValue = $("#premiKesehatan" + clickId).val();
 			var tunjanganKesehatanValue = $("#tunjanganKesehatan" + clickId).val();
 			var pilihanBankValue = $("#pilihanBank" + clickId).val();
-			//var bruto = gajiDasar+tunjanganKesehatan+premiKesehatan;
 
 			$(".modal-body .rowId").val(clickId);
 			$(".modal-body .no").val(noValue);

@@ -1,5 +1,5 @@
 <?php
-//edit data golongan
+
 if (isset($_POST['edit'])) {
     $rowId = $_POST['rowId'];
     $pangkat = strtoupper($_POST['pangkat']);
@@ -20,7 +20,7 @@ if (isset($_POST['edit'])) {
         }
         dbase_close($db);
     }
-//add data golongan
+
 else if (isset($_POST['add'])) {
     $pangkat = strtoupper($_POST['pangkat']);
     $min = strtoupper($_POST['min']);
@@ -33,7 +33,6 @@ else if (isset($_POST['add'])) {
     dbase_close($db);
 } else if (isset($_POST['delete']) == 1) {
     $idDelete = $_POST['idDelete'];
-    //echo "string";
 
     $db = dbase_open('../B/PANGKAT_K1.DBF', 2);
     if ($db) {
@@ -43,7 +42,7 @@ else if (isset($_POST['add'])) {
     dbase_close($db);
 }
 
-//fetch data golongan dri db
+
 $db = dbase_open('../B/PANGKAT_K1.DBF', 0);
 if ($db) {
     $record_numbers = dbase_numrecords($db);

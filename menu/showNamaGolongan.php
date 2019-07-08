@@ -10,7 +10,6 @@ if (isset($_POST['edit'])) {
 		$record_numbers = dbase_numrecords($db);
 
 		$row = dbase_get_record_with_names($db, $rowId);
-		//echo $row['NAMA'];
 
 		unset($row['deleted']);
 		$row['KODE'] = $kode;
