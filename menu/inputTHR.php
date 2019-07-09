@@ -46,15 +46,15 @@ if ($db) {
 	<table cellspacing='0' id="myTable">
 		<thead>
 			<tr>
-				<th onclick="sortTable(0)">DEPT</th>
-				<th onclick="sortTable(1)">Nama</th>
-				<th onclick="sortTable(2)">Gaji</th>
-				<th onclick="sortTable(3)">Tunjangan Jabatan</th>
-				<th onclick="sortTable(4)colspan=" 2">THR</th>
+				<th onclick="sortTable(0,'T')">DEPT</th>
+				<th onclick="sortTable(1,'T')">Nama</th>
+				<th onclick="sortTable(2,'N')">Gaji</th>
+				<th onclick="sortTable(3,'N')">Tunjangan Jabatan</th>
+				<th onclick="sortTable(4,'N')">THR</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-
 			<?php
 			$totalThr = 0;
 			for ($i = 1; $i <= $record_numbers; $i++) { ?>
@@ -62,25 +62,33 @@ if ($db) {
 					<?php $row = dbase_get_record_with_names($db, $i);
 					?>
 					<td>
-						<input type="text" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?> disabled>
+						<?php echo $row['DEPT']; ?>
 					</td>
 					<td>
-						<input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
+						<?php echo $row['NAMA']; ?>
 					</td>
 					<td>
-						<input type="text" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?> disabled>
+						<?php echo $row['GAJI_DASAR']; ?>
+
 					</td>
 					<td>
-						<input type="text" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?> disabled>
+						<?php echo $row['TUNJ_JAB']; ?>
+
 					</td>
 					<td>
-						<input type="text" name="thr" value=<?php echo "'" . $row['THR'] . "'";
-															$totalThr += $row['THR']; ?> id=<?php echo "thr" . $i; ?> disabled>
+						<?php echo $row['THR']; ?>
+
 					</td>
 					<td>
 						<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
 						<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
 						<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK'] ?> id=<?php echo "pilihanBank" . $i; ?>>
+						<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
+						<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
+						<input type="hidden" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?>>
+						<input type="hidden" name="thr" value=<?php echo "'" . $row['THR'] . "'";
+																$totalThr += $row['THR']; ?> id=<?php echo "thr" . $i; ?>>
+						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
 
 					</td>
 				</tr>
@@ -141,7 +149,6 @@ if ($db) {
 	</div>
 	</div>
 	<script>
-		
 		$(document).on("click", ".btnUpdate", function() {
 			var clickId = $(this).data('id');
 			var nikValue = $("#nik" + clickId).val();
@@ -162,7 +169,7 @@ if ($db) {
 			$(".modal-body .pilihanBank").val(pilihanBankValue);
 		});
 
-		function sortTable(n) {
+		function sortTable(n, mode) {
 			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
 			table = document.getElementById("myTable");
 			switching = true;
@@ -186,16 +193,33 @@ if ($db) {
 					/*check if the two rows should switch place,
 					based on the direction, asc or desc:*/
 					if (dir == "asc") {
-						if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-							//if so, mark as a switch and break the loop:
-							shouldSwitch = true;
-							break;
+						if (mode == 'N') {
+							if (Number(x.innerHTML) > Number(y.innerHTML)) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
+							}
+						} else {
+							if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
+							}
 						}
+
 					} else if (dir == "desc") {
-						if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-							//if so, mark as a switch and break the loop:
-							shouldSwitch = true;
-							break;
+						if (mode == 'N') {
+							if (Number(x.innerHTML) < Number(y.innerHTML)) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
+							}
+						} else {
+							if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
+							}
 						}
 					}
 				}

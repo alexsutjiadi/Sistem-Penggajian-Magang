@@ -51,25 +51,26 @@ if ($db) {
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Nama Golongan</title>
 	<link rel="stylesheet" type="text/css" href="../src/View.css">
-    <link rel="stylesheet" type="text/css" href="../src/tampilan1.css">
+	<link rel="stylesheet" type="text/css" href="../src/tampilan1.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-	<div>
-		<div class="wrap">
-			<div class="header">
+	<div class="wrap">
+		<div class="header">
 			<header>
 				<img src="../img/back.png" align="right" height="40" width="40" margin-top="0" onclick="goBack()" />
-  				<h1>NAMA GOLONGAN</h1>
+				<h1>NAMA GOLONGAN</h1>
 			</header>
-			</div>
 		</div>
+	</div>
+	<div class="container">
 		<table border="1" id="myTable">
 			<tr>
 				<th onclick="sortTable(0)">KODE</th>
@@ -82,14 +83,16 @@ if ($db) {
 				<tr>
 					<?php $row = dbase_get_record_with_names($db, $i); ?>
 					<td>
-						<input type="text" name="kode" value=<?php echo $row['KODE']; ?> id=<?php echo "kode" . $i; ?> disabled>
+						<?php echo $row['KODE']; ?>
 					</td>
 					<td>
-						<input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled> </td>
+						<?php echo $row['NAMA'] ?> </td>
 					<td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
 					</td>
 					<td>
 						<form action="" method="post">
+							<input type="hidden" name="kode" value=<?php echo $row['KODE']; ?> id=<?php echo "kode" . $i; ?> >
+							<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> >
 							<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
 							<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
 						</form>
@@ -109,35 +112,36 @@ if ($db) {
 			</tr>
 
 		</table>
-		<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<form action="" method="post">
-						<div class="modal-header">
-							<h5 class="modal-title">Update Data Golongan</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
+	</div>
+	<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<form action="" method="post">
+					<div class="modal-header">
+						<h5 class="modal-title">Update Data Golongan</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="col-lg-12">
+							<label for="kode">KODE</label>
+							<input type="text" class="kode" name="kode" placeholder="">
+							<input type="hidden" name="rowId" class="rowId" value="">
 						</div>
-						<div class="modal-body">
-							<div class="col-lg-12">
-								<label for="kode">KODE</label>
-								<input type="text" class="kode" name="kode" placeholder="">
-								<input type="hidden" name="rowId" class="rowId" value="">
-							</div>
-							<div class="col-lg-12">
-								<label for="nama">NAMA GOLONGAN</label>
-								<input type="text" class="nama" name="nama" placeholder="">
-							</div>
+						<div class="col-lg-12">
+							<label for="nama">NAMA GOLONGAN</label>
+							<input type="text" class="nama" name="nama" placeholder="">
 						</div>
-						<div class="modal-footer">
-							<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						</div>
-					</form>
-				</div>
+					</div>
+					<div class="modal-footer">
+						<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</form>
 			</div>
 		</div>
+	</div>
 	</div>
 
 	<script>
@@ -196,9 +200,9 @@ if ($db) {
 		}
 	</script>
 	<script>
-    function goBack() {
-        window.history.back();
-    }
+		function goBack() {
+			window.history.back();
+		}
 	</script>
 </body>
 

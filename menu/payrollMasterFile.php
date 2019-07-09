@@ -97,7 +97,7 @@ if ($db) {
 </head>
 
 <body>
-	<div>
+	<div class="container">
 		<table border="1" id="myTable">
 			<tr>
 				<th onclick="sortTable(0)">DEPT</th>
@@ -112,13 +112,13 @@ if ($db) {
 					$row2 = dbase_get_record_with_names($db2, $i);
 					?>
 					<td>
-						<input type="text" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?> disabled>
+						<?php echo $row['DEPT']?>
 					</td>
 					<td>
-						<input type="text" name="no" value=<?php echo $row['NO_URUT']; ?> id=<?php echo "no" . $i; ?> disabled>
+						<?php echo $row['NO_URUT']; ?>
 					</td>
 					<td>
-						<input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
+						<?php echo $row['NAMA']; ?>
 					</td>
 					<td>
 						<input type="hidden" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?>>
@@ -137,6 +137,9 @@ if ($db) {
 						<input type="hidden" name="premiKesehatan" value=<?php echo $row['JPK']; ?> id=<?php echo "premiKesehatan" . $i; ?>>
 						<input type="hidden" name="tunjanganKesehatan" value=<?php echo $row['TUNJ_KES']; ?> id=<?php echo "tunjanganKesehatan" . $i; ?>>
 						<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK']; ?> id=<?php echo "pilihanBank" . $i; ?>>
+						<input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?> >
+						<input type="hidden" name="no" value=<?php echo $row['NO_URUT']; ?> id=<?php echo "no" . $i; ?>>
+						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> >
 
 					</td>
 					<td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>

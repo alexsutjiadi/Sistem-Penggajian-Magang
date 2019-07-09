@@ -69,22 +69,26 @@ if ($db) {
                 <tr>
                     <?php $row = dbase_get_record_with_names($db, $i); ?>
                     <td>
-                        <input type="text" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?> disabled>
+                        <?php echo $row['PANGKAT']; ?>
                     </td>
                     <td>
-                        <input type="text" name="min" value=<?php echo "'" . $row['MIN'] . "'"; ?> id=<?php echo "min" . $i; ?> disabled>
+                        <?php echo $row['MIN'] ?>
                     </td>
                     <td>
-                        <input type="text" value="<?php echo $row['MAX'] ?>" id=<?php echo "max" . $i; ?> disabled>
+                        <?php echo $row['MAX'] ?>
                     </td>
-                    <td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+                    <td>
+                        <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
+                        <input type="hidden" name="min" value=<?php echo "'" . $row['MIN'] . "'"; ?> id=<?php echo "min" . $i; ?>>
+                        <input type="hidden" value="<?php echo $row['MAX'] ?>" id=<?php echo "max" . $i; ?>>
+                        <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                     </td>
                     <!-- <td>
-                            <form action="" method="post">
-                                <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
-                                <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
-                            </form>
-                        </td> -->
+                                <form action="" method="post">
+                                    <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
+                                    <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
+                                </form>
+                            </td> -->
                 </tr>
             <?php }
             dbase_close($db); ?>

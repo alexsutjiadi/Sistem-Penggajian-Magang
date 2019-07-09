@@ -65,10 +65,10 @@ if ($db) {
     <div>
         <div class="wrap">
             <div class="header">
-            <header>
-                <img src="../img/back.png" align="right" height="40" width="40" margin-top="0" onclick="goBack()" />
-                <h1>INPUT GAJI BARU</h1>
-            </header>
+                <header>
+                    <img src="../img/back.png" align="right" height="40" width="40" margin-top="0" onclick="goBack()" />
+                    <h1>INPUT GAJI BARU</h1>
+                </header>
             </div>
         </div>
         <table border="1" id="myTable">
@@ -83,18 +83,22 @@ if ($db) {
                 <tr>
                     <?php $row = dbase_get_record_with_names($db, $i); ?>
                     <td>
-                        <input type="text" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?> disabled>
+                        <?php echo $row['DEPT']; ?>
+                    </td>
+                    <td>
+                        <?php echo $row['NO_URUT'] ?>
+                    </td>
+                    <td>
+                        <?php echo $row['NAMA']; ?>
+                    </td>
+                    <td>
+                        <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+                        <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?>>
+                        <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
                         <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
                         <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
                         <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
-                    </td>
-                    <td>
-                        <input type="text" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?> disabled>
-                    </td>
-                    <td>
-                        <input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
-                    </td>
-                    <td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+                        <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                     </td>
                 </tr>
             <?php }
@@ -235,10 +239,10 @@ if ($db) {
         }
     </script>
     <script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 
 </html>

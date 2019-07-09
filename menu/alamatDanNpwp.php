@@ -37,36 +37,16 @@ if ($db) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#gajiId').change(function() {
-                var inputValue = $(this).val();
-                var kotaValue = $("#kotaId").val();
-                //alert("value in js " + inputValue + kotaValue);
-
-                //Ajax for calling php function
-                $.post('../src/cekPangkat.php', {
-                    gajiV: inputValue,
-                    kotaV: "B"
-                }, function(data) {
-                    //alert('ajax completed. Response:  ' + data);
-                    //do after submission operation in DOM
-                    $("#pangkatId").val(data);
-                    $("#pangkatValue").val(data);
-                });
-            });
-        });
-    </script>
 </head>
 
 <body>
     <div>
         <div class="wrap">
             <div class="header">
-            <header>
-                <img src="../img/back.png" align="right" height="40" width="40" margin-top="0" onclick="goBack()" />
-                <h1>ALAMAT & N.P.W.P</h1>
-            </header>
+                <header>
+                    <img src="../img/back.png" align="right" height="40" width="40" margin-top="0" onclick="goBack()" />
+                    <h1>ALAMAT & N.P.W.P</h1>
+                </header>
             </div>
         </div>
         <table border="1" id="myTable">
@@ -81,17 +61,21 @@ if ($db) {
                 <tr>
                     <?php $row = dbase_get_record_with_names($db, $i); ?>
                     <td>
-                        <input type="text" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?> disabled>
-                        <input type="hidden" name="alamat" value=<?php echo "'".$row['ALAMAT']."'"; ?> id=<?php echo "alamat" . $i; ?>>
-                        <input type="hidden" name="npwp" value=<?php echo "'".$row['NPWP']."'"; ?> id=<?php echo "npwp" . $i; ?>>
+                        <?php echo $row['DEPT']; ?> 
                     </td>
                     <td>
-                        <input type="text" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?> disabled>
+                        <?php echo $row['NO_URUT'] ?>
                     </td>
                     <td>
-                        <input type="text" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
+                        <?php echo$row['NAMA']; ?>
                     </td>
-                    <td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+                    <td>
+                        <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> >
+                        <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?> >
+                        <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?> >
+                        <input type="hidden" name="alamat" value=<?php echo "'" . $row['ALAMAT'] . "'"; ?> id=<?php echo "alamat" . $i; ?>>
+                        <input type="hidden" name="npwp" value=<?php echo "'" . $row['NPWP'] . "'"; ?> id=<?php echo "npwp" . $i; ?>>
+                        <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                     </td>
                 </tr>
             <?php }
@@ -121,13 +105,13 @@ if ($db) {
                             </div>
                             <div class="col-lg-12">
                                 <label for="alamat">ALAMAT</label>
-                                <input type="text" class="alamat" name="alamat" id="alamat" placeholder="" >
+                                <input type="text" class="alamat" name="alamat" id="alamat" placeholder="">
                             </div>
                             <div class="col-lg-12">
                                 <label for="npwp">N.P.W.P</label>
                                 <input type="text" class="npwp" name="npwp" id="npwp" placeholder="">
                             </div>
-                        
+
                         </div>
                         <div class="modal-footer">
                             <input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
@@ -152,7 +136,7 @@ if ($db) {
             $(".modal-body .alamat").val(alamatValue);
             $(".modal-body .rowId").val(clickId);
             $(".modal-body .npwp").val(npwpValue);
-            
+
 
         });
 
@@ -221,9 +205,9 @@ if ($db) {
         }
     </script>
     <script>
-    function goBack() {
-        window.history.back();
-    }
+        function goBack() {
+            window.history.back();
+        }
     </script>
 </body>
 
