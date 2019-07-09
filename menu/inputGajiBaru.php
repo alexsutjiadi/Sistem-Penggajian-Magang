@@ -58,48 +58,67 @@ if ($db) {
                 });
             });
         });
+        $(document).ready(function() {
+            $('#kotaId').change(function() {
+                var inputValue = $("#gajiId").val();
+                var kotaValue = $(this).val();
+                //alert("value in js " + inputValue + kotaValue);
+
+                //Ajax for calling php function
+                $.post('../src/cekPangkat.php', {
+                    gajiV: inputValue,
+                    kotaV: kotaValue
+                }, function(data) {
+                    //alert('ajax completed. Response:  ' + data);
+                    //do after submission operation in DOM
+                    $("#pangkatId").val(data);
+                    $("#pangkatValue").val(data);
+                });
+            });
+        });
     </script>
 </head>
 
 <body>
-        <div class="wrap">
-            <div class="header">
-                <header> <!--Section HEADER-->
-                    <img src="../img/rtn.jpg" />
-                        <div id='cssmenu'>
+    <div class="wrap">
+        <div class="header">
+            <header>
+                <!--Section HEADER-->
+                <img src="../img/rtn.jpg" />
+                <div id='cssmenu'>
+                    <ul>
+                        <li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
                             <ul>
-                                <li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
-                                    <ul>
-                                        <li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
-                                        <li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
-                                        <li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
-                                        <li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
-                                        <li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
-                                        <li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
-                                        <li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
-                                    </ul>
-                                </li>
-                                <li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
-                                    <ul>
-                                        <li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
-                                        <li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
-                                    </ul>
-                                </li>
-                                <li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
-                                    <ul>
-                                        <li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
-                                        <li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
-                                        <li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
-                                    </ul>
-                                </li>
-                                <li class='active'><a href='index.html'><span>Home</span></a></li>
-                                <li><a href='#'><span>Contact</span></a></li>
+                                <li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
+                                <li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
+                                <li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
+                                <li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
+                                <li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
+                                <li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
+                                <li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
                             </ul>
-                        </div>
-                </header>
-            </div>
+                        </li>
+                        <li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
+                            <ul>
+                                <li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
+                                <li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
+                            </ul>
+                        </li>
+                        <li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
+                            <ul>
+                                <li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
+                                <li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
+                                <li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
+                            </ul>
+                        </li>
+                        <li class='active'><a href='index.html'><span>Home</span></a></li>
+                        <li><a href='#'><span>Contact</span></a></li>
+                    </ul>
+                </div>
+            </header>
         </div>
-        <div>
+    </div>
+    <div>
         <table width="100%" border="1" id="myTable">
             <tr>
                 <th onclick="sortTable(0)">NO. DEPT</th>
