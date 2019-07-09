@@ -102,6 +102,8 @@ if (isset($_POST['addNew'])) {
 <html>
 
 <head>
+    <link rel="stylesheet" type="text/css" href="../src/tampilan.css">
+    <link rel="stylesheet" type="text/css" href="../src/tampil.css">
     <title>Form Input</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
@@ -127,22 +129,56 @@ if (isset($_POST['addNew'])) {
 </head>
 
 <body>
+    <header> <!--Section HEADER-->
+        <img src="../img/rtn.jpg" />
+      <div id='cssmenu'>
+      <ul>
+        <li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
+            <ul>
+              <li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
+              <li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
+              <li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
+              <li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
+              <li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
+              <li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
+              <li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
+            </ul>
+        </li>
+        <li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
+          <ul>
+              <li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
+              <li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
+            </ul>
+        </li>
+        <li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
+          <ul>
+              <li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
+              <li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
+              <li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
+            </ul>
+        </li>
+        <li class='active'><a href='index.html'><span>Home</span></a></li>
+        <li><a href='#'><span>Contact</span></a></li>
+      </ul>
+      </div>
+    </header>
+    <div class="form-style-3">
     <font face="Berlin Sans FB">
         <form action="" method="post">
             <fieldset>
                 <legend>Input New</legend>
-                <p>
-                    <label>Nama:</label>
+                <label>
+                    <span>Nama:</span>
                     <input type="text" name="nama" placeholder="Nama..." />
-                </p>
-                <p>
-                    <label>NIK:</label>
+                </label>
+                <label>
+                    <span>NIK:</span>
                     <input type="text" name="nik" placeholder="NIK..." />
-                </p>
-                <p>
-                    <label>Dept:</label>
-
+                </label>
+                <label>
+                    <span>Dept:</span>
                     <select name="dept">
+                        <option selected="true" disabled="disabled">-</option>
                         <?php
                         $db = dbase_open('../B/GOLONGAN.DBF', 0);
                         $nRecord = dbase_numrecords($db);
@@ -154,65 +190,70 @@ if (isset($_POST['addNew'])) {
                         dbase_close($db); ?>
                     </select>
 
-                </p>
-                <p>
-                    <label>Alamat:</label>
+                </label>
+                <label>
+                    <span>Alamat:</span>
                     <input type="text" name="alamat" placeholder="Alamat..." />
-                </p>
-                <p>
-                    <label>NPWP:</label>
+                </label>
+                <label>
+                    <span>NPWP:</span>
                     <input type="string" name="npwp" placeholder="NPWP..." />
-                </p>
-                <p>
-                    <label>Jabatan:</label>
+                </label>
+                <label>
+                    <span>Jabatan:</span>
                     <select name="jabatan">
+                        <option selected="true" disabled="disabled">-</option>
                         <option value="MANAGER">MANAGER</option>
                         <option value="STAFF">STAFF</option>
                         <option value="STAFF">DIREKSI</option>
                     </select>
-                </p>
-                <p>
-                    <label>Kota Lahir:</label>
+                </label>
+                <label>
+                    <span>Kota Lahir:</span>
                     <input type="text" name="kotaLahir" placeholder="Kota Lahir..."/>
-                </p>
-                <p>
-                    <label>Tgl Lahir:</label>
+                </label>
+                <label>
+                    <span>Tgl Lahir:</span>
                     <input type="date" name="tglLahir" />
-                </p>
-
-                <p>
-                    <label>Status:</label>
+                </label>
+                <label>
+                    <span>Status:</span>
                     <select name="status">
+                        <option selected="true" disabled="disabled">-</option>
                         <option value="K">KAWIN</option>
                         <option value="T">BELUM KAWIN</option>
                     </select>
-                </p>
-                <p>
-                    <label>Jenis Kelamin:</label>
+                </label>
+                <label>
+                    <span>Jenis Kelamin:</span>
                     <select name="jenisKelamin">
+                        <option selected="true" disabled="disabled">-</option>
                         <option value="Pria">Pria</option>
                         <option value="Wanita">Wanita</option>
                     </select>
-                </p>
-                <p>
-                    <label>Keluarga:</label>
+                </label>
+                <label>
+                    <span>Keluarga:</span>
                     <select name="keluarga">
+                        <option selected="true" disabled="disabled">-</option>
                         <option value="TK-">TK-</option>
                         <option value="KT-">KT-</option>
                         <option value="K/1">K/1</option>
                         <option value="K/2">K/2</option>
                         <option value="K/3">K/3</option>
                     </select>
-                </p>
-                <p>
-                    <label>Kode Bank:</label>
+                </label>
+                <label>
+                    <span>Kode Bank:</span>
                     <select name="kodeBank">
+                        <option selected="true" disabled="disabled">-</option>
                         <option value="1">1</option>
                     </select>
-                </p>
-                <p>
-                    <label>Kota:</label>
+                </label>
+                <label>
+                    <span>Kota:</span>
                     <select name="kotaAsal" id="kotaId">
+                        <option selected="true" disabled="disabled">-</option>
                         <option value="V">JAKARTA (V)</option>
                         <option value="H0">PUSAT (H0)</option>
                         <option value="S">SURABAYA (S)</option>
@@ -222,32 +263,32 @@ if (isset($_POST['addNew'])) {
                         <option value="U">MAKASSAR (U)</option>
                         <option value="W">PALEMBANG (W)</option>
                     </select>
-                </p>
-                <p>
-                    <label>Pangkat:</label>
+                </label>
+                <label>
+                    <span>Gaji Dasar:</span>
+                    <input type="text" name="gaji" id="gajiId" placeholder="Rp..." />
+                </label>
+                <label>
+                    <span>Pangkat:</span>
                     <input type="text" name="pangkat" id="pangkatId" placeholder="Pangkat..." disabled/>
                     <input type="hidden" name="pangkatValue" id="pangkatValue">
-                </p>
-                <p>
-                    <label>Gaji Dasar:</label>
-                    <input type="text" name="gaji" id="gajiId" placeholder="Rp..." />
-                </p>
-
-                <p>
-                    <label>Tgl Masuk:</label>
+                </label>
+                <label>
+                    <span>Tgl Masuk:</span>
                     <input type="date" name="tglMasuk" />
-                </p>
-                <p>
-                    <label>Tgl Aktif:</label>
+                </label>
+                <label>
+                    <span>Tgl Aktif:</span>
                     <input type="date" name="tglAktif" />
-                </p>
-
-                <p>
+                </label>
+                <br>
+                <label>
                     <input type="submit" name="addNew" value="ADD NEW" />
-                </p>
+                </label>
             </fieldset>
         </form>
     </font>
+</div>
 </body>
 
 </html>

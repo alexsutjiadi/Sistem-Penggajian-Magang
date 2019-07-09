@@ -91,14 +91,53 @@ if ($db) {
 
 <head>
 	<title></title>
+	<link rel="stylesheet" type="text/css" href="../src/View.css">
+	<link rel="stylesheet" type="text/css" href="../src/tampilan.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-	<div class="container">
-		<table border="1" id="myTable">
+	<div class="wrap">
+	<div class="header">
+	<header> <!--Section HEADER-->
+        <img src="../img/rtn.jpg" />
+      	<div id='cssmenu'>
+      		<ul>
+        		<li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
+            		<ul>
+              			<li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
+              			<li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
+              			<li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
+              			<li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
+              			<li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
+              			<li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
+              			<li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
+            		</ul>
+        		</li>
+        		<li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
+          			<ul>
+              			<li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
+              			<li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
+            		</ul>
+        		</li>
+        		<li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
+          			<ul>
+              			<li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
+              			<li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
+              			<li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
+            		</ul>
+        		</li>
+        		<li class='active'><a href='index.html'><span>Home</span></a></li>
+        		<li><a href='#'><span>Contact</span></a></li>
+      		</ul>
+      </div>
+    </header>
+</div>
+</div>
+	<div>
+		<table width="100%" border="1" id="myTable">
 			<tr>
 				<th onclick="sortTable(0)">DEPT</th>
 				<th onclick="sortTable(1)">NO</th>
@@ -120,6 +159,7 @@ if ($db) {
 					<td>
 						<?php echo $row['NAMA']; ?>
 					</td>
+
 					<td>
 						<input type="hidden" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?>>
 						<input type="hidden" name="tglLahir" value=<?php echo substr($row['TGL_LAHIR'], 6, 2) . "-" . substr($row['TGL_LAHIR'], 4, 2) . "-" . substr($row['TGL_LAHIR'], 0, 4); ?> id=<?php echo "tglLahir" . $i; ?>>
@@ -140,9 +180,7 @@ if ($db) {
 						<input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?> >
 						<input type="hidden" name="no" value=<?php echo $row['NO_URUT']; ?> id=<?php echo "no" . $i; ?>>
 						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> >
-
-					</td>
-					<td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>
+					<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>
 					</td>
 					<td>
 						<form action="" method="post">

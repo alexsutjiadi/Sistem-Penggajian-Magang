@@ -62,7 +62,7 @@ if ($db) {
 <head>
 	<title>Master BCA</title>
 	<link rel="stylesheet" type="text/css" href="../src/View.css">
-	<link rel="stylesheet" type="text/css" href="../src/tampilan1.css">
+	<link rel="stylesheet" type="text/css" href="../src/tampilan.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -71,25 +71,56 @@ if ($db) {
 <body>
 	<div class="wrap">
 		<div class="header">
-			<header>
-				<img src="../img/back.png" align="right" height="40" width="40" margin-top="0" onclick="goBack()" />
-				<h1>MASTER BCA</h1>
-			</header>
+			<header> <!--Section HEADER-->
+        			<img src="../img/rtn.jpg" />
+      					<div id='cssmenu'>
+      						<ul>
+        						<li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
+            						<ul>
+              							<li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
+              							<li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
+              							<li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
+              							<li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
+              							<li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
+              							<li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
+              							<li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
+            						</ul>
+        						</li>
+        						<li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
+          							<ul>
+              							<li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
+              							<li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
+            						</ul>
+        						</li>
+        						<li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
+          							<ul>
+              							<li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
+              							<li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
+              							<li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
+            						</ul>
+        						</li>
+        						<li class='active'><a href='index.html'><span>Home</span></a></li>
+        						<li><a href='#'><span>Contact</span></a></li>
+      						</ul>
+      					</div>
+    			</header>
 		</div>
 	</div>
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-md-6">
-				<table border="1" id="myTable">
+	<div>
+		<div>
+			<div>
+				<table width="100%" border="1" id="myTable">
 					<tr>
 						<th onclick="sortTable(0)">NO. DEPT</th>
 						<th onclick="sortTable(1)">NAMA</th>
 						<th onclick="sortTable(2)">REKENING</th>
 						<th colspan="2"></th>
+						<p >
 						<?php
 						date_default_timezone_set("Asia/Jakarta");
 						echo "Last Modified " . date(" H:i:s - d M Y", filemtime("../B/BCA.DBF"))
 						?>
+						</p>
 					</tr>
 					<?php
 					for ($i = 1; $i <= $record_numbers; $i++) { ?>
