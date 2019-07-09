@@ -62,7 +62,9 @@ if ($db) {
 <html>
 
 <head>
-	<title></title>
+	<title>Master BCA</title>
+	<link rel="stylesheet" type="text/css" href="../src/View.css">
+    <link rel="stylesheet" type="text/css" href="../src/tampilan1.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -70,11 +72,19 @@ if ($db) {
 
 <body>
 	<div>
+		<div class="wrap">
+			<div class="header">
+			<header>
+				<img src="../img/back.png" align="right" height="40" width="40" margin-top="0" onclick="goBack()" />
+  				<h1>MASTER BCA</h1>
+			</header>
+			</div>
 		<table border="1" id="myTable">
 			<tr>
 				<th onclick="sortTable(0)">NO. DEPT</th>
 				<th onclick="sortTable(1)">NAMA</th>
 				<th onclick="sortTable(2)">REKENING</th>
+				<th colspan="2"></th>
 				<?php
 				date_default_timezone_set("Asia/Jakarta");
 				echo "Last Modified " . date(" H:i:s - d M Y", filemtime("../B/BCA.DBF"))
@@ -108,10 +118,10 @@ if ($db) {
 			<?php }
 			dbase_close($db); ?>
 			<tr>
-				<td colspan="5">
+				<th colspan="5">
 					<center><input type="submit" name="add" class="btnAdd" data-toggle="modal" data-target="#mdl-add" value="ADD"></center>
 					</form>
-				</td>
+				</th>
 			</tr>
 
 
@@ -277,6 +287,11 @@ if ($db) {
 				}
 			}
 		}
+	</script>
+	<script>
+    function goBack() {
+        window.history.back();
+    }
 	</script>
 </body>
 

@@ -32,6 +32,8 @@ if ($db) {
 
 <head>
     <title></title>
+    <link rel="stylesheet" type="text/css" href="../src/View.css">
+    <link rel="stylesheet" type="text/css" href="../src/tampilan1.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -59,11 +61,20 @@ if ($db) {
 
 <body>
     <div>
+        <div class="wrap">
+            <div class="header">
+            <header>
+                <img src="../img/back.png" align="right" height="40" width="40" margin-top="0" onclick="goBack()" />
+                <h1>ALAMAT & N.P.W.P</h1>
+            </header>
+            </div>
+        </div>
         <table border="1" id="myTable">
             <tr>
                 <th onclick="sortTable(0)">NO. DEPT</th>
                 <th onclick="sortTable(1)">NO. URUT</th>
                 <th onclick="sortTable(2)">NAMA</th>
+                <th></th>
             </tr>
             <?php
             for ($i = 1; $i <= $record_numbers; $i++) { ?>
@@ -208,6 +219,11 @@ if ($db) {
                 }
             }
         }
+    </script>
+    <script>
+    function goBack() {
+        window.history.back();
+    }
     </script>
 </body>
 
