@@ -35,6 +35,7 @@ if ($db) {
 
 <head>
 	<title>Input THR</title>
+	<link rel="stylesheet" type="text/css" href="../src/tampilan.css">
 	<link rel="stylesheet" type="text/css" href="../src/View.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -42,8 +43,40 @@ if ($db) {
 </head>
 
 <body>
-	<h1> INPUT THR</h1>
-	<table cellspacing='0' id="myTable">
+	<header> <!--Section HEADER-->
+        <img src="../img/rtn.jpg" />
+      <div id='cssmenu'>
+      <ul>
+        <li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
+            <ul>
+              <li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
+              <li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
+              <li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
+              <li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
+              <li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
+              <li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
+              <li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
+            </ul>
+        </li>
+        <li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
+          <ul>
+              <li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
+              <li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
+            </ul>
+        </li>
+        <li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
+          <ul>
+              <li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
+              <li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
+              <li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
+            </ul>
+        </li>
+        <li class='active'><a href='index.html'><span>Home</span></a></li>
+        <li><a href='#'><span>Contact</span></a></li>
+      </ul>
+      </div>
+    </header>
+	<table width="100%" cellspacing='0' id="myTable">
 		<thead>
 			<tr>
 				<th onclick="sortTable(0,'T')">DEPT</th>
