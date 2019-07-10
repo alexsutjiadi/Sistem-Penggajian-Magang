@@ -8,7 +8,7 @@ if (isset($_POST['addNew'])) {
     $jabatan = strtoupper($_POST['jabatan']);
     $kotaLahir = strtoupper($_POST['kotaLahir']);
     $tglLahir = date("Ymd", strtotime($_POST['tglLahir']));
-    $pangkat = $_POST['pangkatValue'];
+    $pangkat = $_POST['pangkat'];
     $status = $_POST['status'];
     $jenisKelamin = $_POST['jenisKelamin'];
     $keluarga = $_POST['keluarga'];
@@ -19,10 +19,11 @@ if (isset($_POST['addNew'])) {
     $tglAktif = date("Ymd", strtotime($_POST['tglAktif']));
 
 
-    if ($kotaAsal == 'B') {
-        $db = dbase_open('../B/GAJI.DBF', 2);
-    } //buka db sesuai kota aktif/asal.
+    $db = dbase_open('../B/GAJI.DBF', 2);
     $db2 = dbase_open('../B/WAKTU_MASUK.DBF', 2);
+    $dbBca =dbase_open('../B/BCA.DBF',2);
+
+
     // }else if (){
 
     // }else if(){
@@ -63,15 +64,7 @@ if (isset($_POST['addNew'])) {
         $dept = $dept . "0-" . $noDept;
     }
 
-    //pangkat
-    //buka db sesuai cluster kota
-    if ($kotaAsal == 'V' || $kotaAsal == 'H0' || $kotaAsal == 'S') {
-        $dbPangkat = dbase_open('../B/PANGKAT_K1.DBF', 0);
-    } else if ($kotaAsal == 'R' || $kotaAsal == 'B') {
-        $dbPangkat = dbase_open('../B/PANGKAT_K3.DBF', 0);
-    } else {
-        $dbPangkat = dbase_open('../B/PANGKAT_K2.DBF', 0);
-    }
+
 
     //jamsostek & tunjangan kes
     $tunjanganKesehatan = 0;
@@ -94,8 +87,12 @@ if (isset($_POST['addNew'])) {
     //no urut, nik, deptcode, nama, alamat,npwp, jabatan, noktp, kotalahir, tgl lahir, pangkat, status, kelamin, keluarga, kode bank, kode bank, gajidasar, 0 0 0 0 0 0 0 0 0 0 1 Y Y, bln aktiv 0
     dbase_add_record($db, array($no, $nik, $dept, $nama, $alamat, $npwp, $jabatan, $nik, $kotaLahir, $tglLahir, $pangkat, $status, $jenisKelamin, $keluarga, $kodeBank, $kodeBank, $gajiDasar, 0, 0, $tunjanganKesehatan, $premiKesehatan, 0, 0, 0, 0, 0, 0, 1, 'Y', 'Y', $tglAktif, ""));
     dbase_add_record($db2, array($dept, $nama, $tglMasuk));
+    if($kodeBank==1){
+       dbase_add_record($dbBca, array($dept,$nama,0000000000,1,"",0,0));
+    }
     dbase_close($db2);
     dbase_close($db);
+    dbase_close($dbBca);
 }
 ?>
 <!DOCTYPE html>
@@ -116,13 +113,14 @@ if (isset($_POST['addNew'])) {
                 //Ajax for calling php function
                 $.post('../src/cekPangkat.php', {
                     gajiV: inputValue,
-                    kotaV: kotaValue
+                    kotaV: kotaValue,
+                    jamsos: "Y"
                 }, function(data) {
                     //alert('ajax completed. Response:  ' + data);
                     //do after submission operation in DOM
-                    $("#pangkatId").val(data);
-                    $("#pangkatValue").val(data);
-                });
+                    $("#pangkatId").val(data.pangkat);
+
+                }, "json");
             });
         });
         $(document).ready(function() {
@@ -134,13 +132,14 @@ if (isset($_POST['addNew'])) {
                 //Ajax for calling php function
                 $.post('../src/cekPangkat.php', {
                     gajiV: inputValue,
-                    kotaV: kotaValue
+                    kotaV: kotaValue,
+                    jamsos: "Y"
                 }, function(data) {
                     //alert('ajax completed. Response:  ' + data);
                     //do after submission operation in DOM
-                    $("#pangkatId").val(data);
-                    $("#pangkatValue").val(data);
-                });
+                    $("#pangkatId").val(data.pangkat);
+
+                }, "json");
             });
         });
     </script>
@@ -289,8 +288,7 @@ if (isset($_POST['addNew'])) {
                     </label>
                     <label>
                         <span>Pangkat:</span>
-                        <input type="text" name="pangkat" id="pangkatId" placeholder="Pangkat..." disabled />
-                        <input type="hidden" name="pangkatValue" id="pangkatValue">
+                        <input type="text" name="pangkat" id="pangkatId" placeholder="Pangkat..." />
                     </label>
                     <label>
                         <span>Tgl Masuk:</span>

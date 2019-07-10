@@ -4,7 +4,9 @@ if (isset($_POST['edit'])) {
     $gaji = $_POST['gajiDasar'];
     $rowId = $_POST['rowId'];
     $tunjReg = $_POST['tunjReg'];
-    $pangkat = $_POST['pangkatValue'];
+    $pangkat = $_POST['pangkat'];
+    $premi = $_POST['premi'];
+    $tunjKes = $_POST['tunjKes'];
 
     $db = dbase_open('../B/GAJI.DBF', 2);
     if ($db) {
@@ -15,6 +17,8 @@ if (isset($_POST['edit'])) {
         $row['GAJI_DASAR'] = $gaji;
         $row['TUNJ_REG'] = $tunjReg;
         $row['PANGKAT'] = $pangkat;
+        $row['JPK'] = $premi;
+        $row['TUNJ_KES']= $tunjKes;
         $row = array_values($row);
         dbase_replace_record($db, $row, $rowId);
 
@@ -41,39 +45,32 @@ if ($db) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#gajiId').change(function() {
-                var inputValue = $(this).val();
-                var kotaValue = $("#kotaId").val();
-                //alert("value in js " + inputValue + kotaValue);
-
-                //Ajax for calling php function
-                $.post('../src/cekPangkat.php', {
-                    gajiV: inputValue,
-                    kotaV: "B"
-                }, function(data) {
-                    //alert('ajax completed. Response:  ' + data);
-                    //do after submission operation in DOM
-                    $("#pangkatId").val(data);
-                    $("#pangkatValue").val(data);
-                });
-            });
-        });
-        $(document).ready(function() {
-            $('#kotaId').change(function() {
+            $('#formId').change(function() {
+                
                 var inputValue = $("#gajiId").val();
-                var kotaValue = $(this).val();
-                //alert("value in js " + inputValue + kotaValue);
-
+                var kotaValue = $("#pangkatId").val();
+                var jamsosflg = $("#jamsosflg").val();
+                jamsosflg = jamsosflg.toUpperCase();
+                if (kotaValue.substring(0, 2) == "K1") {
+                    kotaValue = "V";
+                } else if (kotaValue.substring(0, 2) == "K3") {
+                    kotaValue = "B";
+                } else {
+                    kotaValue = "W";
+                }
+            
                 //Ajax for calling php function
                 $.post('../src/cekPangkat.php', {
                     gajiV: inputValue,
-                    kotaV: kotaValue
+                    kotaV: kotaValue,
+                    jamsos: jamsosflg
                 }, function(data) {
-                    //alert('ajax completed. Response:  ' + data);
-                    //do after submission operation in DOM
-                    $("#pangkatId").val(data);
-                    $("#pangkatValue").val(data);
-                });
+                    $("#pangkatId").val(data.pangkat);
+                    $("#tunjKes").val(data.tunjKes);
+                    $("#premi").val(data.premi);
+                    
+                }, "json");
+
             });
         });
     </script>
@@ -146,6 +143,7 @@ if ($db) {
                         <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
                         <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
                         <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
+                        <input type="hidden" name="jamsosflg" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsosflg" . $i ?>>
                         <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                     </td>
                 </tr>
@@ -163,7 +161,7 @@ if ($db) {
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="formId">
                         <div class="modal-body">
                             <div class="col-lg-12">
                                 <label for="no">NOMER URUT</label>
@@ -172,7 +170,7 @@ if ($db) {
                             <div class="col-lg-12">
                                 <label for="dept">NO. DEPT</label>
                                 <input type="text" class="dept" name="dept" placeholder="" disabled>
-                                <input type="hidden" class="rowId" name="rowId">
+                                <input type="hidden" class="rowId" name="rowId" id="rowId">
                             </div>
                             <div class="col-lg-12">
                                 <label for="nama">NAMA</label>
@@ -180,8 +178,8 @@ if ($db) {
                             </div>
                             <div class="col-lg-12">
                                 <label for="pangkat">PANGKAT</label>
-                                <input type="text" class="pangkat" name="pangkat" id="pangkatId" placeholder="" disabled>
-                                <input type="hidden" class="pangkatValue" name="pangkatValue" id="pangkatValue">
+                                <input type="text" class="pangkat" name="pangkat" id="pangkatId" placeholder="">
+                                <!-- <input type="hidden" class="pangkatValue" name="pangkatValue" id="pangkatValue"> -->
                             </div>
                             <div class="col-lg-12">
                                 <label for="gajiDasar">GAJI DASAR</label>
@@ -190,6 +188,9 @@ if ($db) {
                             <div class="col-lg-12">
                                 <label for="tunjReg">TUNJANGAN REGIONAL</label>
                                 <input type="text" class="tunjReg" name="tunjReg" placeholder="">
+                                <input type="hidden" id="jamsosflg" name="jamsosflg" class="jamsosflg">
+                                <input type="hidden" id="tunjKes" name="tunjKes" class="tunjKes">
+                                <input type="hidden" id="premi" name="premi" class="premi">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -211,6 +212,7 @@ if ($db) {
             var tunjRegValue = $("#tunjReg" + clickId).val();
             var pangkat = $("#pangkat" + clickId).val();
             var no = $("#no" + clickId).val();
+            var jamsosflg = $("#jamsosflg" + clickId).val();
 
             $(".modal-body .dept").val(deptValue);
             $(".modal-body .nama").val(namaValue);
@@ -219,6 +221,7 @@ if ($db) {
             $(".modal-body .tunjReg").val(tunjRegValue);
             $(".modal-body .no").val(no);
             $(".modal-body .pangkat").val(pangkat);
+            $(".modal-body .jamsosflg").val(jamsosflg);
 
         });
 

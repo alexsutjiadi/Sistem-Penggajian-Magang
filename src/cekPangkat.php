@@ -1,5 +1,5 @@
 <?php
-function cekPangkat($gaji, $kota)
+function cekPangkat($gaji, $kota, $jamsos = "N")
 {
     if ($kota == 'V' || $kota == 'H0' || $kota == 'S') {
         $dbPangkat = dbase_open('../B/PANGKAT_K1.DBF', 0);
@@ -22,12 +22,37 @@ function cekPangkat($gaji, $kota)
         }
     }
     dbase_close($dbPangkat);
-    echo $pangkat;
+
+    $premiKesehatan = 0;
+    $jamsostek = (0.05 * $gaji);
+    if ($jamsostek > 400000) {
+        $jamsostek = 400000;
+    }
+    if ($pangkat == "4A" || $pangkat == "4B" || $pangkat == "3A" || $pangkat == "3B") {
+        $tunjanganDariPerusahaan = (0.1 * $gaji);
+    } else if ($pangkat == "2A" || $pangkat == "2B" || $pangkat == "1A" || $pangkat == "1B" || $pangkat == "TM") {
+        $tunjanganDariPerusahaan = (0.12 * $gaji);
+    } else {
+        $tunjanganDariPerusahaan = (0.08 * $gaji);
+    }
+    if (strtoupper($jamsos) == 'Y') {
+        $premiKesehatan = (0.2 * $jamsostek);
+        $tunjanganKesehatan = $tunjanganDariPerusahaan - ($jamsostek - $premiKesehatan) - $premiKesehatan;
+    } else {
+        $premiKesehatan = 0;
+        $tunjanganKesehatan = $tunjanganDariPerusahaan - ($jamsostek - $premiKesehatan) - $premiKesehatan;
+    }
+
+
+
+    $returnArray = array('pangkat' => $pangkat, 'premi' => $premiKesehatan, 'tunjKes' => $tunjanganKesehatan);
+
+    echo json_encode($returnArray);
 }
 
 if ($_POST['gajiV']) {
     //call the function or execute the code
-    if($_POST['kotaV']){
-        cekPangkat($_POST['gajiV'],$_POST['kotaV']);
+    if ($_POST['kotaV']) {
+        cekPangkat($_POST['gajiV'], $_POST['kotaV'], $_POST['jamsos']);
     }
 }

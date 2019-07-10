@@ -2,68 +2,32 @@
 //edit data master gaji
 if (isset($_POST['edit'])) {
 	$rowId = $_POST['rowId'];
-	$no = $_POST['no'];
-	$nama = strtoupper($_POST['nama']);
-	$nik = $_POST['nik'];
-	$dept = $_POST['dept'];
-	$tglLahir = date("Ymd", strtotime($_POST['tglLahir']));
-	$alamat = strtoupper($_POST['alamat']);
-	$status = $_POST['status'];
-	$kelamin = $_POST['kelamin'];
-	$golongan = $_POST['golongan'];
-	$tanggungan = $_POST['tanggungan'];
-	$tglMasuk = date("Ymd", strtotime($_POST['tglMasuk']));
-	$aktifFiskal = date("Ymd", strtotime($_POST['aktifFiskal']));
-	$npwp = $_POST['npwp'];
-	$jamsos = $_POST['jamsos'];
+	$jamsos = strtoupper($_POST['jamsos']);
 	$gajiDasar = $_POST['gajiDasar'];
 	$pangkat = $_POST['pangkat'];
 	$premiKesehatan = $_POST['premiKesehatan'];
 	$tunjanganKesehatan = $_POST['tunjanganKesehatan'];
 	$pilihanBank = $_POST['pilihanBank'];
 
-
-
 	$db = dbase_open('../B/GAJI.DBF', 2);
-	$db2 = dbase_open('../B/WAKTU_MASUK.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		$row2 = dbase_get_record_with_names($db2, $rowId);
-		
+
 		unset($row['deleted']);
-		unset($row2['deleted']);
-		
-		$row['NO_URUT'] = $no; 
-		$row['NAMA'] = $nama;
-		$row['NIK'] = $nik;
-		$row['DEPT'] = $dept;
-		$row['TGL_LAHIR'] = $tglLahir;
-		$row['ALAMAT'] = $alamat;
-		$row['STATUS'] = $status;
-		$row['KELAMIN'] = $kelamin;
-		$row['GOLONGAN'] = $golongan;
-		$row['KELUARGA'] = $tanggungan;
-		$row['BLN_AKTIV'] = $aktifFiskal;
-		$row['NPWP'] = $npwp;
+
 		$row['JAMSOSFLG'] = $jamsos;
 		$row['GAJI_DASAR'] = $gajiDasar;
 		$row['PANGKAT'] = $pangkat;
-		$row['JPK']=$premiKesehatan;
+		$row['JPK'] = $premiKesehatan;
 		$row['TUNJ_KES'] = $tunjanganKesehatan;
 		$row['KODE_BANK'] = $pilihanBank;
 		$row['KODE_BANK1'] = $pilihanBank;
-		$row2['TGL_MASUK'] = $tglMasuk;
 
 		$row = array_values($row);
-		$row2 = array_values($row2);
 		dbase_replace_record($db, $row, $rowId);
-		dbase_replace_record($db2, $row2, $rowId);
-
 	}
-	dbase_close($db2);
 	dbase_close($db);
-}
-else if (isset($_POST['delete']) == 1) {
+} else if (isset($_POST['delete']) == 1) {
 	$idDelete = $_POST['idDelete'];
 
 	$db = dbase_open('../B/GAJI.DBF', 2);
@@ -96,46 +60,79 @@ if ($db) {
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#formId').change(function() {
+				
+				var inputValue = $("#gajiId").val();
+				var kotaValue = $("#pangkatId").val();
+				var jamsosflg = $("#jamsosId").val();
+				jamsosflg = jamsosflg.toUpperCase();
+				if (kotaValue.substring(0, 2) == "K1") {
+					kotaValue = "V";
+				} else if (kotaValue.substring(0, 2) == "K3") {
+					kotaValue = "B";
+				} else {
+					kotaValue = "W";
+				}
+				
+				//Ajax for calling php function
+				$.post('../src/cekPangkat.php', {
+					gajiV: inputValue,
+					kotaV: kotaValue,
+					jamsos: jamsosflg
+				}, function(data) {
+					$("#pangkatId").val(data.pangkat);
+					$("#tunjKesId").val(data.tunjKes);
+					$("#premiId").val(data.premi);
+				}, "json");
+
+
+
+			});
+		});
+	</script>
 </head>
 
 <body>
 	<div class="wrap">
-	<div class="header">
-	<header> <!--Section HEADER-->
-        <img src="../img/rtn.jpg" />
-      	<div id='cssmenu'>
-      		<ul>
-        		<li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
-            		<ul>
-              			<li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
-              			<li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
-              			<li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
-              			<li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
-              			<li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
-              			<li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
-              			<li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
-            		</ul>
-        		</li>
-        		<li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
-          			<ul>
-              			<li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
-              			<li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
-            		</ul>
-        		</li>
-        		<li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
-          			<ul>
-              			<li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
-              			<li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
-              			<li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
-            		</ul>
-        		</li>
-        		<li class='active'><a href='index.html'><span>Home</span></a></li>
-        		<li><a href='#'><span>Contact</span></a></li>
-      		</ul>
-      </div>
-    </header>
-</div>
-</div>
+		<div class="header">
+			<header>
+				<!--Section HEADER-->
+				<img src="../img/rtn.jpg" />
+				<div id='cssmenu'>
+					<ul>
+						<li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
+							<ul>
+								<li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
+								<li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
+								<li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
+								<li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
+								<li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
+								<li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
+								<li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
+							</ul>
+						</li>
+						<li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
+							<ul>
+								<li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
+								<li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
+							</ul>
+						</li>
+						<li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
+							<ul>
+								<li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
+								<li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
+								<li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
+							</ul>
+						</li>
+						<li class='active'><a href='index.html'><span>Home</span></a></li>
+						<li><a href='#'><span>Contact</span></a></li>
+					</ul>
+				</div>
+			</header>
+		</div>
+	</div>
 	<div>
 		<table width="100%" border="1" id="myTable">
 			<tr>
@@ -151,7 +148,7 @@ if ($db) {
 					$row2 = dbase_get_record_with_names($db2, $i);
 					?>
 					<td>
-						<?php echo $row['DEPT']?>
+						<?php echo $row['DEPT'] ?>
 					</td>
 					<td>
 						<?php echo $row['NO_URUT']; ?>
@@ -177,10 +174,10 @@ if ($db) {
 						<input type="hidden" name="premiKesehatan" value=<?php echo $row['JPK']; ?> id=<?php echo "premiKesehatan" . $i; ?>>
 						<input type="hidden" name="tunjanganKesehatan" value=<?php echo $row['TUNJ_KES']; ?> id=<?php echo "tunjanganKesehatan" . $i; ?>>
 						<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK']; ?> id=<?php echo "pilihanBank" . $i; ?>>
-						<input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?> >
+						<input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
 						<input type="hidden" name="no" value=<?php echo $row['NO_URUT']; ?> id=<?php echo "no" . $i; ?>>
-						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> >
-					<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>
+						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+						<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>
 					</td>
 					<td>
 						<form action="" method="post">
@@ -203,80 +200,80 @@ if ($db) {
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<form action="" method="post">
+					<form action="" method="post" id="formId">
 						<div class="modal-body">
 							<div class="col-lg-12">
 								<label for="no">NO. URUT</label>
-								<input type="text" class="no" name="no" placeholder="">
+								<input type="text" class="no" name="no" placeholder="" disabled>
 								<input type="hidden" class="rowId" name="rowId">
 							</div>
 							<div class="col-lg-12">
 								<label for="nik">NO. ID</label>
-								<input type="text" class="nik" name="nik" placeholder="">
+								<input type="text" class="nik" name="nik" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="dept">DEPARTEMEN</label>
-								<input type="text" class="dept" name="dept" placeholder="">
+								<input type="text" class="dept" name="dept" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="tglLahir">TGL LAHIR</label>
-								<input type="text" class="tglLahir" name="tglLahir" placeholder="">
+								<input type="text" class="tglLahir" name="tglLahir" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="nama">NAMA</label>
-								<input type="text" class="nama" name="nama" placeholder="">
+								<input type="text" class="nama" name="nama" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="alamat">ALAMAT</label>
-								<input type="text" class="alamat" name="alamat" placeholder="">
+								<input type="text" class="alamat" name="alamat" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="status">STATUS</label>
-								<input type="text" class="status" name="status" placeholder="">
+								<input type="text" class="status" name="status" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="kelamin">JENIS KELAMIN</label>
-								<input type="text" class="kelamin" name="kelamin" placeholder="">
+								<input type="text" class="kelamin" name="kelamin" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="golongan">GOLONGAN</label>
-								<input type="text" class="golongan" name="golongan" placeholder="">
+								<input type="text" class="golongan" name="golongan" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="tanggungan">TANGGUNGAN</label>
-								<input type="text" class="tanggungan" name="tanggungan" placeholder="">
+								<input type="text" class="tanggungan" name="tanggungan" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="tglMasuk">TANGGAL MASUK</label>
-								<input type="text" class="tglMasuk" name="tglMasuk" placeholder="">
+								<input type="text" class="tglMasuk" name="tglMasuk" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="aktifFiskal">AKTIF FISKAL</label>
-								<input type="text" class="aktifFiskal" name="aktifFiskal" placeholder="">
+								<input type="text" class="aktifFiskal" name="aktifFiskal" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="npwp">N.P.W.P</label>
-								<input type="text" class="npwp" name="npwp" placeholder="">
+								<input type="text" class="npwp" name="npwp" placeholder="" disabled>
 							</div>
 							<div class="col-lg-12">
 								<label for="jamsos">JAMSOS (Y/T)</label>
-								<input type="text" class="jamsos" name="jamsos" placeholder="">
+								<input type="text" class="jamsos" name="jamsos" id="jamsosId" placeholder="">
 							</div>
 							<div class="col-lg-12">
 								<label for="gajiDasar">GAJI DASAR</label>
-								<input type="text" class="gajiDasar" name="gajiDasar" placeholder="">
+								<input type="text" class="gajiDasar" name="gajiDasar" id="gajiId" placeholder="">
 							</div>
 							<div class="col-lg-12">
 								<label for="pangkat">PANGKAT GOLONGAN</label>
-								<input type="text" class="pangkat" name="pangkat" placeholder="">
+								<input type="text" class="pangkat" name="pangkat" id="pangkatId" placeholder="">
 							</div>
 							<div class="col-lg-12">
 								<label for="premiKesehatan">PREMI KESEHATAN</label>
-								<input type="text" class="premiKesehatan" name="premiKesehatan" placeholder="">
+								<input type="text" class="premiKesehatan" name="premiKesehatan" id="premiId" placeholder="">
 							</div>
 							<div class="col-lg-12">
 								<label for="tunjanganKesehatan">TUNJANGAN KESEHATAN</label>
-								<input type="text" class="tunjanganKesehatan" name="tunjanganKesehatan" placeholder="">
+								<input type="text" class="tunjanganKesehatan" name="tunjanganKesehatan" id="tunjKesId" placeholder="">
 							</div>
 							<div class="col-lg-12">
 								<label for="pilihanBank">PILIHAN BANK (1=BCA, 2=TUNAI)</label>
