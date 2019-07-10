@@ -34,101 +34,145 @@ if ($db) {
 <html>
 
 <head>
-	<title>Input THR</title>
-	<link rel="stylesheet" type="text/css" href="../src/tampilan.css">
+	<title>INPUT THR</title>
+	
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+
+    <!-- Font Awesome JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="../src/tampilan.css">
 	<link rel="stylesheet" type="text/css" href="../src/View.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-	<header> <!--Section HEADER-->
-        <img src="../img/rtn.jpg" />
-      <div id='cssmenu'>
-      <ul>
-        <li class='has-sub '><a href='#'><span>Maintain Input MASTER</span></a>
-            <ul>
-              <li><a href='/penggajianMagang/menu/inputMaster.php'><span>Input Master</span></a></li>
-              <li><a href='/penggajianMagang/menu/payrollMasterFile.php'><span>Manage Master Gaji</span></a></li>
-              <li><a href='/penggajianMagang/menu/alamatDanNpwp.php'><span>Alamat & N.P.W.P</span></a></li>
-              <li><a href='/penggajianMagang/menu/masterBCA.php'><span>Master B.C.A</span></a></li>
-              <li><a href='/penggajianMagang/menu/showNamaGolongan.php'><span>Golongan</span></a></li>
-              <li><a href='/penggajianMagang/menu/inputGajiBaru.php'><span>Gaji Baru</span></a></li>
-              <li><a href='/penggajianMagang/menu/inputTunjanganJabatan.php'><span>Input Data Lain</span></a></li>
+      <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                </button>
+            </div>
+            <ul class="list-unstyled components">
+      <!-- <img src="img/rtn.jpg" /> -->
+              <li class="active">
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  Maintain Input MASTER
+                </a>
+                  <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                      <a href='inputMaster.php'>Input Master</a>
+                    </li>
+                      <a href='payrollMasterFile.php'>Manage Master Gaji</a>
+                    <li>  
+                      <a href='alamatDanNpwp.php'>Alamat & N.P.W.P</a>
+                    </li>
+                      <a href='masterBCA.php'>Master B.C.A</a>
+                    <li>  
+                      <a href='showNamaGolongan.php'>Golongan</a>
+                    </li>  
+                      <a href='inputGajiBaru.php'>Gaji Baru</a>
+                    <li>
+                      <a href='inputTunjanganJabatan.php'>Input Data Lain</a>
+                    </li>
+                  </ul>
+              </li>
+              <li class="active">
+                <a href="#pageSubTHRBONUS" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  THR BONUS
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubTHRBONUS">
+                    <li>
+                      <a href='inputTHR.php'>Input THR</a>
+                    </li>
+                    <li>
+                      <a href='inputBonus.php'>Input Bonus</a>
+                    </li> 
+                  </ul>  
+              </li>
+              <li class="active">
+                <a href="#pageSubpangkat" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  Manage Pangkat
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubpangkat">
+                    <li>
+                      <a href='masterPangkatK1.php' class="w3-bar-item w3-button">K1 </a>
+                    </li>
+                    <li>
+                      <a href='masterPangkatK2.php' class="w3-bar-item w3-button">K2 </a>
+                    </li>
+                    <li>
+                      <a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>  
+                    </li>
+              </li>
             </ul>
-        </li>
-        <li class='has-sub '><a href='#'><span>THR/Bonus</span></a>
-          <ul>
-              <li><a href='/penggajianMagang/menu/inputTHR.php'><span>Input THR</span></a></li>
-              <li><a href='/penggajianMagang/menu/inputBonus.php'><span>Input Bonus</span></a></li>
-            </ul>
-        </li>
-        <li class='has-sub '><a href='#'><span>Manage Pangkat</span></a>
-          <ul>
-              <li><a href='/penggajianMagang/menu/masterPangkatK1.php'><span>K1 </span></a></li>
-              <li><a href='/penggajianMagang/menu/masterPangkatK2.php'><span>K2 </span></a></li>
-              <li><a href='/penggajianMagang/menu/masterPangkatK3.php'><span>K3 </span></a></li>
-            </ul>
-        </li>
-        <li class='active'><a href='index.html'><span>Home</span></a></li>
-        <li><a href='#'><span>Contact</span></a></li>
-      </ul>
-      </div>
-    </header>
-	<table width="100%" cellspacing='0' id="myTable">
-		<thead>
-			<tr>
-				<th onclick="sortTable(0,'T')">DEPT</th>
-				<th onclick="sortTable(1,'T')">Nama</th>
-				<th onclick="sortTable(2,'N')">Gaji</th>
-				<th onclick="sortTable(3,'N')">Tunjangan Jabatan</th>
-				<th onclick="sortTable(4,'N')">THR</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php
-			$totalThr = 0;
-			for ($i = 1; $i <= $record_numbers; $i++) { ?>
-				<tr>
-					<?php $row = dbase_get_record_with_names($db, $i);
-					?>
-					<td>
-						<?php echo $row['DEPT']; ?>
-					</td>
-					<td>
-						<?php echo $row['NAMA']; ?>
-					</td>
-					<td>
-						<?php echo $row['GAJI_DASAR']; ?>
+        </nav>
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                  <a>INPUT THR</a>
+              	</div>
+             </nav>
+			<table width="100%" cellspacing='0' id="myTable">
+				<thead>
+					<tr>
+						<th onclick="sortTable(0,'T')">DEPT</th>
+						<th onclick="sortTable(1,'T')">Nama</th>
+						<th onclick="sortTable(2,'N')">Gaji</th>
+						<th onclick="sortTable(3,'N')">Tunjangan Jabatan</th>
+						<th onclick="sortTable(4,'N')">THR</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					$totalThr = 0;
+					for ($i = 1; $i <= $record_numbers; $i++) { ?>
+						<tr>
+							<?php $row = dbase_get_record_with_names($db, $i);
+							?>
+							<td>
+								<?php echo $row['DEPT']; ?>
+							</td>
+							<td>
+								<?php echo $row['NAMA']; ?>
+							</td>
+							<td>
+								<?php echo $row['GAJI_DASAR']; ?>
+							</td>
+							<td>
+								<?php echo $row['TUNJ_JAB']; ?>
 
-					</td>
-					<td>
-						<?php echo $row['TUNJ_JAB']; ?>
+							</td>
+							<td>
+								<?php echo $row['THR']; ?>
 
-					</td>
-					<td>
-						<?php echo $row['THR']; ?>
+							</td>
+							<td>
+								<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+								<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
+								<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK'] ?> id=<?php echo "pilihanBank" . $i; ?>>
+								<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
+								<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
+								<input type="hidden" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?>>
+								<input type="hidden" name="thr" value=<?php echo "'" . $row['THR'] . "'";
+																	$totalThr += $row['THR']; ?> id=<?php echo "thr" . $i; ?>>
+								<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
 
-					</td>
-					<td>
-						<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-						<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
-						<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK'] ?> id=<?php echo "pilihanBank" . $i; ?>>
-						<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
-						<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
-						<input type="hidden" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?>>
-						<input type="hidden" name="thr" value=<?php echo "'" . $row['THR'] . "'";
-																$totalThr += $row['THR']; ?> id=<?php echo "thr" . $i; ?>>
-						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-
-					</td>
-				</tr>
-			<?php }
-			dbase_close($db); ?>
-		</tbody>
-	</table>
+							</td>
+						</tr>
+					<?php }
+					dbase_close($db); ?>
+				</tbody>
+			</table>
 	<p>Total THR yang dibayarkan : <?php echo $totalThr ?></p>
 
 	<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
@@ -274,6 +318,18 @@ if ($db) {
 			}
 		}
 	</script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
 
 </body>
 
