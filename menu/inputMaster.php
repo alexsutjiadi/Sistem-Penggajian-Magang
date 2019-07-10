@@ -1,98 +1,90 @@
 <?php
 if (isset($_POST['addNew'])) {
-    $nama = strtoupper($_POST['nama']);
-    $nik = $_POST['nik'];
-    $dept = $_POST['dept'];
-    $alamat = strtoupper($_POST['alamat']);
-    $npwp = $_POST['npwp'];
-    $jabatan = strtoupper($_POST['jabatan']);
-    $kotaLahir = strtoupper($_POST['kotaLahir']);
-    $tglLahir = date("Ymd", strtotime($_POST['tglLahir']));
-    $pangkat = $_POST['pangkat'];
-    $status = $_POST['status'];
-    $jenisKelamin = $_POST['jenisKelamin'];
-    $keluarga = $_POST['keluarga'];
-    $kodeBank = $_POST['kodeBank'];
-    $gajiDasar = $_POST['gaji'];
-    $kotaAsal = $_POST['kotaAsal']; // kota aktif
-    $tglMasuk = date("Ymd", strtotime($_POST['tglMasuk']));
-    $tglAktif = date("Ymd", strtotime($_POST['tglAktif']));
+    if(!empty($_POST['nama']) && !empty($_POST['nik']) && !empty($_POST['dept']) && !empty($_POST['alamat']) && !empty($_POST['npwp']) && !empty($_POST['jabatan']) && !empty($_POST['kotaLahir']) && !empty($_POST['tglLahir']) && !empty($_POST['status']) && !empty($_POST['jenisKelamin']) && !empty($_POST['keluarga']) && !empty($_POST['kodeBank']) && !empty($_POST['kotaAsal']) && !empty($_POST['gaji']) && !empty($_POST['pangkat']) && !empty($_POST['tglMasuk']) && !empty($_POST['tglAktif']) ){
+        $nama = strtoupper($_POST['nama']);
+        $nik = $_POST['nik'];
+        $dept = $_POST['dept'];
+        $alamat = strtoupper($_POST['alamat']);
+        $npwp = $_POST['npwp'];
+        $jabatan = strtoupper($_POST['jabatan']);
+        $kotaLahir = strtoupper($_POST['kotaLahir']);
+        $tglLahir = date("Ymd", strtotime($_POST['tglLahir']));
+        $pangkat = $_POST['pangkat'];
+        $status = $_POST['status'];
+        $jenisKelamin = $_POST['jenisKelamin'];
+        $keluarga = $_POST['keluarga'];
+        $kodeBank = $_POST['kodeBank'];
+        $gajiDasar = $_POST['gaji'];
+        $kotaAsal = $_POST['kotaAsal']; // kota aktif
+        $tglMasuk = date("Ymd", strtotime($_POST['tglMasuk']));
+        $tglAktif = date("Ymd", strtotime($_POST['tglAktif']));
 
 
-    $db = dbase_open('../B/GAJI.DBF', 2);
-    $db2 = dbase_open('../B/WAKTU_MASUK.DBF', 2);
-    $dbBca =dbase_open('../B/BCA.DBF',2);
+        $db = dbase_open('../B/GAJI.DBF', 2);
+        $db2 = dbase_open('../B/WAKTU_MASUK.DBF', 2);
+        $dbBca = dbase_open('../B/BCA.DBF', 2);
 
-
-    // }else if (){
-
-    // }else if(){
-
-    // }else if(){
-
-    // }else if(){
-
-    // }else if(){
-
-    // }else if(){
-
-    // }else if(){
-
-    // }
-
-
-    $numberRecord = dbase_numrecords($db);
-    //get no urut
-    $no = $numberRecord + 1;
-    if ($no < 100) {
-        $no = "0" . $no;
-    }
-
-    //get no urut di deptnya
-    $noDept = 1;
-    for ($i = 1; $i <= $numberRecord; $i++) {
-        $row = dbase_get_record_with_names($db, $i);
-        $getKodeDept = substr($row['DEPT'], 0, 1);
-        if ($getKodeDept == $dept) {
-            $noDept = $noDept + 1;
+        $numberRecord = dbase_numrecords($db);
+        //get no urut
+        $no = $numberRecord + 1;
+        if ($no < 100) {
+            $no = "0" . $no;
         }
-    }
-    //bkin dept code
-    if ($noDept < 10) {
-        $dept = $dept . "0-0" . $noDept;
-    } else {
-        $dept = $dept . "0-" . $noDept;
-    }
+
+        //get no urut di deptnya
+        $noDept = 1;
+        for ($i = 1; $i <= $numberRecord; $i++) {
+            $row = dbase_get_record_with_names($db, $i);
+            $getKodeDept = substr($row['DEPT'], 0, 1);
+            if ($getKodeDept == $dept) {
+                $noDept = $noDept + 1;
+            }
+        }
+        //bkin dept code
+        if ($noDept < 10) {
+            $dept = $dept . "0-0" . $noDept;
+        } else {
+            $dept = $dept . "0-" . $noDept;
+        }
 
 
 
-    //jamsostek & tunjangan kes
-    $tunjanganKesehatan = 0;
-    $premiKesehatan = 0;
-    $jamsostek = (0.05 * $gajiDasar);
-    if ($jamsostek > 400000) {
-        $jamsostek = 400000;
-    }
-    if ($pangkat == "4A" || $pangkat == "4B" || $pangkat == "3A" || $pangkat == "3B") {
-        $tunjanganDariPerusahaan = (0.1 * $gajiDasar);
-    } else if ($pangkat == "2A" || $pangkat == "2B" || $pangkat == "1A" || $pangkat == "1B" || $pangkat == "TM") {
-        $tunjanganDariPerusahaan = (0.12 * $gajiDasar);
-    } else {
-        $tunjanganDariPerusahaan = (0.08 * $gajiDasar);
-    }
-    $premiKesehatan = (0.2 * $jamsostek);
-    $tunjanganKesehatan = $tunjanganDariPerusahaan - ($jamsostek - $premiKesehatan) - $premiKesehatan;
+        //jamsostek & tunjangan kes
+        $tunjanganKesehatan = 0;
+        $premiKesehatan = 0;
+        $jamsostek = (0.05 * $gajiDasar);
+        if ($jamsostek > 400000) {
+            $jamsostek = 400000;
+        }
+        if ($pangkat == "4A" || $pangkat == "4B" || $pangkat == "3A" || $pangkat == "3B") {
+            $tunjanganDariPerusahaan = (0.1 * $gajiDasar);
+        } else if ($pangkat == "2A" || $pangkat == "2B" || $pangkat == "1A" || $pangkat == "1B" || $pangkat == "TM") {
+            $tunjanganDariPerusahaan = (0.12 * $gajiDasar);
+        } else {
+            $tunjanganDariPerusahaan = (0.08 * $gajiDasar);
+        }
+        $premiKesehatan = (0.2 * $jamsostek);
+        $tunjanganKesehatan = $tunjanganDariPerusahaan - ($jamsostek - $premiKesehatan) - $premiKesehatan;
 
-    //input ke db
-    //no urut, nik, deptcode, nama, alamat,npwp, jabatan, noktp, kotalahir, tgl lahir, pangkat, status, kelamin, keluarga, kode bank, kode bank, gajidasar, 0 0 0 0 0 0 0 0 0 0 1 Y Y, bln aktiv 0
-    dbase_add_record($db, array($no, $nik, $dept, $nama, $alamat, $npwp, $jabatan, $nik, $kotaLahir, $tglLahir, $pangkat, $status, $jenisKelamin, $keluarga, $kodeBank, $kodeBank, $gajiDasar, 0, 0, $tunjanganKesehatan, $premiKesehatan, 0, 0, 0, 0, 0, 0, 1, 'Y', 'Y', $tglAktif, ""));
-    dbase_add_record($db2, array($dept, $nama, $tglMasuk));
-    if($kodeBank==1){
-       dbase_add_record($dbBca, array($dept,$nama,0000000000,1,"",0,0));
+        //input ke db
+        //no urut, nik, deptcode, nama, alamat,npwp, jabatan, noktp, kotalahir, tgl lahir, pangkat, status, kelamin, keluarga, kode bank, kode bank, gajidasar, 0 0 0 0 0 0 0 0 0 0 1 Y Y, bln aktiv 0
+        //dbase_add_record($db, array($no, $nik, $dept, $nama, $alamat, $npwp, $jabatan, $nik, $kotaLahir, $tglLahir, $pangkat, $status, $jenisKelamin, $keluarga, $kodeBank, $kodeBank, $gajiDasar, 0, 0, $tunjanganKesehatan, $premiKesehatan, 0, 0, 0, 0, 0, 0, 1, 'Y', 'Y', $tglAktif, ""));
+        //dbase_add_record($db2, array($dept, $nama, $tglMasuk));
+        if ($kodeBank == 1) {
+            dbase_add_record($dbBca, array($dept, $nama, 0000000000, 1, "", 0, 0));
+        }
+        dbase_close($db2);
+        dbase_close($db);
+        dbase_close($dbBca);
+
+        $message = "Data Berhasil di input";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+    
+    }else{
+        $message = "Tolong di Isi semua";
+        echo "<script type='text/javascript'>alert('$message');</script>";
     }
-    dbase_close($db2);
-    dbase_close($db);
-    dbase_close($dbBca);
+        
 }
 ?>
 <!DOCTYPE html>
@@ -105,28 +97,9 @@ if (isset($_POST['addNew'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#gajiId').change(function() {
-                var inputValue = $(this).val();
-                var kotaValue = $("#kotaId").val();
-                //alert("value in js " + inputValue + kotaValue);
-
-                //Ajax for calling php function
-                $.post('../src/cekPangkat.php', {
-                    gajiV: inputValue,
-                    kotaV: kotaValue,
-                    jamsos: "Y"
-                }, function(data) {
-                    //alert('ajax completed. Response:  ' + data);
-                    //do after submission operation in DOM
-                    $("#pangkatId").val(data.pangkat);
-
-                }, "json");
-            });
-        });
-        $(document).ready(function() {
-            $('#kotaId').change(function() {
+            $('#gajiId, #kotaId').change(function() {
                 var inputValue = $("#gajiId").val();
-                var kotaValue = $(this).val();
+                var kotaValue = $("#kotaId").val();
                 //alert("value in js " + inputValue + kotaValue);
 
                 //Ajax for calling php function
@@ -196,7 +169,7 @@ if (isset($_POST['addNew'])) {
                     <label>
                         <span>Dept:</span>
                         <select name="dept">
-                            <option selected="true" disabled="disabled">-</option>
+                            <option selected="true" value="">-</option>
                             <?php
                             $db = dbase_open('../B/GOLONGAN.DBF', 0);
                             $nRecord = dbase_numrecords($db);
@@ -220,7 +193,7 @@ if (isset($_POST['addNew'])) {
                     <label>
                         <span>Jabatan:</span>
                         <select name="jabatan">
-                            <option selected="true" disabled="disabled">-</option>
+                            <option selected="true" value="">-</option>
                             <option value="MANAGER">MANAGER</option>
                             <option value="STAFF">STAFF</option>
                             <option value="STAFF">DIREKSI</option>
@@ -237,7 +210,7 @@ if (isset($_POST['addNew'])) {
                     <label>
                         <span>Status:</span>
                         <select name="status">
-                            <option selected="true" disabled="disabled">-</option>
+                            <option selected="true" value="">-</option>
                             <option value="K">KAWIN</option>
                             <option value="T">BELUM KAWIN</option>
                         </select>
@@ -245,7 +218,7 @@ if (isset($_POST['addNew'])) {
                     <label>
                         <span>Jenis Kelamin:</span>
                         <select name="jenisKelamin">
-                            <option selected="true" disabled="disabled">-</option>
+                            <option selected="true" value="">-</option>
                             <option value="Pria">Pria</option>
                             <option value="Wanita">Wanita</option>
                         </select>
@@ -253,7 +226,7 @@ if (isset($_POST['addNew'])) {
                     <label>
                         <span>Keluarga:</span>
                         <select name="keluarga">
-                            <option selected="true" disabled="disabled">-</option>
+                            <option selected="true" value="">-</option>
                             <option value="TK-">TK-</option>
                             <option value="KT-">KT-</option>
                             <option value="K/1">K/1</option>
@@ -264,14 +237,14 @@ if (isset($_POST['addNew'])) {
                     <label>
                         <span>Kode Bank:</span>
                         <select name="kodeBank">
-                            <option selected="true" disabled="disabled">-</option>
-                            <option value="1">1</option>
+                            <option selected="true" value="">-</option>
+                            <option value="1">1 (B.C.A)</option>
                         </select>
                     </label>
                     <label>
                         <span>Kota:</span>
                         <select name="kotaAsal" id="kotaId">
-                            <option selected="true" disabled="disabled">-</option>
+                            <option selected="true" value="">-</option>
                             <option value="V">JAKARTA (V)</option>
                             <option value="H0">PUSAT (H0)</option>
                             <option value="S">SURABAYA (S)</option>

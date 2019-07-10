@@ -45,7 +45,7 @@ if ($db) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#formId').change(function() {
+            $('#gajiId, #jamsosflg').change(function() {
                 
                 var inputValue = $("#gajiId").val();
                 var kotaValue = $("#pangkatId").val();

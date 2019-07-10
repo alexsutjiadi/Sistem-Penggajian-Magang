@@ -62,11 +62,11 @@ if ($db) {
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$('#formId').change(function() {
-				
+			$('#jamsosId, #gajiId').change(function() {
 				var inputValue = $("#gajiId").val();
 				var kotaValue = $("#pangkatId").val();
 				var jamsosflg = $("#jamsosId").val();
+				var pangkatAwal =$("#pangkatId").val();
 				jamsosflg = jamsosflg.toUpperCase();
 				if (kotaValue.substring(0, 2) == "K1") {
 					kotaValue = "V";
@@ -86,9 +86,6 @@ if ($db) {
 					$("#tunjKesId").val(data.tunjKes);
 					$("#premiId").val(data.premi);
 				}, "json");
-
-
-
 			});
 		});
 	</script>
@@ -200,7 +197,7 @@ if ($db) {
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<form action="" method="post" id="formId">
+					<form action="" method="post">
 						<div class="modal-body">
 							<div class="col-lg-12">
 								<label for="no">NO. URUT</label>
