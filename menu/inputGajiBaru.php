@@ -1,4 +1,10 @@
 <?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+if (!isset($_SESSION['pathKota'])) {
+    header("Location: ../pilihKota.php");
+}
 //edit gaji
 if (isset($_POST['edit'])) {
     $gaji = $_POST['gajiDasar'];
@@ -8,7 +14,7 @@ if (isset($_POST['edit'])) {
     $premi = $_POST['premi'];
     $tunjKes = $_POST['tunjKes'];
 
-    $db = dbase_open('../B/GAJI.DBF', 2);
+    $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
     if ($db) {
 
         $row = dbase_get_record_with_names($db, $rowId);
@@ -18,7 +24,7 @@ if (isset($_POST['edit'])) {
         $row['TUNJ_REG'] = $tunjReg;
         $row['PANGKAT'] = $pangkat;
         $row['JPK'] = $premi;
-        $row['TUNJ_KES']= $tunjKes;
+        $row['TUNJ_KES'] = $tunjKes;
         $row = array_values($row);
         dbase_replace_record($db, $row, $rowId);
 
@@ -27,7 +33,7 @@ if (isset($_POST['edit'])) {
 }
 
 //fetch data gaji dri db
-$db = dbase_open('../B/GAJI.DBF', 0);
+$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
 if ($db) {
     $record_numbers = dbase_numrecords($db);
 }
@@ -38,7 +44,7 @@ if ($db) {
 
 <head>
     <title>GAJI BARU</title>
-    
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -56,7 +62,7 @@ if ($db) {
     <script>
         $(document).ready(function() {
             $('#gajiId, #jamsosflg').change(function() {
-                
+
                 var inputValue = $("#gajiId").val();
                 var kotaValue = $("#pangkatId").val();
                 var jamsosflg = $("#jamsosflg").val();
@@ -68,7 +74,7 @@ if ($db) {
                 } else {
                     kotaValue = "W";
                 }
-            
+
                 //Ajax for calling php function
                 $.post('../src/cekPangkat.php', {
                     gajiV: inputValue,
@@ -78,7 +84,7 @@ if ($db) {
                     $("#pangkatId").val(data.pangkat);
                     $("#tunjKes").val(data.tunjKes);
                     $("#premi").val(data.premi);
-                    
+
                 }, "json");
 
             });
@@ -92,155 +98,158 @@ if ($db) {
         <nav id="sidebar">
             <div class="sidebar-header">
                 <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fas fa-align-left"></i>
+                    <i class="fas fa-align-left"></i>
                 </button>
             </div>
             <ul class="list-unstyled components">
-      <!-- <img src="img/rtn.jpg" /> -->
-              <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                  Maintain Input MASTER
-                </a>
-                  <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                      <a href='inputMaster.php'>Input Master</a>
-                    </li>
-                      <a href='payrollMasterFile.php'>Manage Master Gaji</a>
-                    <li>  
-                      <a href='alamatDanNpwp.php'>Alamat & N.P.W.P</a>
-                    </li>
-                      <a href='masterBCA.php'>Master B.C.A</a>
-                    <li>  
-                      <a href='showNamaGolongan.php'>Golongan</a>
-                    </li>  
-                      <a href='inputGajiBaru.php'>Gaji Baru</a>
-                    <li>
-                      <a href='inputTunjanganJabatan.php'>Input Data Lain</a>
-                    </li>
-                  </ul>
-              </li>
-              <li class="active">
-                <a href="#pageSubTHRBONUS" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                  THR BONUS
-                </a>
-                <ul class="collapse list-unstyled" id="pageSubTHRBONUS">
-                    <li>
-                      <a href='inputTHR.php'>Input THR</a>
-                    </li>
-                    <li>
-                      <a href='inputBonus.php'>Input Bonus</a>
-                    </li> 
-                  </ul>  
-              </li>
-              <li class="active">
-                <a href="#pageSubpangkat" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                  Manage Pangkat
-                </a>
-                <ul class="collapse list-unstyled" id="pageSubpangkat">
-                    <li>
-                      <a href='masterPangkatK1.php' class="w3-bar-item w3-button">K1 </a>
-                    </li>
-                    <li>
-                      <a href='masterPangkatK2.php' class="w3-bar-item w3-button">K2 </a>
-                    </li>
-                    <li>
-                      <a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>  
-                    </li>
-              </li>
+                <!-- <img src="img/rtn.jpg" /> -->
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        Maintain Input MASTER
+                    </a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li>
+                            <a href='inputMaster.php'>Input Master</a>
+                        </li>
+                        <a href='payrollMasterFile.php'>Manage Master Gaji</a>
+                        <li>
+                            <a href='alamatDanNpwp.php'>Alamat & N.P.W.P</a>
+                        </li>
+                        <a href='masterBCA.php'>Master B.C.A</a>
+                        <li>
+                            <a href='showNamaGolongan.php'>Golongan</a>
+                        </li>
+                        <a href='inputGajiBaru.php'>Gaji Baru</a>
+                        <li>
+                            <a href='inputTunjanganJabatan.php'>Input Data Lain</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="#pageSubTHRBONUS" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        THR BONUS
+                    </a>
+                    <ul class="collapse list-unstyled" id="pageSubTHRBONUS">
+                        <li>
+                            <a href='inputTHR.php'>Input THR</a>
+                        </li>
+                        <li>
+                            <a href='inputBonus.php'>Input Bonus</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="#pageSubpangkat" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        Manage Pangkat
+                    </a>
+                    <ul class="collapse list-unstyled" id="pageSubpangkat">
+                        <li>
+                            <a href='masterPangkatK1.php' class="w3-bar-item w3-button">K1 </a>
+                        </li>
+                        <li>
+                            <a href='masterPangkatK2.php' class="w3-bar-item w3-button">K2 </a>
+                        </li>
+                        <li>
+                            <a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
+                        </li>
+                </li>
             </ul>
+            <li class="active">
+                <a href="../pilihKota.php">Pilih Kota</a>
+            </li>
         </nav>
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                  <a>GAJI BARU</a>
+                    <a>GAJI BARU <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
                 </div>
-             </nav>
-        <table width="100%" border="1" id="myTable">
-            <tr>
-                <th onclick="sortTable(0)">NO. DEPT</th>
-                <th onclick="sortTable(1)">NO. URUT</th>
-                <th onclick="sortTable(2)">NAMA</th>
-                <th></th>
-            </tr>
-            <?php
-            for ($i = 1; $i <= $record_numbers; $i++) { ?>
+            </nav>
+            <table width="100%" border="1" id="myTable">
                 <tr>
-                    <?php $row = dbase_get_record_with_names($db, $i); ?>
-                    <td>
-                        <?php echo $row['DEPT']; ?>
-                    </td>
-                    <td>
-                        <?php echo $row['NO_URUT'] ?>
-                    </td>
-                    <td>
-                        <?php echo $row['NAMA']; ?>
-                    </td>
-                    <td>
-                        <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-                        <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?>>
-                        <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
-                        <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
-                        <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
-                        <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
-                        <input type="hidden" name="jamsosflg" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsosflg" . $i ?>>
-                        <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-                    </td>
+                    <th onclick="sortTable(0)">NO. DEPT</th>
+                    <th onclick="sortTable(1)">NO. URUT</th>
+                    <th onclick="sortTable(2)">NAMA</th>
+                    <th></th>
                 </tr>
-            <?php }
-            dbase_close($db); ?>
+                <?php
+                for ($i = 1; $i <= $record_numbers; $i++) { ?>
+                    <tr>
+                        <?php $row = dbase_get_record_with_names($db, $i); ?>
+                        <td>
+                            <?php echo $row['DEPT']; ?>
+                        </td>
+                        <td>
+                            <?php echo $row['NO_URUT'] ?>
+                        </td>
+                        <td>
+                            <?php echo $row['NAMA']; ?>
+                        </td>
+                        <td>
+                            <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+                            <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?>>
+                            <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
+                            <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
+                            <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
+                            <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
+                            <input type="hidden" name="jamsosflg" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsosflg" . $i ?>>
+                            <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+                        </td>
+                    </tr>
+                <?php }
+                dbase_close($db); ?>
 
 
-        </table>
-        <div id="mdl-update" class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">INPUT GAJI BARU</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+            </table>
+            <div id="mdl-update" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">INPUT GAJI BARU</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="" method="POST" id="formId">
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <label for="no">NOMER URUT</label>
+                                    <input type="text" class="no" name="no" placeholder="" disabled>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="dept">NO. DEPT</label>
+                                    <input type="text" class="dept" name="dept" placeholder="" disabled>
+                                    <input type="hidden" class="rowId" name="rowId" id="rowId">
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="nama">NAMA</label>
+                                    <input type="text" class="nama" name="nama" placeholder="" disabled>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="pangkat">PANGKAT</label>
+                                    <input type="text" class="pangkat" name="pangkat" id="pangkatId" placeholder="">
+                                    <!-- <input type="hidden" class="pangkatValue" name="pangkatValue" id="pangkatValue"> -->
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="gajiDasar">GAJI DASAR</label>
+                                    <input type="text" class="gajiDasar" name="gajiDasar" id="gajiId" placeholder="">
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="tunjReg">TUNJANGAN REGIONAL</label>
+                                    <input type="text" class="tunjReg" name="tunjReg" placeholder="">
+                                    <input type="hidden" id="jamsosflg" name="jamsosflg" class="jamsosflg">
+                                    <input type="hidden" id="tunjKes" name="tunjKes" class="tunjKes">
+                                    <input type="hidden" id="premi" name="premi" class="premi">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
                     </div>
-                    <form action="" method="POST" id="formId">
-                        <div class="modal-body">
-                            <div class="col-lg-12">
-                                <label for="no">NOMER URUT</label>
-                                <input type="text" class="no" name="no" placeholder="" disabled>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="dept">NO. DEPT</label>
-                                <input type="text" class="dept" name="dept" placeholder="" disabled>
-                                <input type="hidden" class="rowId" name="rowId" id="rowId">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="nama">NAMA</label>
-                                <input type="text" class="nama" name="nama" placeholder="" disabled>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="pangkat">PANGKAT</label>
-                                <input type="text" class="pangkat" name="pangkat" id="pangkatId" placeholder="">
-                                <!-- <input type="hidden" class="pangkatValue" name="pangkatValue" id="pangkatValue"> -->
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="gajiDasar">GAJI DASAR</label>
-                                <input type="text" class="gajiDasar" name="gajiDasar" id="gajiId" placeholder="">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="tunjReg">TUNJANGAN REGIONAL</label>
-                                <input type="text" class="tunjReg" name="tunjReg" placeholder="">
-                                <input type="hidden" id="jamsosflg" name="jamsosflg" class="jamsosflg">
-                                <input type="hidden" id="tunjKes" name="tunjKes" class="tunjKes">
-                                <input type="hidden" id="premi" name="premi" class="premi">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <script>
         $(document).on("click", ".btnUpdate", function() {
@@ -334,8 +343,8 @@ if ($db) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
+        $(document).ready(function() {
+            $('#sidebarCollapse').on('click', function() {
                 $('#sidebar').toggleClass('active');
             });
         });

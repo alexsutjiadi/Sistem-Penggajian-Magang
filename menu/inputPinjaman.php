@@ -1,11 +1,17 @@
 <?php
+if (!isset($_SESSION)) {
+	session_start();
+}
+if (!isset($_SESSION['pathKota'])) {
+	header("Location: ../pilihKota.php");
+}
 //thr
 if (isset($_POST['edit'])) {
 	$nik = strtoupper($_POST['nik']);
 	$nama = strtoupper($_POST['nama']);
 	$pinjaman = strtoupper($_POST['pinjaman']);
 
-	$db = dbase_open('../B/GAJI.DBF', 2);
+	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$record_numbers = dbase_numrecords($db);
 		for ($i = 1; $i <= $record_numbers; $i++) {
@@ -22,7 +28,7 @@ if (isset($_POST['edit'])) {
 	}
 }
 //fetch data golongan dri db
-$db = dbase_open('../B/GAJI.DBF', 0);
+$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
 if ($db) {
 	$record_numbers = dbase_numrecords($db);
 }

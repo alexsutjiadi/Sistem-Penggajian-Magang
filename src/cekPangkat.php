@@ -1,12 +1,16 @@
 <?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+
 function cekPangkat($gaji, $kota, $jamsos = "N")
 {
     if ($kota == 'V' || $kota == 'H0' || $kota == 'S') {
-        $dbPangkat = dbase_open('../B/PANGKAT_K1.DBF', 0);
+        $dbPangkat = dbase_open('../src/golongan/PANGKAT_K1.DBF', 0);
     } else if ($kota == 'R' || $kota == 'B') {
-        $dbPangkat = dbase_open('../B/PANGKAT_K3.DBF', 0);
+        $dbPangkat = dbase_open('../src/golongan/PANGKAT_K3.DBF', 0);
     } else {
-        $dbPangkat = dbase_open('../B/PANGKAT_K2.DBF', 0);
+        $dbPangkat = dbase_open('../src/golongan/PANGKAT_K2.DBF', 0);
     }
 
     $n = dbase_numrecords($dbPangkat);
