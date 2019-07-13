@@ -118,6 +118,9 @@ if ($db) {
 						<li>
 							<a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
 						</li>
+						<li>
+							<a href='master4Bplus.php' class="w3-bar-item w3-button">4B - TM </a>
+						</li>
 				</li>
 			</ul>
 			<li class="active">

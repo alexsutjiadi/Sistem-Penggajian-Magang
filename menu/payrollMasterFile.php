@@ -167,6 +167,9 @@ if ($db) {
 						<li>
 							<a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
 						</li>
+						<li>
+							<a href='master4Bplus.php' class="w3-bar-item w3-button">4B - TM </a>
+						</li>
 				</li>
 			</ul>
 			<li class="active">
@@ -176,7 +179,7 @@ if ($db) {
 		<div id="content">
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 				<div class="container-fluid">
-					<a>MANAGE MASTER GAJI <?php echo " (".$_SESSION['kota'].")" ?></a>
+					<a>MANAGE MASTER GAJI <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
 				</div>
 			</nav>
 			<table width="100%" border="1" id="myTable">

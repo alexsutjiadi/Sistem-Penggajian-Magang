@@ -1,33 +1,46 @@
 <?php
-if (!isset($_SESSION)) {
-    session_start();
-}
-if (!isset($_SESSION['pathKota'])) {
-    header("Location: ../pilihKota.php");
-}
-//edit gaji
+
 if (isset($_POST['edit'])) {
-    $alamat = $_POST['alamat'];
     $rowId = $_POST['rowId'];
-    $npwp = $_POST['npwp'];
+    $pangkat = strtoupper($_POST['pangkat']);
+    $min = $_POST['min'];
+    $max = $_POST['max'];
 
-    $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+    $db = dbase_open('../src/golongan/PANGKAT_4BPLUS.DBF', 2);
     if ($db) {
-
         $row = dbase_get_record_with_names($db, $rowId);
-
         unset($row['deleted']);
-        $row['ALAMAT'] = $alamat;
-        $row['NPWP'] = $npwp;
+
+        $row['PANGKAT'] = $pangkat;
+        $row['MIN'] = $min;
+        $row['MAX'] = $max;
         $row = array_values($row);
         dbase_replace_record($db, $row, $rowId);
-
-        dbase_close($db);
     }
+    dbase_close($db);
+} else if (isset($_POST['add'])) {
+    $pangkat = strtoupper($_POST['pangkat']);
+    $min = strtoupper($_POST['min']);
+    $max = $_POST['max'];
+
+    $db = dbase_open('../src/golongan/PANGKAT_4BPLUS.DBF', 2);
+    if ($db) {
+        dbase_add_record($db, array($pangkat, $min, $max));
+    }
+    dbase_close($db);
+} else if (isset($_POST['delete']) == 1) {
+    $idDelete = $_POST['idDelete'];
+
+    $db = dbase_open('../src/golongan/PANGKAT_4BPLUS.DBF', 2);
+    if ($db) {
+        dbase_delete_record($db, $idDelete);
+        dbase_pack($db);
+    }
+    dbase_close($db);
 }
 
-//fetch data gaji dri db
-$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
+
+$db = dbase_open('../src/golongan/PANGKAT_4BPLUS.DBF', 0);
 if ($db) {
     $record_numbers = dbase_numrecords($db);
 }
@@ -37,7 +50,7 @@ if ($db) {
 <html>
 
 <head>
-    <title>ALAMAT & N.P.W.P</title>
+    <title>MASTER PANGKAT K1</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -127,14 +140,14 @@ if ($db) {
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <a>ALAMAT & N.P.W.P <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
+                    <a>MASTER PANGKAT 4B - TM</a>
                 </div>
             </nav>
-            <table width="100%" border="1" id="myTable">
+            <table width="100%" cellspacing='0' id="myTable">
                 <tr>
-                    <th onclick="sortTable(0)">NO. DEPT</th>
-                    <th onclick="sortTable(1)">NO. URUT</th>
-                    <th onclick="sortTable(2)">NAMA</th>
+                    <th onclick="sortTable(0)">PANGKAT</th>
+                    <th onclick="sortTable(1)">BATAS BAWAH</th>
+                    <th onclick="sortTable(2)">BATAS ATAS</th>
                     <th></th>
                 </tr>
                 <?php
@@ -142,33 +155,56 @@ if ($db) {
                     <tr>
                         <?php $row = dbase_get_record_with_names($db, $i); ?>
                         <td>
-                            <?php echo $row['DEPT']; ?>
+                            <?php echo $row['PANGKAT']; ?>
                         </td>
                         <td>
-                            <?php echo $row['NO_URUT'] ?>
+                            <?php echo $row['MIN'] ?>
                         </td>
                         <td>
-                            <?php echo $row['NAMA']; ?>
+                            <?php echo $row['MAX'] ?>
                         </td>
                         <td>
-                            <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-                            <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?>>
-                            <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
-                            <input type="hidden" name="alamat" value=<?php echo "'" . $row['ALAMAT'] . "'"; ?> id=<?php echo "alamat" . $i; ?>>
-                            <input type="hidden" name="npwp" value=<?php echo "'" . $row['NPWP'] . "'"; ?> id=<?php echo "npwp" . $i; ?>>
+                            <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
+                            <input type="hidden" name="min" value=<?php echo "'" . $row['MIN'] . "'"; ?> id=<?php echo "min" . $i; ?>>
+                            <input type="hidden" value="<?php echo $row['MAX'] ?>" id=<?php echo "max" . $i; ?>>
                             <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                         </td>
+                        <!-- <td>
+                                <form action="" method="post">
+                                    <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
+                                    <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
+                                </form>
+                            </td> -->
                     </tr>
                 <?php }
                 dbase_close($db); ?>
+                <!-- <tr>
+                <td>
+                    <form action="masterPangkatK1.php" method="post"><input type="submit" name="k1" value="K1"></form>
+                </td>
+                <td>
+                    <form action="masterPangkatK2.php" method="post"><input type="submit" name="k2" value="K2"></form>
+                </td>
+                <td>
+                    <form action="masterPangkatK3.php" method="post"><input type="submit" name="k3" value="K3"></form>
+                </td>
+            </tr> -->
+                <!-- <tr>
+                <td colspan="5">
+                    <center><input type="submit" name="add" class="btnAdd" data-toggle="modal" data-target="#mdl-add" value="ADD"></center>
+                    </form>
+                </td>
+            </tr> -->
+
+
 
 
             </table>
-            <div id="mdl-update" class="modal" tabindex="-1" role="dialog">
+            <div id="mdl-add" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">PERUBAHAN DATA ALAMAT & N.P.W.P</h5>
+                            <h5 class="modal-title">TAMBAH DATA Pangkat</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -176,23 +212,50 @@ if ($db) {
                         <form action="" method="POST">
                             <div class="modal-body">
                                 <div class="col-lg-12">
-                                    <label for="dept">NO. DEPT</label>
-                                    <input type="text" class="dept" name="dept" placeholder="" disabled>
-                                    <input type="hidden" class="rowId" name="rowId">
+                                    <label for="pangkat">PANGKAT</label>
+                                    <input type="text" class="pangkat" name="pangkat" autofocus>
                                 </div>
                                 <div class="col-lg-12">
-                                    <label for="nama">NAMA</label>
-                                    <input type="text" class="nama" name="nama" placeholder="" disabled>
+                                    <label for="min">BATAS BAWAH</label>
+                                    <input type="text" class="min" name="min" placeholder="">
                                 </div>
                                 <div class="col-lg-12">
-                                    <label for="alamat">ALAMAT</label>
-                                    <input type="text" class="alamat" name="alamat" id="alamat" placeholder="">
+                                    <label for="max">BATAS ATAS</label>
+                                    <input type="text" class="max" name="max" placeholder="">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" val="" id="add" name="add" value="ADD">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="mdl-update" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">PEMELIHARAAN DATA PANGKAT</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="" method="POST">
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <label for="pangkat">PANGKAT</label>
+                                    <input type="text" class="pangkat" name="pangkat">
+                                    <input type="hidden" name="rowId" class="rowId">
                                 </div>
                                 <div class="col-lg-12">
-                                    <label for="npwp">N.P.W.P</label>
-                                    <input type="text" class="npwp" name="npwp" id="npwp" placeholder="">
+                                    <label for="min">BATAS BAWAH</label>
+                                    <input type="text" class="min" name="min" placeholder="">
                                 </div>
-
+                                <div class="col-lg-12">
+                                    <label for="max">BATAS ATAS</label>
+                                    <input type="text" class="max" name="max" placeholder="">
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
@@ -205,19 +268,18 @@ if ($db) {
         </div>
 
         <script>
+            sortTable(1);
             $(document).on("click", ".btnUpdate", function() {
                 var clickId = $(this).data('id');
-                var deptValue = $("#dept" + clickId).val();
-                var namaValue = $("#nama" + clickId).val();
-                var alamatValue = $("#alamat" + clickId).val();
-                var npwpValue = $("#npwp" + clickId).val();
+                var pangkatValue = $("#pangkat" + clickId).val();
+                var minValue = $("#min" + clickId).val();
+                var maxValue = $("#max" + clickId).val();
 
-                $(".modal-body .dept").val(deptValue);
-                $(".modal-body .nama").val(namaValue);
-                $(".modal-body .alamat").val(alamatValue);
+                $(".modal-body .pangkat").val(pangkatValue);
+                $(".modal-body .pangkatValue").val(pangkatValue);
                 $(".modal-body .rowId").val(clickId);
-                $(".modal-body .npwp").val(npwpValue);
-
+                $(".modal-body .min").val(minValue);
+                $(".modal-body .max").val(maxValue);
 
             });
 
@@ -231,11 +293,9 @@ if ($db) {
             }
 
             function sortTable(n) {
-                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                var table, rows, switching, i, x, y, shouldSwitch;
                 table = document.getElementById("myTable");
                 switching = true;
-                //Set the sorting direction to ascending:
-                dir = "asc";
                 /*Make a loop that will continue until
                 no switching has been done:*/
                 while (switching) {
@@ -251,20 +311,11 @@ if ($db) {
                         one from current row and one from the next:*/
                         x = rows[i].getElementsByTagName("TD")[n];
                         y = rows[i + 1].getElementsByTagName("TD")[n];
-                        /*check if the two rows should switch place,
-                        based on the direction, asc or desc:*/
-                        if (dir == "asc") {
-                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                                //if so, mark as a switch and break the loop:
-                                shouldSwitch = true;
-                                break;
-                            }
-                        } else if (dir == "desc") {
-                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                                //if so, mark as a switch and break the loop:
-                                shouldSwitch = true;
-                                break;
-                            }
+                        //check if the two rows should switch place:
+                        if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
                         }
                     }
                     if (shouldSwitch) {
@@ -272,19 +323,12 @@ if ($db) {
                         and mark that a switch has been done:*/
                         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                         switching = true;
-                        //Each time a switch is done, increase this count by 1:
-                        switchcount++;
-                    } else {
-                        /*If no switching has been done AND the direction is "asc",
-                        set the direction to "desc" and run the while loop again.*/
-                        if (switchcount == 0 && dir == "asc") {
-                            dir = "desc";
-                            switching = true;
-                        }
                     }
                 }
             }
         </script>
+        </script>
+        <!-- Popper.JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
         <!-- Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>

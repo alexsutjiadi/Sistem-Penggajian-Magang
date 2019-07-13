@@ -226,6 +226,9 @@ if (isset($_POST['addNew'])) {
                         <li>
                             <a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
                         </li>
+                        <li>
+                            <a href='master4Bplus.php' class="w3-bar-item w3-button">4B - TM </a>
+                        </li>
                 </li>
             </ul>
             <li class="active">
@@ -256,7 +259,7 @@ if (isset($_POST['addNew'])) {
                                 <select name="dept">
                                     <option selected="true" value="">-</option>
                                     <?php
-                                    $db = dbase_open($_SESSION['pathKota']."GOLONGAN.DBF", 0);
+                                    $db = dbase_open($_SESSION['pathKota'] . "GOLONGAN.DBF", 0);
                                     $nRecord = dbase_numrecords($db);
                                     for ($i = 0; $i <= $nRecord; $i++) {
                                         $row = dbase_get_record_with_names($db, $i)

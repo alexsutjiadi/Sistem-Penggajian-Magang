@@ -128,6 +128,9 @@ if ($db) {
                         <li>
                             <a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
                         </li>
+                        <li>
+                            <a href='master4Bplus.php' class="w3-bar-item w3-button">4B - TM </a>
+                        </li>
                 </li>
             </ul>
             <li class="active">
@@ -166,12 +169,12 @@ if ($db) {
                             <input type="hidden" value="<?php echo $row['MAX'] ?>" id=<?php echo "max" . $i; ?>>
                             <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                         </td>
-                        <!-- <td>
-                                        <form action="" method="post">
-                                            <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
-                                            <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
-                                        </form>
-                                    </td> -->
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
+                                <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
+                            </form>
+                        </td>
                     </tr>
                 <?php }
                 dbase_close($db); ?>

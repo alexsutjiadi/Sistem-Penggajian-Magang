@@ -12,13 +12,25 @@ function cekPangkat($gaji, $kota, $jamsos = "N")
     } else {
         $dbPangkat = dbase_open('../src/golongan/PANGKAT_K2.DBF', 0);
     }
+    $dbPangkat2 = dbase_open('../src/golongan/Pangkat_4BPLUS.DBF', 0);
 
     $n = dbase_numrecords($dbPangkat);
     for ($i = 1; $i <= $n; $i++) {
         $row = dbase_get_record_with_names($dbPangkat, $i);
 
         if ($i == $n && $gaji > $row['MAX']) {
-            $pangkat = "X";
+            $n2 = dbase_numrecords($dbPangkat2);
+            for ($i2 = 1; $i < $n2; $i2++) {
+                $row2 = dbase_get_record_with_names($dbPangkat2, $i2);
+                if ($i2 == $n2 && $gaji > $row2['MAX']) {
+                    $pangkat = "X";
+                    break;
+                }
+                if ($gaji >= $row2['MIN'] && $gaji <= $row2['MAX']) {
+                    $pangkat = $row2['PANGKAT'];
+                    break;
+                }
+            }
         }
         if ($gaji >= $row['MIN'] && $gaji <= $row['MAX']) {
             $pangkat = $row['PANGKAT'];
@@ -26,6 +38,7 @@ function cekPangkat($gaji, $kota, $jamsos = "N")
         }
     }
     dbase_close($dbPangkat);
+    dbase_close($dbPangkat2);
 
     $premiKesehatan = 0;
     $jamsostek = (0.05 * $gaji);
