@@ -7,35 +7,35 @@ if (!isset($_SESSION)) {
 
 if (isset($_POST['LAMPUNG'])) {
     $_SESSION['pathKota'] = "../kota/B/";
-    $_SESSION['kota']="LAMPUNG";
+    $_SESSION['kota'] = "LAMPUNG";
 }
 if (isset($_POST['SURABAYA'])) {
     $_SESSION['pathKota'] = "../kota/S/";
-    $_SESSION['kota']="SURABAYA";
+    $_SESSION['kota'] = "SURABAYA";
 }
 if (isset($_POST['PUSAT'])) {
     $_SESSION['pathKota'] = "../kota/H0/";
-    $_SESSION['kota']="PUSAT";
+    $_SESSION['kota'] = "PUSAT";
 }
 if (isset($_POST['JAKARTA'])) {
     $_SESSION['pathKota'] = "../kota/V/";
-    $_SESSION['kota']="JAKARTA";
+    $_SESSION['kota'] = "JAKARTA";
 }
 if (isset($_POST['MAKASSAR'])) {
     $_SESSION['pathKota'] = "../kota/U/";
-    $_SESSION['kota']="MAKASSAR";
+    $_SESSION['kota'] = "MAKASSAR";
 }
 if (isset($_POST['PALEMBANG'])) {
     $_SESSION['pathKota'] = "../kota/W/";
-    $_SESSION['kota']="PALEMBANG";
+    $_SESSION['kota'] = "PALEMBANG";
 }
 if (isset($_POST['SEMARANG'])) {
     $_SESSION['pathKota'] = "../kota/R/";
-    $_SESSION['kota']="SEMARANG";
+    $_SESSION['kota'] = "SEMARANG";
 }
 if (isset($_POST['MEDAN'])) {
     $_SESSION['pathKota'] = "../kota/Y/";
-    $_SESSION['kota']="MEDAN";
+    $_SESSION['kota'] = "MEDAN";
 }
 if (isset($_SESSION['pathKota'])) {
     header("Location: index.php");
@@ -112,16 +112,22 @@ if (isset($_SESSION['pathKota'])) {
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubpangkat">
                         <li>
-                            <a href='menu/masterPangkatK1.php' class="w3-bar-item w3-button">K1 </a>
+                            <a href='masterPangkatK1.php' class="w3-bar-item w3-button">K1 </a>
                         </li>
                         <li>
-                            <a href='menu/masterPangkatK2.php' class="w3-bar-item w3-button">K2 </a>
+                            <a href='masterPangkatK2.php' class="w3-bar-item w3-button">K2 </a>
                         </li>
                         <li>
-                            <a href='menu/masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
+                            <a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
+                        </li>
+                        <li>
+                            <a href='master4Bplus.php' class="w3-bar-item w3-button">4B - TM </a>
                         </li>
                 </li>
             </ul>
+            <li class="active">
+                <a href="../pilihKota.php">Pilih Kota</a>
+            </li>
         </nav>
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">

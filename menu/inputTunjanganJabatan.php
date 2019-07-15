@@ -27,6 +27,22 @@ if (isset($_POST['edit'])) {
 		dbase_close($db);
 	}
 }
+if (isset($_POST['editTunjJab'])) {
+	$rowId = $_POST['rowId'];
+	$val = $_POST['val'];
+
+	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+	if ($db) {
+		$row = dbase_get_record_with_names($db, $rowId);
+		unset($row['deleted']);
+
+		$row['TUNJ_JAB'] = $val;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
+
+		dbase_close($db);
+	}
+}
 
 //fetch data gaji dri db
 $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
@@ -72,6 +88,146 @@ if ($db) {
 					$("#pangkatId").val(data);
 					$("#pangkatValue").val(data);
 				});
+			});
+			$("#buttonEditTunjangan").click(function() {
+				var con = $("#buttonEditTunjangan").data("condition");
+				if (con == true) {
+					// $(".editTunjJab").prop('disabled', false);
+					alert("masuk edit");
+					var totalRow = $(".totalRow").val() - 1;
+					$("#buttonEditTunjangan").val("SAVE");
+					$("#buttonEditTunjangan").data("condition", false);
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var sebelum = $(".tdTunjJab" + i).text();
+							//alert(sebelum);
+							$(".tdTunjJab" + i).html(sebelum + "<br><input type='text' class='editTunjJab' id='et" + i + "'>")
+						})(i);
+					}
+				} else {
+
+					alert("masuk save");
+					var totalRow = $(".totalRow").val() - 1;
+					alert(totalRow);
+					$("#buttonEditTunjangan").val("Edit Tunjangan");
+					$("#buttonEditTunjangan").data("condition", true);
+
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var valInput = $("#et" + i).val();
+							if (valInput != "") {
+								$(".tdTunjJab" + i).html(valInput)
+								$.post("inputTunjanganJabatan.php", {
+									editTunjJab: "1",
+									rowId: i,
+									val: valInput
+								}, function(resp) {
+
+								});
+							} else {
+								var valSebelum = $(".tdTunjJab" + i).text();
+								$(".tdTunjJab" + i).html(valSebelum);
+							}
+						})(i);
+					}
+					//$(".editTunjJab").prop('disabled', true);
+
+				}
+
+			});
+
+			$("#buttonEditExtra").click(function() {
+				var con = $("#buttonEditExtra").data("condition");
+				if (con == true) {
+					//$(".editTunjJab").prop('disabled', false);
+					alert("masuk edit");
+					var totalRow = $(".totalRow").val() - 1;
+					$("#buttonEditExtra").val("SAVE");
+					$("#buttonEditExtra").data("condition", false);
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var sebelum = $(".tdExtra" + i).text();
+							//alert(sebelum);
+							$(".tdExtra" + i).html(sebelum + "<br><input type='text' class='editExtra' id='etExtra" + i + "'>")
+						})(i);
+					}
+				} else {
+
+					alert("masuk save");
+					var totalRow = $(".totalRow").val() - 1;
+					alert(totalRow);
+					$("#buttonEditExtra").val("Edit Extra");
+					$("#buttonEditExtra").data("condition", true);
+
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var valInput = $("#etExtra" + i).val();
+							if (valInput != "") {
+								$(".tdExtra" + i).html(valInput)
+								// $.post("inputTunjanganJabatan.php", {
+								// 	editTunjJab: "1",
+								// 	rowId: i,
+								// 	val: valInput
+								// }, function(resp) {
+
+								// });
+							} else {
+								var valSebelum = $(".tdExtra" + i).text();
+								$(".tdExtra" + i).html(valSebelum);
+							}
+						})(i);
+					}
+					//$(".editTunjJab").prop('disabled', true);
+
+				}
+
+			});
+
+			$("#buttonEditPinjaman").click(function() {
+				var con = $("#buttonEditPinjaman").data("condition");
+				if (con == true) {
+					//$(".editTunjJab").prop('disabled', false);
+					alert("masuk edit");
+					var totalRow = $(".totalRow").val() - 1;
+					$("#buttonEditPinjaman").val("SAVE");
+					$("#buttonEditPinjaman").data("condition", false);
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var sebelum = $(".tdPinjaman" + i).text();
+							//alert(sebelum);
+							$(".tdPinjaman" + i).html(sebelum + "<br><input type='text' class='editPinjaman' id='etPinjaman" + i + "'>")
+						})(i);
+					}
+				} else {
+
+					alert("masuk save");
+					var totalRow = $(".totalRow").val() - 1;
+					alert(totalRow);
+					$("#buttonEditPinjaman").val("Edit Pinjaman");
+					$("#buttonEditPinjaman").data("condition", true);
+
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var valInput = $("#etPinjaman" + i).val();
+							if (valInput != "") {
+								$(".tdPinjaman" + i).html(valInput)
+								// $.post("inputTunjanganJabatan.php", {
+								// 	editTunjJab: "1",
+								// 	rowId: i,
+								// 	val: valInput
+								// }, function(resp) {
+
+								// });
+							} else {
+								var valSebelum = $(".tdPinjaman" + i).text();
+								$(".tdPinjaman" + i).html(valSebelum);
+							}
+						})(i);
+					}
+					//$(".editTunjJab").prop('disabled', true);
+
+				}
+
 			});
 		});
 	</script>
@@ -152,7 +308,13 @@ if ($db) {
 					<a>INPUT DATA LAIN <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
 				</div>
 			</nav>
+			<input type="button" name="buttonEditTunjangan" value="Edit Tunjangan" id="buttonEditTunjangan" data-condition="true">
+			<input type="button" name="buttonEditExtra" value="Edit Extra" id="buttonEditExtra" data-condition="true">
+			<input type="button" name="buttonEditPinjaman" value="Edit Pinjaman" id="buttonEditPinjaman" data-condition="true">
+
+
 			<table width="100%" border="1" id="myTable">
+
 				<tr>
 					<th onclick="sortTable(0,'T')">NO. DEPT</th>
 					<th onclick="sortTable(1,'T')">NO. URUT</th>
@@ -163,6 +325,7 @@ if ($db) {
 					<th></th>
 				</tr>
 				<?php
+				$i = 0;
 				for ($i = 1; $i <= $record_numbers; $i++) { ?>
 					<tr>
 						<?php $row = dbase_get_record_with_names($db, $i); ?>
@@ -175,13 +338,13 @@ if ($db) {
 						<td>
 							<?php echo $row['NAMA']; ?>
 						</td>
-						<td>
+						<td class=<?php echo "tdTunjJab" . $i ?>>
 							<?php echo $row['TUNJ_JAB'] ?>
 						</td>
-						<td>
+						<td class=<?php echo "tdExtra" . $i ?>>
 							<?php echo $row['EXTRA_LAIN'] ?>
 						</td>
-						<td>
+						<td class=<?php echo "tdPinjaman" . $i ?>>
 							<?php echo $row['PINJAMAN'] ?>
 						</td>
 
@@ -191,13 +354,12 @@ if ($db) {
 							<input type="hidden" name="tunj_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunj_jab" . $i; ?>>
 							<input type="hidden" name="extra" value=<?php echo "'" . $row['EXTRA_LAIN'] . "'"; ?> id=<?php echo "extra" . $i; ?>>
 							<input type="hidden" name="pinjaman" value=<?php echo "'" . $row['PINJAMAN'] . "'"; ?> id=<?php echo "pinjaman" . $i; ?>>
-							<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+							<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
 						</td>
 					</tr>
 				<?php }
 				dbase_close($db); ?>
-
-
+				<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
 			</table>
 			<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">

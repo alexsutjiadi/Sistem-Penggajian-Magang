@@ -99,6 +99,7 @@ if (!isset($_SESSION['pathKota'])) {
 
       </nav>
       <?php echo "Kota Aktif: " . $_SESSION['kota'] ?>
+      <br>
       <?php echo "path Aktif: " . $_SESSION['pathKota'] ?>
     </div>
   </div>
