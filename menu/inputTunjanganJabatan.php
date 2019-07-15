@@ -229,6 +229,33 @@ if ($db) {
 				}
 
 			});
+			$(".imgEditTunj_Jab").click(function () {             
+                alert("click");
+                var bca = $(this).data("id");
+                var abc = $(this).data("di");
+                if(abc == true){
+                	alert("1");
+                	var sebelum = $(".tdTunjJab" + bca).text();
+                	alert(sebelum);
+                    $(".tdTunjJab" + bca).html(sebelum+"<img src='../img/Pencil.ico' data-id="+bca+" data-di='false' class='imgEditTunj_Jab' width='15px' height='15px'><br><input type='text' class='editTunjJab' id='et"+bca+"'>");
+                    alert("Edit baris tersebut?");
+          			alert($(".tdTunjJab" + bca).html());
+                }
+                else{
+                	alert("masuk save");
+                	var valInput = $("#et" + bca).val();
+                	if(valInput!=""){
+                    	$(".tdTunjJab" + bca).html(valInput);
+                    	alert("Selesai?");
+                    	$(this).data("di", true);
+                	}
+                	else{
+                    	var sebelum = $(".tdTunjJab" + bca).text();
+                    	$(".tdTunjJab" + bca).html(sebelum);
+
+                    }
+                }
+            });
 		});
 	</script>
 </head>
@@ -340,12 +367,15 @@ if ($db) {
 						</td>
 						<td class=<?php echo "tdTunjJab" . $i ?>>
 							<?php echo $row['TUNJ_JAB'] ?>
+							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditTunj_Jab" width="15px" height="15px">
 						</td>
 						<td class=<?php echo "tdExtra" . $i ?>>
 							<?php echo $row['EXTRA_LAIN'] ?>
+							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditExtra" width="15px" height="15px">
 						</td>
 						<td class=<?php echo "tdPinjaman" . $i ?>>
 							<?php echo $row['PINJAMAN'] ?>
+							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditPinjaman" width="15px" height="15px">
 						</td>
 
 						<td>
