@@ -88,6 +88,34 @@ if ($db) {
                 }, "json");
 
             });
+            $(".imgEditGaji").click(function () {
+                var bca = $(this).data("id");
+                var abc = $(this).data("di");
+                if(abc == true){
+                    $(".edit1" + bca).prop('disabled', false);
+                    alert("Edit baris tersebut?");
+                    $(this).data("di", false);
+                }
+                else{
+                    $(".edit1" + bca).prop('disabled', true);
+                    alert("Selesai?");
+                    $(this).data("di", true);
+                }
+            });
+            $(".imgEditTunj_Reg").click(function () {
+                var bca = $(this).data("id");
+                var abc = $(this).data("di");
+                if(abc == true){
+                    $(".edit2" + bca).prop('disabled', false);
+                    alert("Edit baris tersebut?");
+                    $(this).data("di", false);
+                }
+                else{
+                    $(".edit2" + bca).prop('disabled', true);
+                    alert("Selesai?");
+                    $(this).data("di", true);
+                }
+            });
         });
     </script>
 </head>
@@ -172,6 +200,8 @@ if ($db) {
                     <th onclick="sortTable(0)">NO. DEPT</th>
                     <th onclick="sortTable(1)">NO. URUT</th>
                     <th onclick="sortTable(2)">NAMA</th>
+                    <th onclick="sortTable(3)">GAJI DASAR</th>
+                    <th onclick="sortTable(4)">TUNJANGAN REGIONAL</th>
                     <th></th>
                 </tr>
                 <?php
@@ -186,6 +216,16 @@ if ($db) {
                         </td>
                         <td>
                             <?php echo $row['NAMA']; ?>
+                        </td>
+                        <td>
+                            <?php echo $row['GAJI_DASAR']; ?>
+                            <img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditGaji" width="15px" height="15px"><br>
+                            <input type="text" class=<?php echo "edit1" .$i ?> disabled>
+                        </td>
+                        <td>
+                            <?php echo $row['TUNJ_REG']; ?>
+                            <img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditTunj_Reg" width="15px" height="15px"><br>
+                            <input type="text" class=<?php echo "edit2" .$i ?> disabled>
                         </td>
                         <td>
                             <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>

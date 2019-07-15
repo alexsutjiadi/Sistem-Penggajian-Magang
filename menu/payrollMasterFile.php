@@ -103,7 +103,50 @@ if ($db) {
 					$("#premiId").val(data.premi);
 				}, "json");
 			});
+			$(".imgEditGaji").click(function () {
+				var bca = $(this).data("id");
+				var abc = $(this).data("di");
+				if(abc == true){
+					$(".edit1" + bca).prop('disabled', false);
+					alert("Edit baris tersebut?");
+					$(this).data("di", false);
+				}
+				else{
+					$(".edit1" + bca).prop('disabled', true);
+					alert("Selesai?");
+					$(this).data("di", true);
+				}
+			});
+			$(".imgEditJPK").click(function () {
+				var bca = $(this).data("id");
+				var abc = $(this).data("di");
+				if(abc == true){
+					$(".edit2" + bca).prop('disabled', false);
+					alert("Edit baris tersebut?");
+					$(this).data("di", false);
+				}
+				else{
+					$(".edit2" + bca).prop('disabled', true);
+					alert("Selesai?");
+					$(this).data("di", true);
+				}
+			});
+			$(".imgEditTUNJ").click(function () {
+				var bca = $(this).data("id");
+				var abc = $(this).data("di");
+				if(abc == true){
+					$(".edit3" + bca).prop('disabled', false);
+					alert("Edit baris tersebut?");
+					$(this).data("di", false);
+				}
+				else{
+					$(".edit3" + bca).prop('disabled', true);
+					alert("Selesai?");
+					$(this).data("di", true);
+				}
+			});
 		});
+		
 	</script>
 </head>
 
@@ -187,7 +230,10 @@ if ($db) {
 					<th onclick="sortTable(0)">DEPT</th>
 					<th onclick="sortTable(1)">NO</th>
 					<th onclick="sortTable(2)">NAMA</th>
-					<th colspan="3"></th>
+					<th onclick="sortTable(3)">GAJI DASAR</th>
+					<th onclick="sortTable(4)">PREMI KESEHATAN</th>
+					<th onclick="sortTable(5)">TUNJANGAN KESEHATAN</th>
+					<th colspan="2"></th>
 				</tr>
 				<?php
 				for ($i = 1; $i <= $record_numbers; $i++) { ?>
@@ -204,7 +250,21 @@ if ($db) {
 						<td>
 							<?php echo $row['NAMA']; ?>
 						</td>
-
+						<td>
+							<?php echo $row['GAJI_DASAR']; ?>
+							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditGaji" width="15px" height="15px"><br>
+							<input type="text" class=<?php echo "edit1" .$i ?> disabled>
+						</td>
+						<td>
+							<?php echo $row['JPK']; ?>
+							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditJPK" width="15px" height="15px"><br>
+							<input type="text" class=<?php echo "edit2" .$i ?> disabled>
+						</td>
+						<td>
+							<?php echo $row['TUNJ_KES']; ?>
+							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditTUNJ" width="15px" height="15px"><br>
+							<input type="text" class=<?php echo "edit3" .$i ?> disabled>
+						</td>
 						<td>
 							<input type="hidden" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?>>
 							<input type="hidden" name="tglLahir" value=<?php echo substr($row['TGL_LAHIR'], 6, 2) . "-" . substr($row['TGL_LAHIR'], 4, 2) . "-" . substr($row['TGL_LAHIR'], 0, 4); ?> id=<?php echo "tglLahir" . $i; ?>>
