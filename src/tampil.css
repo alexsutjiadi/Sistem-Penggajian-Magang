@@ -1,15 +1,17 @@
 <style type="text/css">
 .form-style-3{
   max-width: 450px;
-  font:bold 13px/100% Arial, Helvetica, sans-serif;
+  font:13px/100% Arial, Helvetica, sans-serif;
 }
 .form-style-3 label{
   display:block;
   margin-bottom: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 .form-style-3 label > span{
-  float: left;
-  width: 100px;
+  margin-left: 50px;
+  width: 50px;
   color: #000;
   font-size: 15px;
 }
@@ -24,7 +26,7 @@
   box-shadow: inset 0px 0px 15px #000;
   -moz-box-shadow: inset 0px 0px 15px #000;
   -webkit-box-shadow: inset 0px 0px 15px #000;
-  width: 50%;
+  width: 100%;
 }
 .form-style-3 fieldset legend{
   color: #000;
@@ -43,7 +45,7 @@
   font-size: 12px;
 }
 .form-style-3 textarea{
-  width:50px;
+  width:100px;
   height:100px;
 }
 .form-style-3 input[type=text],
@@ -68,8 +70,7 @@
   -moz-box-shadow: inset 1px 1px 4px #000;
   -webkit-box-shadow: inset 1px 1px 4px #000;
   background: #EAEDED;
-  font-weight: bold;
-  width:50%;
+  width:40%;
 
 }
 .form-style-3  input[type=submit],
@@ -86,7 +87,6 @@
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;  
-  font-weight: bold;
 }
 .form-style-3 .required{
   color:red;

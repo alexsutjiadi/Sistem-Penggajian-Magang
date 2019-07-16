@@ -53,6 +53,7 @@ if (isset($_SESSION['pathKota'])) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" type="text/css" href="src/tampilan.css">
+    <link rel="stylesheet" type="text/css" href="src/tampilan1.css">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -126,7 +127,7 @@ if (isset($_SESSION['pathKota'])) {
                 </li>
             </ul>
             <li class="active">
-                <a href="../pilihKota.php">Pilih Kota</a>
+                <a href="pilihKota.php">Pilih Kota</a>
             </li>
         </nav>
         <div id="content">
@@ -136,15 +137,32 @@ if (isset($_SESSION['pathKota'])) {
                 </div>
             </nav>
             <div>
-                <form action="" method="post">
-                    <input type="submit" value="LAMPUNG" name="LAMPUNG">
-                    <input type="submit" value="PUSAT" name="PUSAT">
-                    <input type="submit" value="SURABAYA" name="SURABAYA">
-                    <input type="submit" value="JAKARTA" name="JAKARTA">
-                    <input type="submit" value="MAKASSAR" name="MAKASSAR">
-                    <input type="submit" value="SEMARANG" name="SEMARANG">
-                    <input type="submit" value="MEDAN" name="MEDAN">
-                    <input type="submit" value="PALEMBANG" name="PALEMBANG">
+                <form action="" method="post">          
+                    <button type="submit" class="button" style="vertical-align:middle" value="PUSAT" name="PUSAT">
+                        <span>PUSAT</span>
+                    </button>
+                    <button type="submit" class="button" style="vertical-align:middle" value="JAKARTA" name="JAKARTA">
+                        <span>JAKARTA</span>
+                    </button>
+                    <button type="submit" class="button" style="vertical-align:middle" value="SURABAYA" name="SURABAYA">
+                        <span>SURABAYA</span>
+                    </button>
+                    <button type="submit" class="button" style="vertical-align:middle" value="MAKASSAR" name="MAKASSAR">
+                        <span>MAKASSAR</span>
+                    </button>                    
+                    <br>
+                    <button type="submit" class="button" style="vertical-align:middle" value="LAMPUNG" name="LAMPUNG">
+                        <span>LAMPUNG</span>
+                    </button>
+                    <button type="submit" class="button" style="vertical-align:middle" value="SEMARANG" name="SEMARANG">
+                        <span>SEMARANG</span>
+                    </button>
+                    <button type="submit" class="button" style="vertical-align:middle" value="MEDAN" name="MEDAN">
+                        <span>MEDAN</span>
+                    </button>
+                    <button type="submit" class="button" style="vertical-align:middle" value="PALEMBANG" name="PALEMBANG">
+                        <span>PALEMBANG</span>
+                    </button>
                 </form>
             </div>
         </div>
