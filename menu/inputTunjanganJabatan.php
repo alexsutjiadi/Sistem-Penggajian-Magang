@@ -118,7 +118,7 @@ if ($db) {
 				if (con == true) {
 					// alert("masuk edit");
 					var totalRow = $(".totalRow").val() - 1;
-					$("#buttonEditTunjangan").val("SAVE");
+					$("#buttonEditTunjangan").val("SAVE TUNJANGAN");
 					$("#buttonEditTunjangan").data("condition", false);
 					$("#myTable").off("click"); //disable click edit per kolom
 					for (var i = 1; i <= totalRow; i++) {
@@ -131,7 +131,7 @@ if ($db) {
 					//alert("masuk save");
 					var totalRow = $(".totalRow").val() - 1;
 					//alert(totalRow);
-					$("#buttonEditTunjangan").val("Edit Tunjangan");
+					$("#buttonEditTunjangan").val("Edit All Tunjangan");
 					$("#buttonEditTunjangan").data("condition", true);
 					$("#myTable").on("click", "td", function() {
 						editPerKolom(); //nyalain lg wktu udh slesai edit
@@ -168,7 +168,7 @@ if ($db) {
 				if (con == true) {
 					//alert("masuk edit");
 					var totalRow = $(".totalRow").val() - 1;
-					$("#buttonEditExtra").val("SAVE");
+					$("#buttonEditExtra").val("SAVE EXTRA");
 					$("#buttonEditExtra").data("condition", false);
 					$("#myTable").off("click");
 					for (var i = 1; i <= totalRow; i++) {
@@ -181,7 +181,7 @@ if ($db) {
 					//alert("masuk save");
 					var totalRow = $(".totalRow").val() - 1;
 					//alert(totalRow);
-					$("#buttonEditExtra").val("Edit Extra");
+					$("#buttonEditExtra").val("Edit All Extra");
 					$("#buttonEditExtra").data("condition", true);
 					$("#myTable").on("click", "td", function() {
 						editPerKolom();
@@ -215,7 +215,7 @@ if ($db) {
 				if (con == true) {
 					//alert("masuk edit");
 					var totalRow = $(".totalRow").val() - 1;
-					$("#buttonEditPinjaman").val("SAVE");
+					$("#buttonEditPinjaman").val("SAVE PINJAMAN");
 					$("#buttonEditPinjaman").data("condition", false);
 					$("#myTable").off("click");
 					for (var i = 1; i <= totalRow; i++) {
@@ -229,7 +229,7 @@ if ($db) {
 					//alert("masuk save");
 					var totalRow = $(".totalRow").val() - 1;
 					//alert(totalRow);
-					$("#buttonEditPinjaman").val("Edit Pinjaman");
+					$("#buttonEditPinjaman").val("Edit All Pinjaman");
 					$("#buttonEditPinjaman").data("condition", true);
 					$("#myTable").on("click", "td", function() {
 						editPerKolom();
