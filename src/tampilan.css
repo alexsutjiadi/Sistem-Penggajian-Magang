@@ -253,3 +253,11 @@ a.article:hover {
         display: none;
     }
 }
+.bEdit{
+    margin-left: 30px;
+    margin-right: 10px;
+}
+.tableButton{
+    display: inline-block;
+    text-align: right;
+}
