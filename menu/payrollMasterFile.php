@@ -57,7 +57,13 @@ if (isset($_POST['editGaji'])) {
 	$premiKesehatan = 0;
 	$tunjanganKesehatan = 0;
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+	$row1 = dbase_get_record_with_names($db, $rowId);
+	if ($gaji == "") {
+		$gaji = $row1['GAJI_DASAR'];
+	}
 	if ($db) {
+
+		
 
 		if ($kota == 'V' || $kota == 'H0' || $kota == 'S') {
 			$dbPangkat = dbase_open('../src/golongan/PANGKAT_K1.DBF', 0);
@@ -94,6 +100,7 @@ if (isset($_POST['editGaji'])) {
 		dbase_close($dbPangkat);
 		dbase_close($dbPangkat2);
 
+
 		$premiKesehatan = 0;
 		$jamsostek = (0.05 * $gaji);
 		if ($jamsostek > 400000) {
@@ -108,8 +115,7 @@ if (isset($_POST['editGaji'])) {
 		}
 
 		//cek jamsos flg
-		$row = dbase_get_record_with_names($db, $rowId);
-		$jamsos = $row['JAMSOSFLG'];
+		$jamsos = $row1['JAMSOSFLG'];
 
 		if (strtoupper($jamsos) == 'Y') {
 			$premiKesehatan = (0.2 * $jamsostek);
@@ -120,13 +126,13 @@ if (isset($_POST['editGaji'])) {
 		}
 
 		//edit
-		unset($row['deleted']);
-		$row['GAJI_DASAR'] = $gaji;
-		$row['PANGKAT'] = $pangkat;
-		$row['JPK'] = $premiKesehatan;
-		$row['TUNJ_KES'] = $tunjanganKesehatan;
-		$row = array_values($row);
-		dbase_replace_record($db, $row, $rowId);
+		unset($row1['deleted']);
+		$row1['GAJI_DASAR'] = $gaji;
+		$row1['PANGKAT'] = $pangkat;
+		$row1['JPK'] = $premiKesehatan;
+		$row1['TUNJ_KES'] = $tunjanganKesehatan;
+		$row1 = array_values($row1);
+		dbase_replace_record($db, $row1, $rowId);
 		dbase_close($db);
 	}
 }
@@ -139,11 +145,14 @@ if (isset($_POST['editPremi'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		unset($row['deleted']);
+	
+		if($val!=""){
+			unset($row['deleted']);
+			$row['JPK'] = $val;
+			$row = array_values($row);
+			dbase_replace_record($db, $row, $rowId);
 
-		$row['JPK'] = $val;
-		$row = array_values($row);
-		dbase_replace_record($db, $row, $rowId);
+		}
 
 		dbase_close($db);
 	}
@@ -156,11 +165,13 @@ if (isset($_POST['editTunjKes'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		unset($row['deleted']);
-
-		$row['TUNJ_KES'] = $val;
-		$row = array_values($row);
-		dbase_replace_record($db, $row, $rowId);
+		
+		if($val!=""){
+			unset($row['deleted']);
+			$row['TUNJ_KES'] = $val;
+			$row = array_values($row);
+			dbase_replace_record($db, $row, $rowId);
+		}
 
 		dbase_close($db);
 	}

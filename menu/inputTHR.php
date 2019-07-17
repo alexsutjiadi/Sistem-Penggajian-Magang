@@ -38,12 +38,14 @@ if (isset($_POST['editThr'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		unset($row['deleted']);
-
-		$row['THR'] = $val;
-		$row = array_values($row);
-		dbase_replace_record($db, $row, $rowId);
-		dbase_close($db);
+		if($val!=""){
+			unset($row['deleted']);
+			$row['THR'] = $val;
+			$row = array_values($row);
+			dbase_replace_record($db, $row, $rowId);
+			dbase_close($db);
+		}
+		
 	}
 }
 

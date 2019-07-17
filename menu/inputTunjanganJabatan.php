@@ -36,13 +36,17 @@ if (isset($_POST['editTunjJab'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		unset($row['deleted']);
+		if($val!=""){
+			unset($row['deleted']);
 
-		$row['TUNJ_JAB'] = $val;
-		$row = array_values($row);
-		dbase_replace_record($db, $row, $rowId);
+			$row['TUNJ_JAB'] = $val;
+			$row = array_values($row);
+			dbase_replace_record($db, $row, $rowId);
+
+		}
 
 		dbase_close($db);
+		
 	}
 }
 
@@ -54,11 +58,14 @@ if (isset($_POST['editExtra'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		unset($row['deleted']);
+		if($val!=""){
+			unset($row['deleted']);
 
-		$row['EXTRA_LAIN'] = $val;
-		$row = array_values($row);
-		dbase_replace_record($db, $row, $rowId);
+			$row['EXTRA_LAIN'] = $val;
+			$row = array_values($row);
+			dbase_replace_record($db, $row, $rowId);
+		}
+		
 
 		dbase_close($db);
 	}
@@ -72,11 +79,13 @@ if (isset($_POST['editPinjaman'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		unset($row['deleted']);
-
-		$row['PINJAMAN'] = $val;
-		$row = array_values($row);
-		dbase_replace_record($db, $row, $rowId);
+		if($val!=""){
+			unset($row['deleted']);
+			$row['PINJAMAN'] = $val;
+			$row = array_values($row);
+			dbase_replace_record($db, $row, $rowId);
+		}
+		
 
 		dbase_close($db);
 	}
