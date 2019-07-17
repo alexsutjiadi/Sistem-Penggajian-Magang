@@ -8,34 +8,42 @@ if (!isset($_SESSION)) {
 if (isset($_POST['LAMPUNG'])) {
     $_SESSION['pathKota'] = "../kota/B/";
     $_SESSION['kota'] = "LAMPUNG";
+    $_SESSION['kodeKota']="B";
 }
 if (isset($_POST['SURABAYA'])) {
     $_SESSION['pathKota'] = "../kota/S/";
     $_SESSION['kota'] = "SURABAYA";
+    $_SESSION['kodeKota'] = "S";
 }
 if (isset($_POST['PUSAT'])) {
     $_SESSION['pathKota'] = "../kota/H0/";
     $_SESSION['kota'] = "PUSAT";
+    $_SESSION['kodeKota'] = "H0";
 }
 if (isset($_POST['JAKARTA'])) {
     $_SESSION['pathKota'] = "../kota/V/";
     $_SESSION['kota'] = "JAKARTA";
+    $_SESSION['kodeKota'] = "V";
 }
 if (isset($_POST['MAKASSAR'])) {
     $_SESSION['pathKota'] = "../kota/U/";
     $_SESSION['kota'] = "MAKASSAR";
+    $_SESSION['kodeKota'] = "U";
 }
 if (isset($_POST['PALEMBANG'])) {
     $_SESSION['pathKota'] = "../kota/W/";
     $_SESSION['kota'] = "PALEMBANG";
+    $_SESSION['kodeKota'] = "W";
 }
 if (isset($_POST['SEMARANG'])) {
     $_SESSION['pathKota'] = "../kota/R/";
     $_SESSION['kota'] = "SEMARANG";
+    $_SESSION['kodeKota'] = "R";
 }
 if (isset($_POST['MEDAN'])) {
     $_SESSION['pathKota'] = "../kota/Y/";
     $_SESSION['kota'] = "MEDAN";
+    $_SESSION['kodeKota'] = "Y";
 }
 if (isset($_SESSION['pathKota'])) {
     header("Location: index.php");
