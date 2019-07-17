@@ -300,6 +300,7 @@ if ($db) {
 					' + $(this).text() + ' \
                     <br><input type="text" name="val" /> \
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <input type="hidden" name="kodeKota" value="' +$("#kodeKota").val()+'"> \
                     <br /> \
 					<input type="submit" name="editGaji"> \
                 </form><form action=""><input type="submit" value="Cancel"></form>';

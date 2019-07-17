@@ -109,7 +109,7 @@ if (isset($_POST['editGaji'])) {
 
 		//cek jamsos flg
 		$row = dbase_get_record_with_names($db, $rowId);
-		$jamsos=$row['JAMSOSFLG'];
+		$jamsos = $row['JAMSOSFLG'];
 
 		if (strtoupper($jamsos) == 'Y') {
 			$premiKesehatan = (0.2 * $jamsostek);
@@ -376,6 +376,7 @@ if ($db) {
 					' + $(this).text() + ' \
                     <br><input type="text" name="val" /> \
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+					<input type="hidden" name="kodeKota" value="' + $("#kodeKota").val() + '"> \
                     <br /> \
 					<input type="submit" name="editGaji"> \
                 </form><form action=""><input type="submit" value="Cancel"></form>';
