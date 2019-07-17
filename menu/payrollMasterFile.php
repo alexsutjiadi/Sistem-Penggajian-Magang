@@ -429,20 +429,20 @@ if ($db) {
 				</div>
 			</nav>
 			<div class="tableButton">
-				<div style="margin-right: 300px">
+				<div style="margin-right:300px">
 					<input type="button" tabindex="-1" name="buttonEditGaji" value="Edit All Gaji" id="buttonEditGaji" data-condition="true" class="bEdit">
 					<input type="button" tabindex="-1" name="buttonEditPremi" value="Edit All Premi" id="buttonEditPremi" data-condition="true" class="bEdit">
 					<input type="button" tabindex="-1" name="buttonEditTunjKes" value="Edit All Tunj_Kes" id="buttonEditTunjKes" data-condition="true" class="bEdit">
 				</div>
 
-				<table width="100%" border="1" id="myTable">
+				<table width="100%" cellspacing="0" id="myTable">
 					<tr>
-						<th onclick="sortTable(0)">DEPT</th>
-						<th onclick="sortTable(1)">NO</th>
-						<th onclick="sortTable(2)">NAMA</th>
-						<th onclick="sortTable(3)">GAJI DASAR</th>
-						<th onclick="sortTable(4)">PREMI KESEHATAN</th>
-						<th onclick="sortTable(5)">TUNJANGAN KESEHATAN</th>
+						<th onclick="sortTable(0,'T')">DEPT</th>
+						<th onclick="sortTable(1,'T')">NO</th>
+						<th onclick="sortTable(2,'T')">NAMA</th>
+						<th onclick="sortTable(3,'N')">GAJI DASAR</th>
+						<th onclick="sortTable(4,'N')">PREMI KESEHATAN</th>
+						<th onclick="sortTable(5,'N')">TUNJANGAN KESEHATAN</th>
 						<th colspan="2"></th>
 					</tr>
 					<?php
@@ -490,12 +490,12 @@ if ($db) {
 								<input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
 								<input type="hidden" name="no" value=<?php echo $row['NO_URUT']; ?> id=<?php echo "no" . $i; ?>>
 								<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-								<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>
+								<input type="submit" class="btnUpdate" tabindex="-1" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>
 							</td>
 							<td>
 								<form action="" method="post">
 									<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
-									<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
+									<input type="submit" tabindex="-1" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
 								</form>
 							</td>
 						</tr>
@@ -665,7 +665,7 @@ if ($db) {
 				}
 			}
 
-			function sortTable(n) {
+			function sortTable(n, mode) {
 				var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
 				table = document.getElementById("myTable");
 				switching = true;
@@ -689,16 +689,33 @@ if ($db) {
 						/*check if the two rows should switch place,
 						based on the direction, asc or desc:*/
 						if (dir == "asc") {
-							if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-								//if so, mark as a switch and break the loop:
-								shouldSwitch = true;
-								break;
+							if (mode == 'N') {
+								if (Number(x.innerHTML) > Number(y.innerHTML)) {
+									//if so, mark as a switch and break the loop:
+									shouldSwitch = true;
+									break;
+								}
+							} else {
+								if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+									//if so, mark as a switch and break the loop:
+									shouldSwitch = true;
+									break;
+								}
 							}
+
 						} else if (dir == "desc") {
-							if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-								//if so, mark as a switch and break the loop:
-								shouldSwitch = true;
-								break;
+							if (mode == 'N') {
+								if (Number(x.innerHTML) < Number(y.innerHTML)) {
+									//if so, mark as a switch and break the loop:
+									shouldSwitch = true;
+									break;
+								}
+							} else {
+								if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+									//if so, mark as a switch and break the loop:
+									shouldSwitch = true;
+									break;
+								}
 							}
 						}
 					}
