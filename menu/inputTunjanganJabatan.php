@@ -273,7 +273,7 @@ if ($db) {
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
 					<input type="submit" name="editTunjJab"> \
-                </form>';
+                </form><form action=""><input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
 
@@ -286,7 +286,7 @@ if ($db) {
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
 					<input type="submit" name="editExtra"> \
-                </form>';
+                </form><form action=""><input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
 
@@ -299,7 +299,7 @@ if ($db) {
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
 					<input type="submit" name="editPinjaman"> \
-                </form>';
+                </form><form action=""><input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
 				});
@@ -388,9 +388,9 @@ if ($db) {
 			</nav>
 			<div class="tableButton">
 				<div style="margin-right: 110px">
-					<input type="button" name="buttonEditTunjangan" value="Edit All Tunjangan" id="buttonEditTunjangan" data-condition="true" class="bEdit">
-					<input type="button" name="buttonEditExtra" value="Edit All Extra" id="buttonEditExtra" data-condition="true" class="bEdit">
-					<input type="button" name="buttonEditPinjaman" value="Edit All Pinjaman" id="buttonEditPinjaman" data-condition="true" class="bEdit">
+					<input type="button" tabindex="-1" name="buttonEditTunjangan" value="Edit All Tunjangan" id="buttonEditTunjangan" data-condition="true" class="bEdit">
+					<input type="button" tabindex="-1" name="buttonEditExtra" value="Edit All Extra" id="buttonEditExtra" data-condition="true" class="bEdit">
+					<input type="button" tabindex="-1" name="buttonEditPinjaman" value="Edit All Pinjaman" id="buttonEditPinjaman" data-condition="true" class="bEdit">
 				</div>
 				<!-- table tampilan -->
 				<table width="100%" border="1" id="myTable">

@@ -32,6 +32,39 @@ if (isset($_POST['edit'])) {
     }
 }
 
+if (isset($_POST['editTunjangan'])) {
+    $rowId = $_POST['rowId'];
+    $val = $_POST['val'];
+
+    $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+    if ($db) {
+        $row = dbase_get_record_with_names($db, $rowId);
+        unset($row['deleted']);
+
+        $row['TUNJ_REG'] = $val;
+        $row = array_values($row);
+        dbase_replace_record($db, $row, $rowId);
+
+        dbase_close($db);
+    }
+}
+if (isset($_POST['editGaji'])) {
+    $rowId = $_POST['rowId'];
+    $val = $_POST['val'];
+
+    $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+    if ($db) {
+        $row = dbase_get_record_with_names($db, $rowId);
+        unset($row['deleted']);
+
+        $row['GAJI_DASAR'] = $val;
+        $row = array_values($row);
+        dbase_replace_record($db, $row, $rowId);
+
+        dbase_close($db);
+    }
+}
+
 //fetch data gaji dri db
 $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
 if ($db) {
@@ -88,34 +121,140 @@ if ($db) {
                 }, "json");
 
             });
-            $(".imgEditGaji").click(function () {
-                var bca = $(this).data("id");
-                var abc = $(this).data("di");
-                if(abc == true){
-                    $(".edit1" + bca).prop('disabled', false);
-                    alert("Edit baris tersebut?");
-                    $(this).data("di", false);
-                }
-                else{
-                    $(".edit1" + bca).prop('disabled', true);
-                    alert("Selesai?");
-                    $(this).data("di", true);
+
+            //button edit gaji
+            $("#buttonEditGaji").click(function() {
+                var con = $("#buttonEditGaji").data("condition");
+                if (con == true) {
+                    //alert("masuk edit");
+                    var totalRow = $(".totalRow").val() - 1;
+                    $("#buttonEditGaji").val("SAVE GAJI");
+                    $("#buttonEditGaji").data("condition", false);
+                    $("#myTable").off("click");
+                    for (var i = 1; i <= totalRow; i++) {
+                        (function(i) {
+                            var sebelum = $(".tdGaji" + i).text();
+                            //alert(sebelum);
+                            $(".tdGaji" + i).html(sebelum + "<br><input type='text' class='editGaji' id='etGaji" + i + "'>")
+                        })(i);
+                    }
+                } else {
+                    //alert("masuk save");
+                    var totalRow = $(".totalRow").val() - 1;
+                    //alert(totalRow);
+                    $("#buttonEditGaji").val("Edit All Gaji");
+                    $("#buttonEditGaji").data("condition", true);
+                    $("#myTable").on("click", "td", function() {
+                        editPerKolom();
+                    });
+
+                    for (var i = 1; i <= totalRow; i++) {
+                        (function(i) {
+                            var valInput = $("#etGaji" + i).val();
+                            if (valInput != "") {
+                                $(".tdGaji" + i).html(valInput);
+                                $.post("inputGajiBaru.php", {
+                                    editGaji: "1",
+                                    rowId: i,
+                                    val: valInput
+                                }, function(resp) {
+
+                                });
+                            } else {
+                                var valSebelum = $(".tdGaji" + i).text();
+                                $(".tdGaji" + i).html(valSebelum);
+                            }
+                        })(i);
+                    }
+
                 }
             });
-            $(".imgEditTunj_Reg").click(function () {
-                var bca = $(this).data("id");
-                var abc = $(this).data("di");
-                if(abc == true){
-                    $(".edit2" + bca).prop('disabled', false);
-                    alert("Edit baris tersebut?");
-                    $(this).data("di", false);
-                }
-                else{
-                    $(".edit2" + bca).prop('disabled', true);
-                    alert("Selesai?");
-                    $(this).data("di", true);
+
+            //button edit tunjangan reguler
+            $("#buttonEditTunjangan").click(function() {
+                var con = $("#buttonEditTunjangan").data("condition");
+                if (con == true) {
+                    //alert("masuk edit");
+                    var totalRow = $(".totalRow").val() - 1;
+                    $("#buttonEditTunjangan").val("SAVE Tunjangan");
+                    $("#buttonEditTunjangan").data("condition", false);
+                    $("#myTable").off("click");
+                    for (var i = 1; i <= totalRow; i++) {
+                        (function(i) {
+                            var sebelum = $(".tdTunjangan" + i).text();
+                            //alert(sebelum);
+                            $(".tdTunjangan" + i).html(sebelum + "<br><input type='text' class='editTunjangan' id='etTunjangan" + i + "'>")
+                        })(i);
+                    }
+                } else {
+                    //alert("masuk save");
+                    var totalRow = $(".totalRow").val() - 1;
+                    //alert(totalRow);
+                    $("#buttonEditTunjangan").val("Edit All Tunjangan");
+                    $("#buttonEditTunjangan").data("condition", true);
+                    $("#myTable").on("click", "td", function() {
+                        editPerKolom();
+                    });
+
+                    for (var i = 1; i <= totalRow; i++) {
+                        (function(i) {
+                            var valInput = $("#etTunjangan" + i).val();
+                            if (valInput != "") {
+                                $(".tdTunjangan" + i).html(valInput);
+                                $.post("payrollMasterFile.php", {
+                                    editTunjangan: "1",
+                                    rowId: i,
+                                    val: valInput
+                                }, function(resp) {
+
+                                });
+                            } else {
+                                var valSebelum = $(".tdTunjangan" + i).text();
+                                $(".tdTunjangan" + i).html(valSebelum);
+                            }
+                        })(i);
+                    }
+
                 }
             });
+
+            function editPerKolom() {
+                // click 1 kolom
+                $("#myTable").on("click", "td", function() {
+                    // alert($(this).data("row"));
+                    // alert($(this).data("mode"));
+                    // alert($(this).text());
+
+                    //tunjangan jabatan click
+                    if ($(this).data("mode") == "gaji") {
+                        $("#myTable").off("click");
+                        var form = '<form action="" method="POST"> \
+					' + $(this).text() + ' \
+                    <br><input type="text" name="val" /> \
+					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <br /> \
+					<input type="submit" name="editGaji"> \
+                </form><form action=""><input type="submit" value="Cancel"></form>';
+                        $(this).html(form);
+                    }
+
+                    //click tunjangan
+                    else if ($(this).data("mode") == "tunjangan") {
+                        $("#myTable").off("click");
+                        var form = '<form action="" method="POST"> \
+					' + $(this).text() + ' \
+                    <br><input type="text" name="val" /> \
+					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <br /> \
+					<input type="submit" name="editTunjangan"> \
+                </form><form action=""><input type="submit" value="Cancel"></form>';
+                        $(this).html(form);
+                    }
+
+                });
+            }
+            // click 1 kolom
+            editPerKolom();
         });
     </script>
 </head>
@@ -195,54 +334,57 @@ if ($db) {
                     <a>GAJI BARU <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
                 </div>
             </nav>
-            <table width="100%" border="1" id="myTable">
-                <tr>
-                    <th onclick="sortTable(0)">NO. DEPT</th>
-                    <th onclick="sortTable(1)">NO. URUT</th>
-                    <th onclick="sortTable(2)">NAMA</th>
-                    <th onclick="sortTable(3)">GAJI DASAR</th>
-                    <th onclick="sortTable(4)">TUNJANGAN REGIONAL</th>
-                    <th></th>
-                </tr>
-                <?php
-                for ($i = 1; $i <= $record_numbers; $i++) { ?>
+            <div class="tableButton">
+                <div style="margin-right: 200px">
+                    <input type="button" tabindex="-1" name="buttonEditGaji" value="Edit All Gaji" id="buttonEditGaji" data-condition="true" class="bEdit">
+                    <input type="button" tabindex="-1" name="buttonEditTunjangan" value="Edit All Tunjangan" id="buttonEditTunjangan" data-condition="true" class="bEdit">
+                </div>
+                <table width="100%" border="1" id="myTable">
                     <tr>
-                        <?php $row = dbase_get_record_with_names($db, $i); ?>
-                        <td>
-                            <?php echo $row['DEPT']; ?>
-                        </td>
-                        <td>
-                            <?php echo $row['NO_URUT'] ?>
-                        </td>
-                        <td>
-                            <?php echo $row['NAMA']; ?>
-                        </td>
-                        <td>
-                            <?php echo $row['GAJI_DASAR']; ?>
-                            <img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditGaji" width="15px" height="15px"><br>
-                            <input type="text" class=<?php echo "edit1" .$i ?> disabled>
-                        </td>
-                        <td>
-                            <?php echo $row['TUNJ_REG']; ?>
-                            <img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditTunj_Reg" width="15px" height="15px"><br>
-                            <input type="text" class=<?php echo "edit2" .$i ?> disabled>
-                        </td>
-                        <td>
-                            <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-                            <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?>>
-                            <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
-                            <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
-                            <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
-                            <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
-                            <input type="hidden" name="jamsosflg" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsosflg" . $i ?>>
-                            <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-                        </td>
+                        <th onclick="sortTable(0)">NO. DEPT</th>
+                        <th onclick="sortTable(1)">NO. URUT</th>
+                        <th onclick="sortTable(2)">NAMA</th>
+                        <th onclick="sortTable(3)">GAJI DASAR</th>
+                        <th onclick="sortTable(4)">TUNJANGAN REGIONAL</th>
+                        <th></th>
                     </tr>
-                <?php }
-                dbase_close($db); ?>
+                    <?php
+                    $i = 0;
+                    for ($i = 1; $i <= $record_numbers; $i++) { ?>
+                        <tr>
+                            <?php $row = dbase_get_record_with_names($db, $i); ?>
+                            <td>
+                                <?php echo $row['DEPT']; ?>
+                            </td>
+                            <td>
+                                <?php echo $row['NO_URUT'] ?>
+                            </td>
+                            <td>
+                                <?php echo $row['NAMA']; ?>
+                            </td>
+                            <td class=<?php echo "tdGaji" . $i ?> data-mode="gaji" data-row=<?php echo $i ?>>
+                                <?php echo $row['GAJI_DASAR']; ?>
+                            </td>
+                            <td class=<?php echo "tdTunjangan" . $i ?> data-mode="tunjangan" data-row=<?php echo $i ?>>
+                                <?php echo $row['TUNJ_REG']; ?>
+                            </td>
+                            <td>
+                                <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+                                <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?>>
+                                <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
+                                <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
+                                <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
+                                <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
+                                <input type="hidden" name="jamsosflg" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsosflg" . $i ?>>
+                                <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+                            </td>
+                        </tr>
+                    <?php }
+                    dbase_close($db); ?>
+                    <input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
+                </table>
+            </div>
 
-
-            </table>
             <div id="mdl-update" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">

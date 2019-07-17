@@ -5,7 +5,7 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['pathKota'])) {
 	header("Location: ../pilihKota.php");
 }
-//thr
+//edit button bonus
 if (isset($_POST['edit'])) {
 	$bonus = $_POST['bonus'];
 	$rowId = $_POST['rowId'];
@@ -21,6 +21,23 @@ if (isset($_POST['edit'])) {
 		dbase_replace_record($db, $row, $rowId);
 
 
+		dbase_close($db);
+	}
+}
+
+//edit all bonus
+if (isset($_POST['editBonus'])) {
+	$rowId = $_POST['rowId'];
+	$val = $_POST['val'];
+
+	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+	if ($db) {
+		$row = dbase_get_record_with_names($db, $rowId);
+		unset($row['deleted']);
+
+		$row['BONUS'] = $val;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
 		dbase_close($db);
 	}
 }
@@ -51,6 +68,81 @@ if ($db) {
 	<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 	<link rel="stylesheet" type="text/css" href="../src/tampilan.css">
 	<link rel="stylesheet" type="text/css" href="../src/View.css">
+
+	<script>
+		$(document).ready(function() {
+			$("#buttonEditBonus").click(function() {
+				var con = $("#buttonEditBonus").data("condition");
+				if (con == true) {
+					//alert("masuk edit");
+					var totalRow = $(".totalRow").val() - 1;
+					$("#buttonEditBonus").val("SAVE Bonus");
+					$("#buttonEditBonus").data("condition", false);
+					$("#myTable").off("click");
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var sebelum = $(".tdBonus" + i).text();
+							//alert(sebelum);
+							$(".tdBonus" + i).html(sebelum + "<br><input type='text' class='editBonus' id='etBonus" + i + "'>")
+						})(i);
+					}
+				} else {
+					//alert("masuk save");
+					var totalRow = $(".totalRow").val() - 1;
+					//alert(totalRow);
+					$("#buttonEditBonus").val("Edit All Bonus");
+					$("#buttonEditBonus").data("condition", true);
+					$("#myTable").on("click", "td", function() {
+						editPerKolom();
+					});
+
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var valInput = $("#etBonus" + i).val();
+							if (valInput != "") {
+								$(".tdBonus" + i).html(valInput);
+								$.post("payrollMasterFile.php", {
+									editBonus: "1",
+									rowId: i,
+									val: valInput
+								}, function(resp) {
+
+								});
+							} else {
+								var valSebelum = $(".tdBonus" + i).text();
+								$(".tdBonus" + i).html(valSebelum);
+							}
+						})(i);
+					}
+
+				}
+			});
+
+			function editPerKolom() {
+				// click 1 kolom
+				$("#myTable").on("click", "td", function() {
+					// alert($(this).data("row"));
+					// alert($(this).data("mode"));
+					// alert($(this).text());
+
+					// Bonus
+					if ($(this).data("mode") == "bonus") {
+						$("#myTable").off("click");
+						var form = '<form action="" method="POST"> \
+					' + $(this).text() + ' \
+                    <br><input type="text" name="val" /> \
+					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <br /> \
+					<input type="submit" name="editBonus"> \
+                </form><form action=""><input type="submit" value="Cancel"></form>';
+						$(this).html(form);
+					}
+				});
+			}
+			// click 1 kolom
+			editPerKolom();
+		})
+	</script>
 </head>
 
 <body>
@@ -128,46 +220,52 @@ if ($db) {
 					<a>INPUT BONUS <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
 				</div>
 			</nav>
-			<table width="100%" cellspacing='0' id="myTable">
+			<div class="tableButton">
+				<div style="margin-right: 120px">
+					<input type="button" tabindex="-1" name="buttonEditBonus" value="Edit All Bonus" id="buttonEditBonus" data-condition="true" class="bEdit">
+				</div>
+				<table width="100%" cellspacing='0' id="myTable">
 
-				<tr>
-					<th onclick="sortTable(0.'T')">DEPT</th>
-					<th onclick="sortTable(1,'T')">Nama</th>
-					<th onclick="sortTable(2,'N')">Gaji</th>
-					<th onclick="sortTable(3,'N')">BONUS</th>
-					<th></th>
-				</tr>
-
-				<?php
-				$totalBonus = 0;
-				for ($i = 1; $i <= $record_numbers; $i++) { ?>
 					<tr>
-						<?php $row = dbase_get_record_with_names($db, $i); ?>
-						<td>
-							<?php echo $row['DEPT'] ?>
-						</td>
-						<td>
-							<?php echo $row['NAMA'] ?>
-						</td>
-						<td>
-							<?php echo $row['GAJI_DASAR'] ?>
-						</td>
-						<td>
-							<?php echo $row['BONUS'] ?>
-						</td>
-						<td>
-							<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-							<input type="hidden" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'";
-																	$totalBonus += $row['BONUS'] ?> id=<?php echo "bonus" . $i; ?>>
-							<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
-							<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
-							<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-						</td>
+						<th onclick="sortTable(0.'T')">DEPT</th>
+						<th onclick="sortTable(1,'T')">Nama</th>
+						<th onclick="sortTable(2,'N')">Gaji</th>
+						<th onclick="sortTable(3,'N')">BONUS</th>
+						<th></th>
 					</tr>
-				<?php }
-				dbase_close($db); ?>
 
-			</table>
+					<?php
+					$i = 0;
+					$totalBonus = 0;
+					for ($i = 1; $i <= $record_numbers; $i++) { ?>
+						<tr>
+							<?php $row = dbase_get_record_with_names($db, $i); ?>
+							<td>
+								<?php echo $row['DEPT'] ?>
+							</td>
+							<td>
+								<?php echo $row['NAMA'] ?>
+							</td>
+							<td>
+								<?php echo $row['GAJI_DASAR'] ?>
+							</td>
+							<td class=<?php echo "tdBonus" . $i ?> data-mode="bonus" data-row=<?php echo $i ?>>
+								<?php echo $row['BONUS'] ?>
+							</td>
+							<td>
+								<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+								<input type="hidden" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'";
+																		$totalBonus += $row['BONUS'] ?> id=<?php echo "bonus" . $i; ?>>
+								<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
+								<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
+								<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+							</td>
+						</tr>
+					<?php }
+					dbase_close($db); ?>
+					<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
+				</table>
+			</div>
 			<p>Total Bonus Yang dibayarkan : <?php echo $totalBonus ?></p>
 
 			<div id="mdl-update" class="modal" tabindex="-1" role="dialog">

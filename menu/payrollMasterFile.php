@@ -48,6 +48,57 @@ if (isset($_POST['edit'])) {
 	dbase_close($db2);
 }
 
+//edit Gaji all / perkolom
+if (isset($_POST['editGaji'])) {
+	$rowId = $_POST['rowId'];
+	$val = $_POST['val'];
+
+	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+	if ($db) {
+		$row = dbase_get_record_with_names($db, $rowId);
+		unset($row['deleted']);
+
+		$row['GAJI_DASAR'] = $val;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
+
+		dbase_close($db);
+	}
+}
+if (isset($_POST['editPremi'])) {
+	$rowId = $_POST['rowId'];
+	$val = $_POST['val'];
+
+	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+	if ($db) {
+		$row = dbase_get_record_with_names($db, $rowId);
+		unset($row['deleted']);
+
+		$row['JPK'] = $val;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
+
+		dbase_close($db);
+	}
+}
+if (isset($_POST['editTunjKes'])) {
+	$rowId = $_POST['rowId'];
+	$val = $_POST['val'];
+
+	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+	if ($db) {
+		$row = dbase_get_record_with_names($db, $rowId);
+		unset($row['deleted']);
+
+		$row['TUNJ_KES'] = $val;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
+
+		dbase_close($db);
+	}
+}
+
+
 //fetch data golongan dri db
 $db = dbase_open($_SESSION['pathKota'] . "GAJI.DBF", 0);
 $db2 = dbase_open($_SESSION['pathKota'] . 'WAKTU_MASUK.DBF', 0);
@@ -78,6 +129,7 @@ if ($db) {
 	<link rel="stylesheet" type="text/css" href="../src/View.css">
 	<script>
 		$(document).ready(function() {
+			//gaji  jamsosflg brubah
 			$('#jamsosId, #gajiId').change(function() {
 				var inputValue = $("#gajiId").val();
 				var kotaValue = $("#pangkatId").val();
@@ -103,50 +155,201 @@ if ($db) {
 					$("#premiId").val(data.premi);
 				}, "json");
 			});
-			$(".imgEditGaji").click(function () {
-				var bca = $(this).data("id");
-				var abc = $(this).data("di");
-				if(abc == true){
-					$(".edit1" + bca).prop('disabled', false);
-					alert("Edit baris tersebut?");
-					$(this).data("di", false);
-				}
-				else{
-					$(".edit1" + bca).prop('disabled', true);
-					alert("Selesai?");
-					$(this).data("di", true);
+
+			//button edit gaji
+			$("#buttonEditGaji").click(function() {
+				var con = $("#buttonEditGaji").data("condition");
+				if (con == true) {
+					//alert("masuk edit");
+					var totalRow = $(".totalRow").val() - 1;
+					$("#buttonEditGaji").val("SAVE GAJI");
+					$("#buttonEditGaji").data("condition", false);
+					$("#myTable").off("click");
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var sebelum = $(".tdGaji" + i).text();
+							//alert(sebelum);
+							$(".tdGaji" + i).html(sebelum + "<br><input type='text' class='editGaji' id='etGaji" + i + "'>")
+						})(i);
+					}
+				} else {
+					//alert("masuk save");
+					var totalRow = $(".totalRow").val() - 1;
+					//alert(totalRow);
+					$("#buttonEditGaji").val("Edit All Gaji");
+					$("#buttonEditGaji").data("condition", true);
+					$("#myTable").on("click", "td", function() {
+						editPerKolom();
+					});
+
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var valInput = $("#etGaji" + i).val();
+							if (valInput != "") {
+								$(".tdGaji" + i).html(valInput);
+								$.post("payrollMasterFile.php", {
+									editGaji: "1",
+									rowId: i,
+									val: valInput
+								}, function(resp) {
+
+								});
+							} else {
+								var valSebelum = $(".tdGaji" + i).text();
+								$(".tdGaji" + i).html(valSebelum);
+							}
+						})(i);
+					}
+
 				}
 			});
-			$(".imgEditJPK").click(function () {
-				var bca = $(this).data("id");
-				var abc = $(this).data("di");
-				if(abc == true){
-					$(".edit2" + bca).prop('disabled', false);
-					alert("Edit baris tersebut?");
-					$(this).data("di", false);
-				}
-				else{
-					$(".edit2" + bca).prop('disabled', true);
-					alert("Selesai?");
-					$(this).data("di", true);
+
+			////button edit Premi
+			$("#buttonEditPremi").click(function() {
+				var con = $("#buttonEditPremi").data("condition");
+				if (con == true) {
+					//alert("masuk edit");
+					var totalRow = $(".totalRow").val() - 1;
+					$("#buttonEditPremi").val("SAVE PREMI");
+					$("#buttonEditPremi").data("condition", false);
+					$("#myTable").off("click");
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var sebelum = $(".tdPremi" + i).text();
+							//alert(sebelum);
+							$(".tdPremi" + i).html(sebelum + "<br><input type='text' class='editPremi' id='etPremi" + i + "'>")
+						})(i);
+					}
+				} else {
+					//alert("masuk save");
+					var totalRow = $(".totalRow").val() - 1;
+					//alert(totalRow);
+					$("#buttonEditPremi").val("Edit All Premi");
+					$("#buttonEditPremi").data("condition", true);
+					$("#myTable").on("click", "td", function() {
+						editPerKolom();
+					});
+
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var valInput = $("#etPremi" + i).val();
+							if (valInput != "") {
+								$(".tdPremi" + i).html(valInput);
+								$.post("payrollMasterFile.php", {
+									editPremi: "1",
+									rowId: i,
+									val: valInput
+								}, function(resp) {
+
+								});
+							} else {
+								var valSebelum = $(".tdPremi" + i).text();
+								$(".tdPremi" + i).html(valSebelum);
+							}
+						})(i);
+					}
 				}
 			});
-			$(".imgEditTUNJ").click(function () {
-				var bca = $(this).data("id");
-				var abc = $(this).data("di");
-				if(abc == true){
-					$(".edit3" + bca).prop('disabled', false);
-					alert("Edit baris tersebut?");
-					$(this).data("di", false);
-				}
-				else{
-					$(".edit3" + bca).prop('disabled', true);
-					alert("Selesai?");
-					$(this).data("di", true);
+
+			//button edit TunjKes
+			$("#buttonEditTunjKes").click(function() {
+				var con = $("#buttonEditTunjKes").data("condition");
+				if (con == true) {
+					//alert("masuk edit");
+					var totalRow = $(".totalRow").val() - 1;
+					$("#buttonEditTunjKes").val("SAVE TUNJ_KES");
+					$("#buttonEditTunjKes").data("condition", false);
+					$("#myTable").off("click");
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var sebelum = $(".tdTunjKes" + i).text();
+							//alert(sebelum);
+							$(".tdTunjKes" + i).html(sebelum + "<br><input type='text' class='editTunjKes' id='etTunjKes" + i + "'>")
+						})(i);
+					}
+				} else {
+					//alert("masuk save");
+					var totalRow = $(".totalRow").val() - 1;
+					//alert(totalRow);
+					$("#buttonEditTunjKes").val("Edit All Tunj_Kes");
+					$("#buttonEditTunjKes").data("condition", true);
+					$("#myTable").on("click", "td", function() {
+						editPerKolom();
+					});
+
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var valInput = $("#etTunjKes" + i).val();
+							if (valInput != "") {
+								$(".tdTunjKes" + i).html(valInput);
+								$.post("payrollMasterFile.php", {
+									editTunjKes: "1",
+									rowId: i,
+									val: valInput
+								}, function(resp) {
+
+								});
+							} else {
+								var valSebelum = $(".tdTunjKes" + i).text();
+								$(".tdTunjKes" + i).html(valSebelum);
+							}
+						})(i);
+					}
+
 				}
 			});
+
+			function editPerKolom() {
+				// click 1 kolom
+				$("#myTable").on("click", "td", function() {
+					// alert($(this).data("row"));
+					// alert($(this).data("mode"));
+					// alert($(this).text());
+
+					//tunjangan jabatan click
+					if ($(this).data("mode") == "gaji") {
+						$("#myTable").off("click");
+						var form = '<form action="" method="POST"> \
+					' + $(this).text() + ' \
+                    <br><input type="text" name="val" /> \
+					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <br /> \
+					<input type="submit" name="editGaji"> \
+                </form><form action=""><input type="submit" value="Cancel"></form>';
+						$(this).html(form);
+					}
+
+					//click extra
+					else if ($(this).data("mode") == "premi") {
+						$("#myTable").off("click");
+						var form = '<form action="" method="POST"> \
+					' + $(this).text() + ' \
+                    <br><input type="text" name="val" /> \
+					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <br /> \
+					<input type="submit" name="editPremi"> \
+                </form><form action=""><input type="submit" value="Cancel"></form>';
+						$(this).html(form);
+					}
+
+					//click kolom pinjaman
+					else if ($(this).data("mode") == "tunjKes") {
+						$("#myTable").off("click");
+						var form = '<form action="" method="POST"> \
+					' + $(this).text() + ' \
+                    <br><input type="text" name="val" /> \
+					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <br /> \
+					<input type="submit" name="editTunjKes"> \
+                </form><form action=""><input type="submit" value="Cancel"></form>';
+						$(this).html(form);
+					}
+				});
+			}
+			// click 1 kolom
+			editPerKolom();
+
 		});
-		
 	</script>
 </head>
 
@@ -225,80 +428,84 @@ if ($db) {
 					<a>MANAGE MASTER GAJI <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
 				</div>
 			</nav>
-			<table width="100%" border="1" id="myTable">
-				<tr>
-					<th onclick="sortTable(0)">DEPT</th>
-					<th onclick="sortTable(1)">NO</th>
-					<th onclick="sortTable(2)">NAMA</th>
-					<th onclick="sortTable(3)">GAJI DASAR</th>
-					<th onclick="sortTable(4)">PREMI KESEHATAN</th>
-					<th onclick="sortTable(5)">TUNJANGAN KESEHATAN</th>
-					<th colspan="2"></th>
-				</tr>
-				<?php
-				for ($i = 1; $i <= $record_numbers; $i++) { ?>
-					<tr>
-						<?php $row = dbase_get_record_with_names($db, $i);
-						$row2 = dbase_get_record_with_names($db2, $i);
-						?>
-						<td>
-							<?php echo $row['DEPT'] ?>
-						</td>
-						<td>
-							<?php echo $row['NO_URUT']; ?>
-						</td>
-						<td>
-							<?php echo $row['NAMA']; ?>
-						</td>
-						<td>
-							<?php echo $row['GAJI_DASAR']; ?>
-							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditGaji" width="15px" height="15px"><br>
-							<input type="text" class=<?php echo "edit1" .$i ?> disabled>
-						</td>
-						<td>
-							<?php echo $row['JPK']; ?>
-							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditJPK" width="15px" height="15px"><br>
-							<input type="text" class=<?php echo "edit2" .$i ?> disabled>
-						</td>
-						<td>
-							<?php echo $row['TUNJ_KES']; ?>
-							<img src="../img/Pencil.ico" data-id=<?php echo $i; ?> data-di="true" class="imgEditTUNJ" width="15px" height="15px"><br>
-							<input type="text" class=<?php echo "edit3" .$i ?> disabled>
-						</td>
-						<td>
-							<input type="hidden" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?>>
-							<input type="hidden" name="tglLahir" value=<?php echo substr($row['TGL_LAHIR'], 6, 2) . "-" . substr($row['TGL_LAHIR'], 4, 2) . "-" . substr($row['TGL_LAHIR'], 0, 4); ?> id=<?php echo "tglLahir" . $i; ?>>
-							<input type="hidden" name="alamat" value=<?php echo $row['ALAMAT']; ?> id=<?php echo "alamat" . $i; ?>>
-							<input type="hidden" name="status" value=<?php echo $row['STATUS']; ?> id=<?php echo "status" . $i; ?>>
-							<input type="hidden" name="kelamin" value=<?php echo $row['KELAMIN']; ?> id=<?php echo "kelamin" . $i; ?>>
-							<input type="hidden" name="golongan" value=<?php echo $row['GOLONGAN']; ?> id=<?php echo "golongan" . $i; ?>>
-							<input type="hidden" name="tanggungan" value=<?php echo $row['KELUARGA']; ?> id=<?php echo "tanggungan" . $i; ?>>
-							<input type="hidden" name="tglMasuk" value=<?php echo substr($row2['TGL_MASUK'], 6, 2) . "-" . substr($row2['TGL_MASUK'], 4, 2) . "-" . substr($row2['TGL_MASUK'], 0, 4); ?> id=<?php echo "tglMasuk" . $i; ?>>
-							<input type="hidden" name="aktifFiskal" value=<?php echo substr($row['BLN_AKTIV'], 6, 2) . "-" . substr($row['BLN_AKTIV'], 4, 2) . "-" . substr($row['BLN_AKTIV'], 0, 4); ?> id=<?php echo "aktifFiskal" . $i; ?>>
-							<input type="hidden" name="npwp" value=<?php echo $row['NPWP']; ?> id=<?php echo "npwp" . $i; ?>>
-							<input type="hidden" name="jamsos" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsos" . $i; ?>>
-							<input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
-							<input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
-							<input type="hidden" name="premiKesehatan" value=<?php echo $row['JPK']; ?> id=<?php echo "premiKesehatan" . $i; ?>>
-							<input type="hidden" name="tunjanganKesehatan" value=<?php echo $row['TUNJ_KES']; ?> id=<?php echo "tunjanganKesehatan" . $i; ?>>
-							<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK']; ?> id=<?php echo "pilihanBank" . $i; ?>>
-							<input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
-							<input type="hidden" name="no" value=<?php echo $row['NO_URUT']; ?> id=<?php echo "no" . $i; ?>>
-							<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-							<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>
-						</td>
-						<td>
-							<form action="" method="post">
-								<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
-								<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
-							</form>
-						</td>
-					</tr>
-				<?php }
-				dbase_close($db);
-				dbase_close($db2); ?>
+			<div class="tableButton">
+				<div style="margin-right: 300px">
+					<input type="button" tabindex="-1" name="buttonEditGaji" value="Edit All Gaji" id="buttonEditGaji" data-condition="true" class="bEdit">
+					<input type="button" tabindex="-1" name="buttonEditPremi" value="Edit All Premi" id="buttonEditPremi" data-condition="true" class="bEdit">
+					<input type="button" tabindex="-1" name="buttonEditTunjKes" value="Edit All Tunj_Kes" id="buttonEditTunjKes" data-condition="true" class="bEdit">
+				</div>
 
-			</table>
+				<table width="100%" border="1" id="myTable">
+					<tr>
+						<th onclick="sortTable(0)">DEPT</th>
+						<th onclick="sortTable(1)">NO</th>
+						<th onclick="sortTable(2)">NAMA</th>
+						<th onclick="sortTable(3)">GAJI DASAR</th>
+						<th onclick="sortTable(4)">PREMI KESEHATAN</th>
+						<th onclick="sortTable(5)">TUNJANGAN KESEHATAN</th>
+						<th colspan="2"></th>
+					</tr>
+					<?php
+					$i = 0;
+					for ($i = 1; $i <= $record_numbers; $i++) { ?>
+						<tr>
+							<?php $row = dbase_get_record_with_names($db, $i);
+							$row2 = dbase_get_record_with_names($db2, $i);
+							?>
+							<td>
+								<?php echo $row['DEPT'] ?>
+							</td>
+							<td>
+								<?php echo $row['NO_URUT']; ?>
+							</td>
+							<td>
+								<?php echo $row['NAMA']; ?>
+							</td>
+							<td class=<?php echo "tdGaji" . $i ?> data-mode="gaji" data-row=<?php echo $i ?>>
+								<?php echo $row['GAJI_DASAR']; ?>
+							</td>
+							<td class=<?php echo "tdPremi" . $i ?> data-mode="premi" data-row=<?php echo $i ?>>
+								<?php echo $row['JPK']; ?>
+							</td>
+							<td class=<?php echo "tdTunjKes" . $i ?> data-mode="tunjKes" data-row=<?php echo $i ?>>
+								<?php echo $row['TUNJ_KES']; ?>
+							</td>
+							<td>
+								<input type="hidden" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?>>
+								<input type="hidden" name="tglLahir" value=<?php echo substr($row['TGL_LAHIR'], 6, 2) . "-" . substr($row['TGL_LAHIR'], 4, 2) . "-" . substr($row['TGL_LAHIR'], 0, 4); ?> id=<?php echo "tglLahir" . $i; ?>>
+								<input type="hidden" name="alamat" value=<?php echo $row['ALAMAT']; ?> id=<?php echo "alamat" . $i; ?>>
+								<input type="hidden" name="status" value=<?php echo $row['STATUS']; ?> id=<?php echo "status" . $i; ?>>
+								<input type="hidden" name="kelamin" value=<?php echo $row['KELAMIN']; ?> id=<?php echo "kelamin" . $i; ?>>
+								<input type="hidden" name="golongan" value=<?php echo $row['GOLONGAN']; ?> id=<?php echo "golongan" . $i; ?>>
+								<input type="hidden" name="tanggungan" value=<?php echo $row['KELUARGA']; ?> id=<?php echo "tanggungan" . $i; ?>>
+								<input type="hidden" name="tglMasuk" value=<?php echo substr($row2['TGL_MASUK'], 6, 2) . "-" . substr($row2['TGL_MASUK'], 4, 2) . "-" . substr($row2['TGL_MASUK'], 0, 4); ?> id=<?php echo "tglMasuk" . $i; ?>>
+								<input type="hidden" name="aktifFiskal" value=<?php echo substr($row['BLN_AKTIV'], 6, 2) . "-" . substr($row['BLN_AKTIV'], 4, 2) . "-" . substr($row['BLN_AKTIV'], 0, 4); ?> id=<?php echo "aktifFiskal" . $i; ?>>
+								<input type="hidden" name="npwp" value=<?php echo $row['NPWP']; ?> id=<?php echo "npwp" . $i; ?>>
+								<input type="hidden" name="jamsos" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsos" . $i; ?>>
+								<input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
+								<input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
+								<input type="hidden" name="premiKesehatan" value=<?php echo $row['JPK']; ?> id=<?php echo "premiKesehatan" . $i; ?>>
+								<input type="hidden" name="tunjanganKesehatan" value=<?php echo $row['TUNJ_KES']; ?> id=<?php echo "tunjanganKesehatan" . $i; ?>>
+								<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK']; ?> id=<?php echo "pilihanBank" . $i; ?>>
+								<input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
+								<input type="hidden" name="no" value=<?php echo $row['NO_URUT']; ?> id=<?php echo "no" . $i; ?>>
+								<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+								<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="DETAIL" name="modal" data-id=<?php echo $i; ?>>
+							</td>
+							<td>
+								<form action="" method="post">
+									<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
+									<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
+								</form>
+							</td>
+						</tr>
+					<?php }
+					dbase_close($db);
+					dbase_close($db2); ?>
+					<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
+				</table>
+			</div>
+
 			<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">

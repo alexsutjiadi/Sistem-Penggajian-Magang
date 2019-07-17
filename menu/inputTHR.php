@@ -29,6 +29,24 @@ if (isset($_POST['edit'])) {
 		dbase_close($db);
 	}
 }
+
+//edit all thr
+if (isset($_POST['editThr'])) {
+	$rowId = $_POST['rowId'];
+	$val = $_POST['val'];
+
+	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
+	if ($db) {
+		$row = dbase_get_record_with_names($db, $rowId);
+		unset($row['deleted']);
+
+		$row['THR'] = $val;
+		$row = array_values($row);
+		dbase_replace_record($db, $row, $rowId);
+		dbase_close($db);
+	}
+}
+
 //fetch data golongan dri db
 $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
 if ($db) {
@@ -56,6 +74,81 @@ if ($db) {
 	<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 	<link rel="stylesheet" type="text/css" href="../src/tampilan.css">
 	<link rel="stylesheet" type="text/css" href="../src/View.css">
+
+	<script>
+		$(document).ready(function() {
+			$("#buttonEditThr").click(function() {
+				var con = $("#buttonEditThr").data("condition");
+				if (con == true) {
+					//alert("masuk edit");
+					var totalRow = $(".totalRow").val() - 1;
+					$("#buttonEditThr").val("SAVE Thr");
+					$("#buttonEditThr").data("condition", false);
+					$("#myTable").off("click");
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var sebelum = $(".tdThr" + i).text();
+							//alert(sebelum);
+							$(".tdThr" + i).html(sebelum + "<br><input type='text' class='editThr' id='etThr" + i + "'>")
+						})(i);
+					}
+				} else {
+					//alert("masuk save");
+					var totalRow = $(".totalRow").val() - 1;
+					//alert(totalRow);
+					$("#buttonEditThr").val("Edit All Thr");
+					$("#buttonEditThr").data("condition", true);
+					$("#myTable").on("click", "td", function() {
+						editPerKolom();
+					});
+
+					for (var i = 1; i <= totalRow; i++) {
+						(function(i) {
+							var valInput = $("#etThr" + i).val();
+							if (valInput != "") {
+								$(".tdThr" + i).html(valInput);
+								$.post("payrollMasterFile.php", {
+									editThr: "1",
+									rowId: i,
+									val: valInput
+								}, function(resp) {
+
+								});
+							} else {
+								var valSebelum = $(".tdThr" + i).text();
+								$(".tdThr" + i).html(valSebelum);
+							}
+						})(i);
+					}
+
+				}
+			});
+
+			function editPerKolom() {
+				// click 1 kolom
+				$("#myTable").on("click", "td", function() {
+					// alert($(this).data("row"));
+					// alert($(this).data("mode"));
+					// alert($(this).text());
+
+					// thr
+					if ($(this).data("mode") == "thr") {
+						$("#myTable").off("click");
+						var form = '<form action="" method="POST"> \
+					' + $(this).text() + ' \
+                    <br><input type="text" name="val" /> \
+					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <br /> \
+					<input type="submit" name="editThr"> \
+                </form><form action=""><input type="submit" value="Cancel"></form>';
+						$(this).html(form);
+					}
+				});
+			}
+			// click 1 kolom
+			editPerKolom();
+		});
+	</script>
 </head>
 
 <body>
@@ -133,58 +226,64 @@ if ($db) {
 					<a>INPUT THR <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
 				</div>
 			</nav>
-			<table width="100%" cellspacing='0' id="myTable">
-				<thead>
-					<tr>
-						<th onclick="sortTable(0,'T')">DEPT</th>
-						<th onclick="sortTable(1,'T')">Nama</th>
-						<th onclick="sortTable(2,'N')">Gaji</th>
-						<th onclick="sortTable(3,'N')">Tunjangan Jabatan</th>
-						<th onclick="sortTable(4,'N')">THR</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-					$totalThr = 0;
-					for ($i = 1; $i <= $record_numbers; $i++) { ?>
+			<div class="tableButton">
+				<div style="margin-right: 120px">
+					<input type="button" tabindex="-1" name="buttonEditThr" value="Edit All Thr" id="buttonEditThr" data-condition="true" class="bEdit">
+				</div>
+				<table width="100%" cellspacing='0' id="myTable">
+					<thead>
 						<tr>
-							<?php $row = dbase_get_record_with_names($db, $i);
-							?>
-							<td>
-								<?php echo $row['DEPT']; ?>
-							</td>
-							<td>
-								<?php echo $row['NAMA']; ?>
-							</td>
-							<td>
-								<?php echo $row['GAJI_DASAR']; ?>
-							</td>
-							<td>
-								<?php echo $row['TUNJ_JAB']; ?>
-
-							</td>
-							<td>
-								<?php echo $row['THR']; ?>
-
-							</td>
-							<td>
-								<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-								<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
-								<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK'] ?> id=<?php echo "pilihanBank" . $i; ?>>
-								<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
-								<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
-								<input type="hidden" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?>>
-								<input type="hidden" name="thr" value=<?php echo "'" . $row['THR'] . "'";
-																		$totalThr += $row['THR']; ?> id=<?php echo "thr" . $i; ?>>
-								<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-
-							</td>
+							<th onclick="sortTable(0,'T')">DEPT</th>
+							<th onclick="sortTable(1,'T')">Nama</th>
+							<th onclick="sortTable(2,'N')">Gaji</th>
+							<th onclick="sortTable(3,'N')">Tunjangan Jabatan</th>
+							<th onclick="sortTable(4,'N')">THR</th>
+							<th></th>
 						</tr>
-					<?php }
-					dbase_close($db); ?>
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						<?php
+						$totalThr = 0;
+						$i = 0;
+						for ($i = 1; $i <= $record_numbers; $i++) { ?>
+							<tr>
+								<?php $row = dbase_get_record_with_names($db, $i);
+								?>
+								<td>
+									<?php echo $row['DEPT']; ?>
+								</td>
+								<td>
+									<?php echo $row['NAMA']; ?>
+								</td>
+								<td>
+									<?php echo $row['GAJI_DASAR']; ?>
+								</td>
+								<td>
+									<?php echo $row['TUNJ_JAB']; ?>
+
+								</td>
+								<td class=<?php echo "tdThr" . $i ?> data-mode="thr" data-row=<?php echo $i ?>>
+									<?php echo $row['THR']; ?>
+								</td>
+								<td>
+									<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+									<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
+									<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK'] ?> id=<?php echo "pilihanBank" . $i; ?>>
+									<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
+									<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
+									<input type="hidden" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?>>
+									<input type="hidden" name="thr" value=<?php echo "'" . $row['THR'] . "'";
+																			$totalThr += $row['THR']; ?> id=<?php echo "thr" . $i; ?>>
+									<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+
+								</td>
+							</tr>
+						<?php }
+						dbase_close($db); ?>
+					</tbody>
+					<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
+				</table>
+			</div>
 			<p>Total THR yang dibayarkan : <?php echo $totalThr ?></p>
 
 			<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
