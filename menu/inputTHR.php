@@ -49,6 +49,12 @@ if (isset($_POST['editThr'])) {
 	}
 }
 
+function rupiah($angka)
+{
+	$hasil = "Rp. " . number_format((int)$angka, 0, '', '.');
+	return $hasil;
+}
+
 //fetch data golongan dri db
 $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
 if ($db) {
@@ -258,14 +264,14 @@ if ($db) {
 									<?php echo $row['NAMA']; ?>
 								</td>
 								<td>
-									<?php echo $row['GAJI_DASAR']; ?>
+									<?php echo rupiah($row['GAJI_DASAR']); ?>
 								</td>
 								<td>
-									<?php echo $row['TUNJ_JAB']; ?>
+									<?php echo rupiah($row['TUNJ_JAB']); ?>
 
 								</td>
 								<td class=<?php echo "tdThr" . $i ?> data-mode="thr" data-row=<?php echo $i ?>>
-									<?php echo $row['THR']; ?>
+									<?php echo rupiah($row['THR']); ?>
 								</td>
 								<td>
 									<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>

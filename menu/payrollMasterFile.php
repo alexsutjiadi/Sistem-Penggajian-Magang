@@ -177,7 +177,7 @@ if (isset($_POST['editTunjKes'])) {
 }
 function rupiah($angka)
 {
-	$hasil = "Rp. " . number_format($angka, 0, '', '.');
+	$hasil = "Rp. " . number_format((int)$angka, 0, '', '.');
 	return $hasil;
 }
 
