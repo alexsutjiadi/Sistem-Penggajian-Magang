@@ -63,7 +63,7 @@ if (isset($_POST['editGaji'])) {
 	}
 	if ($db) {
 
-		
+
 
 		if ($kota == 'V' || $kota == 'H0' || $kota == 'S') {
 			$dbPangkat = dbase_open('../src/golongan/PANGKAT_K1.DBF', 0);
@@ -145,13 +145,12 @@ if (isset($_POST['editPremi'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-	
-		if($val!=""){
+
+		if ($val != "") {
 			unset($row['deleted']);
 			$row['JPK'] = $val;
 			$row = array_values($row);
 			dbase_replace_record($db, $row, $rowId);
-
 		}
 
 		dbase_close($db);
@@ -165,8 +164,8 @@ if (isset($_POST['editTunjKes'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		
-		if($val!=""){
+
+		if ($val != "") {
 			unset($row['deleted']);
 			$row['TUNJ_KES'] = $val;
 			$row = array_values($row);
@@ -176,7 +175,11 @@ if (isset($_POST['editTunjKes'])) {
 		dbase_close($db);
 	}
 }
-
+function rupiah($angka)
+{
+	$hasil = "Rp. " . number_format($angka, 0, '', '.');
+	return $hasil;
+}
 
 //fetch data golongan dri db
 $db = dbase_open($_SESSION['pathKota'] . "GAJI.DBF", 0);
@@ -537,13 +540,13 @@ if ($db) {
 								<?php echo $row['NAMA']; ?>
 							</td>
 							<td class=<?php echo "tdGaji" . $i ?> data-mode="gaji" data-row=<?php echo $i ?>>
-								<?php echo $row['GAJI_DASAR']; ?>
+								<?php echo rupiah($row['GAJI_DASAR']); ?>
 							</td>
 							<td class=<?php echo "tdPremi" . $i ?> data-mode="premi" data-row=<?php echo $i ?>>
-								<?php echo $row['JPK']; ?>
+								<?php echo rupiah($row['JPK']); ?>
 							</td>
 							<td class=<?php echo "tdTunjKes" . $i ?> data-mode="tunjKes" data-row=<?php echo $i ?>>
-								<?php echo $row['TUNJ_KES']; ?>
+								<?php echo rupiah($row['TUNJ_KES']); ?>
 							</td>
 							<td>
 								<input type="hidden" name="nik" value=<?php echo $row['NIK']; ?> id=<?php echo "nik" . $i; ?>>
@@ -764,9 +767,10 @@ if ($db) {
 						y = rows[i + 1].getElementsByTagName("TD")[n];
 						/*check if the two rows should switch place,
 						based on the direction, asc or desc:*/
+						//alert(x.innerHTML.split('Rp.')[1].replace(/\./g, ''));
 						if (dir == "asc") {
 							if (mode == 'N') {
-								if (Number(x.innerHTML) > Number(y.innerHTML)) {
+								if (Number(x.innerHTML.split('Rp.')[1].replace(/\./g, '')) > Number(y.innerHTML.split('Rp.')[1].replace(/\./g, ''))) {
 									//if so, mark as a switch and break the loop:
 									shouldSwitch = true;
 									break;
@@ -781,7 +785,7 @@ if ($db) {
 
 						} else if (dir == "desc") {
 							if (mode == 'N') {
-								if (Number(x.innerHTML) < Number(y.innerHTML)) {
+								if (Number(x.innerHTML.split('Rp.')[1].replace(/\./g, '')) < Number(y.innerHTML.split('Rp.')[1].replace(/\./g, ''))) {
 									//if so, mark as a switch and break the loop:
 									shouldSwitch = true;
 									break;
