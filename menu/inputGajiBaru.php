@@ -278,7 +278,7 @@ if ($db) {
                             var valInput = $("#etTunjangan" + i).val();
                             if (valInput != "") {
                                 $(".tdTunjangan" + i).html(valInput);
-                                $.post("payrollMasterFile.php", {
+                                $.post("inputGajiBaru.php", {
                                     editTunjangan: "1",
                                     rowId: i,
                                     val: valInput

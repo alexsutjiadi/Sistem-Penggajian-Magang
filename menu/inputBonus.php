@@ -33,7 +33,7 @@ if (isset($_POST['editBonus'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		if($val!=""){
+		if ($val != "") {
 			unset($row['deleted']);
 			$row['BONUS'] = $val;
 			$row = array_values($row);
@@ -45,7 +45,7 @@ if (isset($_POST['editBonus'])) {
 
 function rupiah($angka)
 {
-	$hasil = "Rp. " . number_format((int)$angka, 0, '', '.');
+	$hasil = "Rp. " . number_format((int) $angka, 0, '', '.');
 	return $hasil;
 }
 
@@ -109,7 +109,7 @@ if ($db) {
 							var valInput = $("#etBonus" + i).val();
 							if (valInput != "") {
 								$(".tdBonus" + i).html(valInput);
-								$.post("payrollMasterFile.php", {
+								$.post("inputBonus.php", {
 									editBonus: "1",
 									rowId: i,
 									val: valInput
@@ -274,7 +274,7 @@ if ($db) {
 					<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
 				</table>
 			</div>
-			<p>Total Bonus Yang dibayarkan : <?php echo $totalBonus ?></p>
+			<p style="color:black;font-weight:bold;">Total Bonus Yang dibayarkan : <?php echo rupiah($totalBonus) ?></p>
 
 			<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">
