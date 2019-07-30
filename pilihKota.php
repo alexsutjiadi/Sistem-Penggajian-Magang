@@ -8,7 +8,7 @@ if (!isset($_SESSION)) {
 if (isset($_POST['LAMPUNG'])) {
     $_SESSION['pathKota'] = "../kota/B/";
     $_SESSION['kota'] = "LAMPUNG";
-    $_SESSION['kodeKota']="B";
+    $_SESSION['kodeKota'] = "B";
 }
 if (isset($_POST['SURABAYA'])) {
     $_SESSION['pathKota'] = "../kota/S/";
@@ -137,6 +137,9 @@ if (isset($_SESSION['pathKota'])) {
             <li class="active">
                 <a href="pilihKota.php">Pilih Kota</a>
             </li>
+            <li class="active">
+                <a href="menu/hitungPPH.php">Hitung PPH</a>
+            </li>
         </nav>
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -145,7 +148,7 @@ if (isset($_SESSION['pathKota'])) {
                 </div>
             </nav>
             <div>
-                <form action="" method="post">          
+                <form action="" method="post">
                     <button type="submit" class="button" style="vertical-align:middle" value="PUSAT" name="PUSAT">
                         <span>PUSAT</span>
                     </button>
@@ -157,7 +160,7 @@ if (isset($_SESSION['pathKota'])) {
                     </button>
                     <button type="submit" class="button" style="vertical-align:middle" value="MAKASSAR" name="MAKASSAR">
                         <span>MAKASSAR</span>
-                    </button>                    
+                    </button>
                     <br>
                     <button type="submit" class="button" style="vertical-align:middle" value="LAMPUNG" name="LAMPUNG">
                         <span>LAMPUNG</span>

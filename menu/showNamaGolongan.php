@@ -145,6 +145,9 @@ if ($db) {
 			<li class="active">
 				<a href="../pilihKota.php">Pilih Kota</a>
 			</li>
+			<li class="active">
+				<a href="hitungPPH.php">Hitung PPH</a>
+			</li>
 		</nav>
 		<div id="content">
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">

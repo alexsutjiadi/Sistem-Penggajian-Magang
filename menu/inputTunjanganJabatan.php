@@ -36,17 +36,15 @@ if (isset($_POST['editTunjJab'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		if($val!=""){
+		if ($val != "") {
 			unset($row['deleted']);
 
 			$row['TUNJ_JAB'] = $val;
 			$row = array_values($row);
 			dbase_replace_record($db, $row, $rowId);
-
 		}
 
 		dbase_close($db);
-		
 	}
 }
 
@@ -58,14 +56,14 @@ if (isset($_POST['editExtra'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		if($val!=""){
+		if ($val != "") {
 			unset($row['deleted']);
 
 			$row['EXTRA_LAIN'] = $val;
 			$row = array_values($row);
 			dbase_replace_record($db, $row, $rowId);
 		}
-		
+
 
 		dbase_close($db);
 	}
@@ -79,20 +77,20 @@ if (isset($_POST['editPinjaman'])) {
 	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
 	if ($db) {
 		$row = dbase_get_record_with_names($db, $rowId);
-		if($val!=""){
+		if ($val != "") {
 			unset($row['deleted']);
 			$row['PINJAMAN'] = $val;
 			$row = array_values($row);
 			dbase_replace_record($db, $row, $rowId);
 		}
-		
+
 
 		dbase_close($db);
 	}
 }
 function rupiah($angka)
 {
-	$hasil = "Rp. " . number_format((int)$angka, 0, '', '.');
+	$hasil = "Rp. " . number_format((int) $angka, 0, '', '.');
 	return $hasil;
 }
 //fetch data gaji dri db
@@ -391,6 +389,9 @@ if ($db) {
 			</ul>
 			<li class="active">
 				<a href="../pilihKota.php">Pilih Kota</a>
+			</li>
+			<li class="active">
+				<a href="hitungPPH.php">Hitung PPH</a>
 			</li>
 		</nav>
 		<div id="content">

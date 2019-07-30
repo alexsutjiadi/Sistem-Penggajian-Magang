@@ -67,9 +67,138 @@ function cekPangkat($gaji, $kota, $jamsos = "N")
     echo json_encode($returnArray);
 }
 
-if ($_POST['gajiV']) {
+if (isset($_POST['gajiV'])) {
     //call the function or execute the code
     if ($_POST['kotaV']) {
         cekPangkat($_POST['gajiV'], $_POST['kotaV'], $_POST['jamsos']);
     }
+}
+if (isset($_POST['hitungPPH'])) {
+    $dbgaji = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
+    $dbtabel = dbase_open($_SESSION['pathKota'] . 'TABEL.DBF', 0);
+    $dbptkp = dbase_open($_SESSION['pathKota'] . 'PTKP.DBF', 0);
+    $dbpph = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 2);
+    $dbpph1 = dbase_open($_SESSION['pathKota'] . 'PPH1.DBF', 0);
+
+    //clear db pph
+    $npph = dbase_numrecords($dbpph);
+    //echo "npph" . $npph . "<br>";
+    for ($j = 1; $j <= $npph; $j++) {
+        dbase_delete_record($dbpph, $j);
+    }
+    dbase_pack($dbpph);
+
+    //mulai hitung pph sebanyak data di dbgaji
+    $numrecord = dbase_numrecords($dbgaji);
+    for ($i = 1; $i <= $numrecord; $i++) {
+        $rowgaji = dbase_get_record_with_names($dbgaji, $i);
+        $rowtabel = dbase_get_record_with_names($dbtabel, 1);
+        //$rowpph = dbase_get_record_with_names($dbpph, $i);
+        //$rowpph1 = dbase_get_record_with_names($dbpph1, $i);
+
+        //gaji dasar & biaya jabatan & tht & neto & jamsos
+        $gaji_dasar = $rowgaji['GAJI_DASAR'];
+        $tunjreg = (int) $rowgaji['TUNJ_REG'];
+        $tunjjab = (int) $rowgaji['TUNJ_JAB'];
+        $tunjkes = (int) $rowgaji['TUNJ_KES'];
+        $jpk = (int) $rowgaji['JPK'];
+
+        $biayaJabatan = $gaji_dasar * $rowtabel['JAB'];
+        $jamsos = $gaji_dasar * $rowtabel['JAMSS'];
+        if ($biayaJabatan > $rowtabel['JAB_MAX']) {
+            $biayaJabatan = $rowtabel['JAB_MAX'];
+        }
+        $tht = ($gaji_dasar * $rowtabel['THT']) / 100;
+        $gaji_net = $gaji_dasar + ($tunjreg + $tunjjab + $tunjkes) - ($biayaJabatan + $tht + $jpk);
+        $ygaji_net = $gaji_net * 12;
+
+        //cek ptkp
+        $nptkp = dbase_numrecords($dbptkp);
+        for ($ii = 1; $ii <= $nptkp; $ii++) {
+            $rowptkp = dbase_get_record_with_names($dbptkp, $ii);
+            if ($rowptkp['KELUARGA'] == $rowgaji['KELUARGA']) {
+                $ptkp = $rowptkp['NILAI'];
+                break;
+            }
+        }
+
+        //pkp
+        $pkp = $ygaji_net - ($ptkp * 12);
+        if ($pkp < 0) {
+            $pkp = 0;
+        }
+
+        //cek tarif
+        if ($pkp <= $rowtabel['TAB_1']) {
+            $tarif = $rowtabel['PERS1']/100;
+        } else if ($pkp <= $rowtabel['TAB_2']) {
+            $tarif = $rowtabel['PERS2']/100;
+        } else if ($pkp <= $rowtabel['TAB_3']) {
+            $tarif = $rowtabel['PERS3']/100;
+        } else {
+            $tarif = $rowtabel['PERS4']/100;
+        }
+
+        $ypph = $tarif * $pkp;
+        $pph = $ypph / 12;
+
+        //posisi bulan
+        $bulan = parse_ini_file($_SESSION['pathKota'] . "init.ini");
+        $bulan = $bulan['bulan_clear'];
+
+        //pph thr
+        if ($rowgaji['THR'] <= $rowtabel['TAB_1']) {
+            $thr = ($rowgaji['THR'] * $rowtabel['PERS1']) / 100;
+        } else if ($rowgaji['THR'] <= $rowtabel['TAB_2']) {
+            $thr = ($rowgaji['THR'] * $rowtabel['PERS2']) / 100;
+        } else {
+            $thr = ($rowgaji['THR'] * $rowtabel['PERS3']) / 100;
+        }
+
+        //pph bonus
+        if ($rowgaji['BONUS'] <= $rowtabel['TAB_1']) {
+            $bonus = ($rowgaji['BONUS'] * $rowtabel['PERS1']) / 100;
+        } else if ($rowgaji['BONUS'] <= $rowtabel['TAB_2']) {
+            $bonus = ($rowgaji['BONUS'] * $rowtabel['PERS2']) / 100;
+        } else {
+            $bonus = ($rowgaji['BONUS'] * $rowtabel['PERS3']) / 100;
+        }
+
+        echo $pph . "," . $ypph . "," . $tarif . "," . $pkp . "," . $ptkp . "," . $gaji_net . "," . $tht . "," . $biayaJabatan . "///<br>";
+        dbase_add_record($dbpph, array(
+            $rowgaji['NO_URUT'],
+            $rowgaji['NIK'],
+            $rowgaji['DEPT'],
+            $rowgaji['TUNJ_JAB'],
+            $rowgaji['TUNJ_KES'],
+            $ptkp,
+            $jamsos,
+            $rowgaji['JPK'],
+            $biayaJabatan,
+            $tht,
+            $pkp,
+            $pph,
+            $rowgaji['THR'],
+            $thr,
+            $rowgaji['BONUS'],
+            $bonus, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $bulan, $rowgaji['AKTIV'], 0
+        ));
+    }
+    dbase_close($dbgaji);
+    dbase_close($dbpph);
+    dbase_close($dbpph1);
+    dbase_close($dbptkp);
+    dbase_close($dbtabel);
+    header("Location: ../menu/hitungPPH.php");
+}
+if (isset($_POST['clear'])) {
+    $dbpph = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 2);
+    $npph = dbase_numrecords($dbpph);
+    //echo "npph" . $npph . "<br>";
+    for ($j = 1; $j <= $npph; $j++) {
+        dbase_delete_record($dbpph, $j);
+    }
+    dbase_pack($dbpph);
+    dbase_close($dbpph);
+    header("Location: ../menu/hitungPPH.php");
 }

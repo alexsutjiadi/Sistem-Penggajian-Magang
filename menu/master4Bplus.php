@@ -136,6 +136,9 @@ if ($db) {
             <li class="active">
                 <a href="../pilihKota.php">Pilih Kota</a>
             </li>
+            <li class="active">
+                <a href="hitungPPH.php">Hitung PPH</a>
+            </li>
         </nav>
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -170,11 +173,11 @@ if ($db) {
                             <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                         </td>
                         <!-- <td>
-                                <form action="" method="post">
-                                    <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
-                                    <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
-                                </form>
-                            </td> -->
+                                    <form action="" method="post">
+                                        <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
+                                        <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
+                                    </form>
+                                </td> -->
                     </tr>
                 <?php }
                 dbase_close($db); ?>

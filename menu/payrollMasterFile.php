@@ -177,7 +177,7 @@ if (isset($_POST['editTunjKes'])) {
 }
 function rupiah($angka)
 {
-	$hasil = "Rp. " . number_format((int)$angka, 0, '', '.');
+	$hasil = "Rp. " . number_format((int) $angka, 0, '', '.');
 	return $hasil;
 }
 
@@ -498,6 +498,9 @@ if ($db) {
 			</ul>
 			<li class="active">
 				<a href="../pilihKota.php">Pilih Kota</a>
+			</li>
+			<li class="active">
+				<a href="hitungPPH.php">Hitung PPH</a>
 			</li>
 		</nav>
 		<div id="content">

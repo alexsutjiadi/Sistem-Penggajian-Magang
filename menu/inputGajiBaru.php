@@ -39,7 +39,7 @@ if (isset($_POST['editTunjangan'])) {
     $db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 2);
     if ($db) {
         $row = dbase_get_record_with_names($db, $rowId);
-        if($val!=""){
+        if ($val != "") {
             unset($row['deleted']);
             $row['TUNJ_REG'] = $val;
             $row = array_values($row);
@@ -62,7 +62,7 @@ if (isset($_POST['editGaji'])) {
         $gaji = $row1['GAJI_DASAR'];
     }
     if ($db) {
-        
+
         if ($kota == 'V' || $kota == 'H0' || $kota == 'S') {
             $dbPangkat = dbase_open('../src/golongan/PANGKAT_K1.DBF', 0);
         } else if ($kota == 'R' || $kota == 'B') {
@@ -136,7 +136,7 @@ if (isset($_POST['editGaji'])) {
 
 function rupiah($angka)
 {
-    $hasil = "Rp. " . number_format((int)$angka, 0, '', '.');
+    $hasil = "Rp. " . number_format((int) $angka, 0, '', '.');
     return $hasil;
 }
 
@@ -309,7 +309,7 @@ if ($db) {
 					' + $(this).text() + ' \
                     <br><input type="text" name="val" /> \
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
-                    <input type="hidden" name="kodeKota" value="' +$("#kodeKota").val()+'"> \
+                    <input type="hidden" name="kodeKota" value="' + $("#kodeKota").val() + '"> \
                     <br /> \
 					<input type="submit" name="editGaji"> \
                 </form><form action=""><input type="submit" value="Cancel"></form>';
@@ -404,6 +404,9 @@ if ($db) {
             </ul>
             <li class="active">
                 <a href="../pilihKota.php">Pilih Kota</a>
+            </li>
+            <li class="active">
+                <a href="hitungPPH.php">Hitung PPH</a>
             </li>
         </nav>
         <div id="content">

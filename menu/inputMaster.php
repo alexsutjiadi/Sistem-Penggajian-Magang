@@ -234,6 +234,9 @@ if (isset($_POST['addNew'])) {
             <li class="active">
                 <a href="../pilihKota.php">Pilih Kota</a>
             </li>
+            <li class="active">
+                <a href="hitungPPH.php">Hitung PPH</a>
+            </li>
         </nav>
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -254,9 +257,9 @@ if (isset($_POST['addNew'])) {
                                     </td>
                                     <td>
                                         <span>NIK:</span>
-                                        <input type="text" name="nik" placeholder="NIK..." />                                 
+                                        <input type="text" name="nik" placeholder="NIK..." />
                                     </td>
-                                </label>            
+                                </label>
                             </tr>
                             <tr>
                                 <label>
@@ -310,7 +313,7 @@ if (isset($_POST['addNew'])) {
                                     </td>
                                 </label>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <label>
                                     <td>
                                         <span>Status:</span>
@@ -337,10 +340,15 @@ if (isset($_POST['addNew'])) {
                                         <select name="keluarga">
                                             <option selected="true" value="">-</option>
                                             <option value="TK-">TK-</option>
-                                            <option value="KT-">KT-</option>
+                                            <option value="TK1">TK1</option>
+                                            <option value="TK2">TK2</option>
+                                            <option value="TK3">TK3</option>
+                                            <option value="K/-">K/-</option>
                                             <option value="K/1">K/1</option>
                                             <option value="K/2">K/2</option>
                                             <option value="K/3">K/3</option>
+                                            <option value="K/4">K/4</option>
+                                            <option value="K/5">K/5</option>
                                         </select>
                                     </td>
                                     <td>
@@ -386,11 +394,11 @@ if (isset($_POST['addNew'])) {
                                     </td>
                                 </label>
                             </tr>
-                                <label>
-                                        <span>Tgl Aktif:</span>
-                                        <input type="date" name="tglAktif" />
+                            <label>
+                                <span>Tgl Aktif:</span>
+                                <input type="date" name="tglAktif" />
 
-                                </label>
+                            </label>
                             <br>
                             <label>
                                 <input type="submit" name="addNew" value="ADD NEW" />
