@@ -102,6 +102,7 @@ if (isset($_POST['hitungPPH'])) {
         $tunjjab = (int) $rowgaji['TUNJ_JAB'];
         $tunjkes = (int) $rowgaji['TUNJ_KES'];
         $jpk = (int) $rowgaji['JPK'];
+        $pensiun = $gaji_dasar * 0.01;
 
         $biayaJabatan = $gaji_dasar * $rowtabel['JAB'];
         $jamsos = $gaji_dasar * $rowtabel['JAMSS'];
@@ -109,7 +110,7 @@ if (isset($_POST['hitungPPH'])) {
             $biayaJabatan = $rowtabel['JAB_MAX'];
         }
         $tht = ($gaji_dasar * $rowtabel['THT']) / 100;
-        $gaji_net = $gaji_dasar + ($tunjreg + $tunjjab + $tunjkes) - ($biayaJabatan + $tht + $jpk);
+        $gaji_net = $gaji_dasar + ($tunjreg + $tunjjab + $tunjkes) - ($biayaJabatan + $tht + $jpk + $pensiun);
         $ygaji_net = $gaji_net * 12;
 
         //cek ptkp
@@ -130,13 +131,13 @@ if (isset($_POST['hitungPPH'])) {
 
         //cek tarif
         if ($pkp <= $rowtabel['TAB_1']) {
-            $tarif = $rowtabel['PERS1']/100;
+            $tarif = $rowtabel['PERS1'] / 100;
         } else if ($pkp <= $rowtabel['TAB_2']) {
-            $tarif = $rowtabel['PERS2']/100;
+            $tarif = $rowtabel['PERS2'] / 100;
         } else if ($pkp <= $rowtabel['TAB_3']) {
-            $tarif = $rowtabel['PERS3']/100;
+            $tarif = $rowtabel['PERS3'] / 100;
         } else {
-            $tarif = $rowtabel['PERS4']/100;
+            $tarif = $rowtabel['PERS4'] / 100;
         }
 
         $ypph = $tarif * $pkp;
