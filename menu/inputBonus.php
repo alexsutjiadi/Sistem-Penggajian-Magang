@@ -142,7 +142,7 @@ if ($db) {
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
 					<input type="submit" name="editBonus"> \
-                </form><form action=""><input type="submit" value="Cancel"></form>';
+                <input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
 				});
@@ -266,7 +266,7 @@ if ($db) {
 							<td>
 								<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
 								<input type="hidden" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'";
-																		$totalBonus += $row['BONUS'] ?> id=<?php echo "bonus" . $i; ?>>
+																		$totalBonus += (int)$row['BONUS'] ?> id=<?php echo "bonus" . $i; ?>>
 								<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
 								<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
 								<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>

@@ -147,7 +147,7 @@ if ($db) {
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
 					<input type="submit" name="editThr"> \
-                </form><form action=""><input type="submit" value="Cancel"></form>';
+                <input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
 				});
@@ -283,7 +283,7 @@ if ($db) {
 									<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
 									<input type="hidden" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?>>
 									<input type="hidden" name="thr" value=<?php echo "'" . $row['THR'] . "'";
-																			$totalThr += $row['THR']; ?> id=<?php echo "thr" . $i; ?>>
+																			$totalThr += (int)$row['THR']; ?> id=<?php echo "thr" . $i; ?>>
 									<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
 
 								</td>

@@ -80,13 +80,13 @@ if (isset($_POST['hitungPPH'])) {
     $dbpph = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 2);
     $dbpph1 = dbase_open($_SESSION['pathKota'] . 'PPH1.DBF', 0);
 
-    //clear db pph
-    $npph = dbase_numrecords($dbpph);
-    //echo "npph" . $npph . "<br>";
-    for ($j = 1; $j <= $npph; $j++) {
-        dbase_delete_record($dbpph, $j);
-    }
-    dbase_pack($dbpph);
+    // //clear db pph
+    // $npph = dbase_numrecords($dbpph);
+    // //echo "npph" . $npph . "<br>";
+    // for ($j = 1; $j <= $npph; $j++) {
+    //     dbase_delete_record($dbpph, $j);
+    // }
+    // dbase_pack($dbpph);
 
     //mulai hitung pph sebanyak data di dbgaji
     $numrecord = dbase_numrecords($dbgaji);
@@ -145,7 +145,7 @@ if (isset($_POST['hitungPPH'])) {
 
         //posisi bulan
         $bulan = parse_ini_file($_SESSION['pathKota'] . "init.ini");
-        $bulan = $bulan['bulan_clear'];
+        $bulan = $bulan['posisi_bulan'];
 
         //pph thr
         if ($rowgaji['THR'] <= $rowtabel['TAB_1']) {
@@ -165,32 +165,99 @@ if (isset($_POST['hitungPPH'])) {
             $bonus = ($rowgaji['BONUS'] * $rowtabel['PERS3']) / 100;
         }
 
-        echo $pph . "," . $ypph . "," . $tarif . "," . $pkp . "," . $ptkp . "," . $gaji_net . "," . $tht . "," . $biayaJabatan . "///<br>";
-        dbase_add_record($dbpph, array(
-            $rowgaji['NO_URUT'],
-            $rowgaji['NIK'],
-            $rowgaji['DEPT'],
-            $rowgaji['TUNJ_JAB'],
-            $rowgaji['TUNJ_KES'],
-            $ptkp,
-            $jamsos,
-            $rowgaji['JPK'],
-            $biayaJabatan,
-            $tht,
-            $pkp,
-            $pph,
-            $rowgaji['THR'],
-            $thr,
-            $rowgaji['BONUS'],
-            $bonus, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $bulan, $rowgaji['AKTIV'], 0
-        ));
+        //echo $pph . "," . $ypph . "," . $tarif . "," . $pkp . "," . $ptkp . "," . $gaji_net . "," . $tht . "," . $biayaJabatan . "///<br>";
+
+        $npph = dbase_numrecords($dbpph);
+        $ngaji =dbase_numrecords($dbgaji);
+        if ($npph == 0) {
+            dbase_add_record($dbpph, array(
+                $rowgaji['NO_URUT'],
+                $rowgaji['NIK'],
+                $rowgaji['DEPT'],
+                $rowgaji['TUNJ_JAB'],
+                $rowgaji['TUNJ_KES'],
+                $ptkp,
+                $jamsos,
+                $rowgaji['JPK'],
+                $biayaJabatan,
+                $tht,
+                $pkp,
+                $pph,
+                $rowgaji['THR'],
+                $thr,
+                $rowgaji['BONUS'],
+                $bonus, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $bulan, $rowgaji['AKTIV'], 0
+            ));
+        } else {
+            //update berdasarkan deptID
+            for ($n = 1; $n <= $ngaji; $n++) {
+                $rowpph = dbase_get_record_with_names($dbpph, $n);
+                if ($rowpph['NO_URUT'] == $rowgaji['NO_URUT']) {
+                    unset($rowpph['deleted']);
+
+                    $rowpph['NO_URUT'] = $rowgaji['NO_URUT'];
+                    $rowpph['TUNJ_JAB'] = $rowgaji['TUNJ_JAB'];
+                    $rowpph['TUNJ_KES'] = $rowgaji['TUNJ_KES'];
+                    $rowpph['PTKP'] = $ptkp;
+                    $rowpph['JAMSOS'] = $jamsos;
+                    $rowpph['JPK'] = $rowgaji['JPK'];
+                    $rowpph['JABAT'] = $biayaJabatan;
+                    $rowpph['THT'] = $tht;
+                    $rowpph['PKP'] = $pkp;
+                    $rowpph['PPH_21'] = $pph;
+                    $rowpph['THR'] = $rowgaji['THR'];
+                    $rowpph['PPH_THR'] = $thr;
+                    $rowpph['BONUS'] = $rowgaji['BONUS'];
+                    $rowpph['PPH_BONUS'] = $bonus;
+                    $rowpph['YTD_BLN'] = $bulan;
+                    $rowpph['AKTIV'] = $rowgaji['AKTIV'];
+                    $rowpph = array_values($rowpph);
+                    dbase_replace_record($dbpph,$rowpph,$n);
+                    break;
+                }
+                if ($n > $npph) {
+                    dbase_add_record($dbpph, array(
+                        $rowgaji['NO_URUT'],
+                        $rowgaji['NIK'],
+                        $rowgaji['DEPT'],
+                        $rowgaji['TUNJ_JAB'],
+                        $rowgaji['TUNJ_KES'],
+                        $ptkp,
+                        $jamsos,
+                        $rowgaji['JPK'],
+                        $biayaJabatan,
+                        $tht,
+                        $pkp,
+                        $pph,
+                        $rowgaji['THR'],
+                        $thr,
+                        $rowgaji['BONUS'],
+                        $bonus, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $bulan, $rowgaji['AKTIV'], 0
+                    ));
+                    break;
+                }
+            }
+        }
     }
+    $ini_array = parse_ini_file($_SESSION['pathKota'] . "init.ini");
+    $nposisi = $ini_array['posisi_bulan'];
+    $ncount = $ini_array['count_bulan'];
+    $hitung_pph = $ini_array['hitung_pph'];
+    $file = ($_SESSION['pathKota'] . "init.ini");
+    //echo $file;
+    $myfile = fopen($file, "w") or die("Unable to open file!");
+    $txt = "posisi_bulan = " . $nposisi . "\n" . "count_bulan = " . $ncount . "\nhitung_pph = 1";
+    fwrite($myfile, $txt);
+    fclose($myfile);
+
     dbase_close($dbgaji);
     dbase_close($dbpph);
     dbase_close($dbpph1);
     dbase_close($dbptkp);
     dbase_close($dbtabel);
     header("Location: ../menu/hitungPPH.php");
+    
+
 }
 if (isset($_POST['clear'])) {
     $dbpph = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 2);
@@ -199,6 +266,18 @@ if (isset($_POST['clear'])) {
     for ($j = 1; $j <= $npph; $j++) {
         dbase_delete_record($dbpph, $j);
     }
+
+    $ini_array = parse_ini_file($_SESSION['pathKota'] . "init.ini");
+    $nposisi = $ini_array['posisi_bulan'];
+    $ncount = $ini_array['count_bulan'];
+    $hitung_pph = $ini_array['hitung_pph'];
+    $file = ($_SESSION['pathKota'] . "init.ini");
+    //echo $file;
+    $myfile = fopen($file, "w") or die("Unable to open file!");
+    $txt = "posisi_bulan = " . $nposisi . "\n" . "count_bulan = " . $ncount . "\nhitung_pph = 0";
+    fwrite($myfile, $txt);
+    fclose($myfile);
+
     dbase_pack($dbpph);
     dbase_close($dbpph);
     header("Location: ../menu/hitungPPH.php");

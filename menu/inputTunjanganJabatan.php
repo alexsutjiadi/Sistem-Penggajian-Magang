@@ -284,7 +284,7 @@ if ($db) {
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
 					<input type="submit" name="editTunjJab"> \
-                </form><form action=""><input type="submit" value="Cancel"></form>';
+                <input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
 
@@ -297,7 +297,7 @@ if ($db) {
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
 					<input type="submit" name="editExtra"> \
-                </form><form action=""><input type="submit" value="Cancel"></form>';
+                <input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
 
@@ -310,7 +310,7 @@ if ($db) {
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
 					<input type="submit" name="editPinjaman"> \
-                </form><form action=""><input type="submit" value="Cancel"></form>';
+                <input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
 				});
