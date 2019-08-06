@@ -102,14 +102,18 @@ if (isset($_POST['hitungPPH'])) {
         $tunjjab = (int) $rowgaji['TUNJ_JAB'];
         $tunjkes = (int) $rowgaji['TUNJ_KES'];
         $jpk = (int) $rowgaji['JPK'];
-        $pensiun = $gaji_dasar * 0.01;
+        $pensiun = $gaji_dasar * 0.01; //1%gajipokok
+        if($pensiun>85124){
+            $pensiun=85124;
+        }
 
         $biayaJabatan = $gaji_dasar * $rowtabel['JAB'];
         $jamsos = $gaji_dasar * $rowtabel['JAMSS'];
         if ($biayaJabatan > $rowtabel['JAB_MAX']) {
             $biayaJabatan = $rowtabel['JAB_MAX'];
         }
-        $tht = ($gaji_dasar * $rowtabel['THT']) / 100;
+        $jht = ($gaji_dasar * $rowtabel['THT']) / 100; //2% gaji pokok
+        $tht = $jht+$pensiun;
         $gaji_net = $gaji_dasar + ($tunjreg + $tunjjab + $tunjkes) - ($biayaJabatan + $tht + $jpk + $pensiun);
         $ygaji_net = $gaji_net * 12;
 
