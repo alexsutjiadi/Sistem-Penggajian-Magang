@@ -114,7 +114,7 @@ if (isset($_POST['hitungPPH'])) {
         }
         $jht = ($gaji_dasar * $rowtabel['THT']) / 100; //2% gaji pokok
         $tht = $jht+$pensiun;
-        $gaji_net = $gaji_dasar + ($tunjreg + $tunjjab + $tunjkes) - ($biayaJabatan + $tht + $jpk + $pensiun);
+        $gaji_net = $gaji_dasar + ($tunjreg + $tunjjab + $tunjkes) - ($biayaJabatan + $tht + $jpk);
         $ygaji_net = $gaji_net * 12;
 
         //cek ptkp

@@ -54,11 +54,14 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 	$TotalTunjJab = 0;
 	$TotalTunjKes = 0;
 	$TotalGajiNetto = 0;
+	$TotalTHR = 0;
+	$TotalTHRBruto = 0;
 	$TotalKolomExtra = 0;
 	$TotalYangditerima = 0;
 	$TotalBCAF = 0;
 	$TotalBCANF = 0;
 	$TotalTunai = 0;
+	
 	for ($i = 1; $i <= $ndata; $i++) {
 		
 		$row = dbase_get_record_with_names($db, $i);
@@ -73,23 +76,28 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 			$GajiNetto = $GajiBruto-($row3['JABAT'] + $row3['THT'] + $row['JPK']);
 			$KolomExtra = $row['EXTRA_LAIN']-$row['PINJAMAN'];
 			$Total = $GajiNetto-$KolomExtra;
+			$BrutoTHR = $row['THR']-$row3['PPH_THR'];
+
 			$TotalGajiBruto = (int)$TotalGajiBruto + (int)$GajiBruto;
 			$TotalTunjJab = (int)$TotalTunjJab+(int)$row['TUNJ_JAB'];
 			$TotalTunjKes = (int)$TotalTunjKes+(int)$row['TUNJ_KES'];
 			$TotalGajiNetto = (int)$TotalGajiNetto+(int)$GajiNetto;
+			$TotalTHR = (int)$TotalTHR+(int)$row['THR'];
+			$TotalTHRBruto = (int)$TotalTHRBruto+(int)$BrutoTHR;
 			$TotalKolomExtra = (int)$TotalKolomExtra+(int)$KolomExtra;
 			$TotalYangditerima = (int)$TotalYangditerima+(int)$Total;
 			$TotalBCAF = $TotalBCAF;
 			$TotalBCANF = $TotalBCANF;
 			$TotalTunai = $TotalTunai;
 
+			$BrutoTHR = rupiah($BrutoTHR);
 			$GajiBruto = rupiah($GajiBruto);
 			$GajiNetto = rupiah($GajiNetto);
 			$KolomExtra = rupiah($KolomExtra);
 			$Total = rupiah($Total);
 			$row['TUNJ_JAB'] = rupiah($row['TUNJ_JAB']);
 			$row['TUNJ_KES'] = rupiah($row['TUNJ_KES']);
-			
+			$row['THR'] = rupiah($row['THR']);
 
 			if ($datapertama == true) {
 				$datapertama = false;
@@ -104,6 +112,7 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 									<td rowspan="2" width="70">Gaji Bruto</td>
 									<td colspan="2" align="center">Tunjangan</td>
 									<td rowspan="2" width="70">Gaji Netto</td>
+									<td colspan="2" align="center">T.H.R</td>
 									<td rowspan="2" width="70">Pend.Lain/ Pinjaman</td>
 									<td rowspan="2" width="70">Yang Diterima</td>
 									<td rowspan="2" >Transfer BCA</td>
@@ -112,6 +121,8 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 								<tr>
 									<td>Jabatan</td>
 									<td>Kesehatan</td>
+									<td>Bruto</td>
+									<td>Netto</td>
 								</tr>
 EOD;
 				$print .= <<<EOD
@@ -124,6 +135,8 @@ EOD;
 						<td>$row[TUNJ_JAB]</td>
 						<td>$row[TUNJ_KES]</td>
 						<td>$GajiNetto</td>
+						<td>$row[THR]</td>
+						<td>$BrutoTHR</td>
 						<td>$KolomExtra</td>
 						<td>$Total</td>
 						<td></td>
@@ -142,6 +155,8 @@ EOD;
 						<td>$row[TUNJ_JAB]</td>
 						<td>$row[TUNJ_KES]</td>
 						<td>$GajiNetto</td>
+						<td>$row[THR]</td>
+						<td>$BrutoTHR</td>
 						<td>$KolomExtra</td>
 						<td>$Total</td>
 						<td></td>
@@ -157,6 +172,8 @@ EOD;
 			$TotalTunjJab = rupiah($TotalTunjJab);
 			$TotalTunjKes = rupiah($TotalTunjKes);
 			$TotalGajiNetto = rupiah($TotalGajiNetto);
+			$TotalTHR = rupiah($TotalTHR);
+			$TotalTHRBruto = rupiah($TotalTHRBruto);
 			$TotalKolomExtra = rupiah($TotalKolomExtra);
 			$TotalYangditerima = rupiah($TotalYangditerima);
 			$TotalBCAF = rupiah($TotalBCAF);
@@ -169,6 +186,8 @@ EOD;
 						<td>$TotalTunjJab</td>
 						<td>$TotalTunjKes</td>
 						<td>$TotalGajiNetto</td>
+						<td>$TotalTHR</td>
+						<td>$TotalTHRBruto</td>
 						<td>$TotalKolomExtra</td>
 						<td>$TotalYangditerima</td>
 						<td></td>
