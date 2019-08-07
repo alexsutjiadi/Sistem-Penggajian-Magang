@@ -5,6 +5,11 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['pathKota'])) {
 	header("Location: ../pilihKota.php");
 }
+function rupiah($angka)
+{
+	$hasil = "Rp. " . number_format((int) $angka, 0, '', '.');
+	return $hasil;
+}
 if (isset($_POST['gogo'])) {
 	include('library/tcpdf.php');
 	$pdf = new TCPDF('p', 'mm', 'A4');
@@ -31,8 +36,13 @@ if (isset($_POST['gogo'])) {
 
 			$DanaKesehatan = $row['TUNJ_KES'] + $row['JPK'];
 			$TotalTambah = $row['GAJI_DASAR'] + $row['TUNJ_JAB'] + $DanaKesehatan;
-			$TotalKurang = "";
-			$TotalSemua = "";
+			$TotalJHT = $row3['THT'] * $row['GAJI_DASAR'] / 100;
+			$TotalJmnPens = 1 * $row['GAJI_DASAR'] / 100;
+			if ($TotalJmnPens > 85124) {
+				$TotalJmnPens = 85124;
+			}
+			$TotalKurang = $TotalJHT + $row['JPK'] + $TotalJmnPens + $row2['PPH_21'];
+			$TotalSemua = $TotalTambah - $TotalKurang - $row['PINJAMAN'];
 			$html = "
 <table>		
 	<tr>
@@ -45,7 +55,7 @@ if (isset($_POST['gogo'])) {
 		<th>Nama : " . $row['NAMA'] . "</th>
 	</tr>
 	<tr>
-		<th>Status : " . $row['STATUS'] . "</th>
+		<th>Status : " . $row['KELUARGA'] . "</th>
 	</tr>
 	<tr>
 		<th>Pangkat : " . $row['PANGKAT'] . "</th>
@@ -60,19 +70,19 @@ if (isset($_POST['gogo'])) {
 		<th> --== PENDAPATAN ==-- </th>
 	</tr>
 	<tr>
-		<th>Gaji Pokok : " . $row['GAJI_DASAR'] . "</th>
+		<th>Gaji Pokok : " . rupiah($row['GAJI_DASAR']) . "</th>
 	</tr>
 	<tr>
-		<th>Dana Kesehatan: " . $DanaKesehatan . "</th>
+		<th>Dana Kesehatan: " . rupiah($DanaKesehatan) . "</th>
 	</tr>
 	<tr>
-		<th>Tunj.Jabatan : " . $row['TUNJ_JAB'] . "</th>
+		<th>Tunj.Jabatan : " . rupiah($row['TUNJ_JAB']) . "</th>
 	</tr>
 	<tr>
-		<th>PPH21 : " . $row2['PPH_21'] . "</th>
+		<th>PPH21 : " . rupiah($row2['PPH_21']) . "</th>
 	</tr>
 	<tr>
-		<th>*Total = " . $TotalTambah . "</th>
+		<th>*Total = " . rupiah($TotalTambah) . "</th>
 	</tr>
 	<tr>
 		<th>----------------------------------------------------------------------------------</th>
@@ -81,31 +91,31 @@ if (isset($_POST['gogo'])) {
 		<th>--== POTONGAN ==-- </th>
 	</tr>
 	<tr>
-		<th>JHT - " . $row3['THT'] . "% : " . $row2['THT'] . "</th>
+		<th>JHT - " . $row3['THT'] . "% : " . rupiah($TotalJHT) . "</th>
 	</tr>
 	<tr>
-		<th>BPJS Kesehatan : " . $row['JPK'] . "</th>
+		<th>BPJS Kesehatan : " . rupiah($row['JPK']) . "</th>
 	</tr>
 	<tr>
-		<th>Jmn Pensiun - 1% : </th>
+		<th>Jmn Pensiun - 1% : " . rupiah($TotalJmnPens) . "</th>
 	</tr>
 	<tr>
-		<th>PPH21 : " . $row2['PPH_21'] . "</th>
+		<th>PPH21 : " . rupiah($row2['PPH_21']) . "</th>
 	</tr>
 	<tr>
-		<th>*Total = " . $TotalKurang . "</th>
-	</tr>
-	<tr>
-		<th>----------------------------------------------------------------------------------</th>
-	</tr>
-	<tr>
-		<th>Koperasi + Pinj : </th>
+		<th>*Total = " . rupiah($TotalKurang) . "</th>
 	</tr>
 	<tr>
 		<th>----------------------------------------------------------------------------------</th>
 	</tr>
 	<tr>
-		<th>Yang di Terima : " . $TotalSemua . "</th>
+		<th>Koperasi + Pinj : " . rupiah($row['PINJAMAN']) . "</th>
+	</tr>
+	<tr>
+		<th>----------------------------------------------------------------------------------</th>
+	</tr>
+	<tr>
+		<th>Yang di Terima : " . rupiah($TotalSemua) . "</th>
 		<th> </th>
 	</tr>
 	<tr>
@@ -132,12 +142,16 @@ if (isset($_POST['gogo'])) {
 			if ($sub_dept == strtoupper($_POST['opt'])) {
 				$DanaKesehatan = $row['TUNJ_KES'] + $row['JPK'];
 				$TotalTambah = $row['GAJI_DASAR'] + $row['TUNJ_JAB'] + $DanaKesehatan;
-				$TotalKurang = "";
-				$TotalSemua = "";
+				$TotalJHT = $row3['THT'] * $row['GAJI_DASAR'] / 100;
+				$TotalJmnPens = 1 * $row['GAJI_DASAR'] / 100;
+				if ($TotalJmnPens > 85124) {
+					$TotalJmnPens = 85124;
+				}
+				$TotalKurang = $TotalJHT + $row['JPK'] + $TotalJmnPens + $row2['PPH_21'];
+				$TotalSemua = $TotalTambah - $TotalKurang - $row['PINJAMAN'];
 
 				$html = "
-<table>
-				
+<table>		
 	<tr>
 		<th>===============================================</th>
 	</tr>
@@ -148,7 +162,7 @@ if (isset($_POST['gogo'])) {
 		<th>Nama : " . $row['NAMA'] . "</th>
 	</tr>
 	<tr>
-		<th>Status : " . $row['STATUS'] . "</th>
+		<th>Status : " . $row['KELUARGA'] . "</th>
 	</tr>
 	<tr>
 		<th>Pangkat : " . $row['PANGKAT'] . "</th>
@@ -163,19 +177,19 @@ if (isset($_POST['gogo'])) {
 		<th> --== PENDAPATAN ==-- </th>
 	</tr>
 	<tr>
-		<th>Gaji Pokok : " . $row['GAJI_DASAR'] . "</th>
+		<th>Gaji Pokok : " . rupiah($row['GAJI_DASAR']) . "</th>
 	</tr>
 	<tr>
-		<th>Dana Kesehatan: " . $DanaKesehatan . "</th>
+		<th>Dana Kesehatan: " . rupiah($DanaKesehatan) . "</th>
 	</tr>
 	<tr>
-		<th>Tunj.Jabatan : " . $row['TUNJ_JAB'] . "</th>
+		<th>Tunj.Jabatan : " . rupiah($row['TUNJ_JAB']) . "</th>
 	</tr>
 	<tr>
-		<th>PPH21 : " . $row2['PPH_21'] . "</th>
+		<th>PPH21 : " . rupiah($row2['PPH_21']) . "</th>
 	</tr>
 	<tr>
-		<th>*Total = " . $TotalTambah . "</th>
+		<th>*Total = " . rupiah($TotalTambah) . "</th>
 	</tr>
 	<tr>
 		<th>----------------------------------------------------------------------------------</th>
@@ -184,31 +198,31 @@ if (isset($_POST['gogo'])) {
 		<th>--== POTONGAN ==-- </th>
 	</tr>
 	<tr>
-		<th>JHT - " . $row3['THT'] . "% : " . $row2['THT'] . "</th>
+		<th>JHT - " . $row3['THT'] . "% : " . rupiah($TotalJHT) . "</th>
 	</tr>
 	<tr>
-		<th>BPJS Kesehatan : " . $row['JPK'] . "</th>
+		<th>BPJS Kesehatan : " . rupiah($row['JPK']) . "</th>
 	</tr>
 	<tr>
-		<th>Jmn Pensiun - 1% : </th>
+		<th>Jmn Pensiun - 1% : " . rupiah($TotalJmnPens) . "</th>
 	</tr>
 	<tr>
-		<th>PPH21 : " . $row2['PPH_21'] . "</th>
+		<th>PPH21 : " . rupiah($row2['PPH_21']) . "</th>
 	</tr>
 	<tr>
-		<th>*Total = " . $TotalKurang . "</th>
-	</tr>
-	<tr>
-		<th>----------------------------------------------------------------------------------</th>
-	</tr>
-	<tr>
-		<th>Koperasi + Pinj : </th>
+		<th>*Total = " . rupiah($TotalKurang) . "</th>
 	</tr>
 	<tr>
 		<th>----------------------------------------------------------------------------------</th>
 	</tr>
 	<tr>
-		<th>Yang di Terima : " . $TotalSemua . "</th>
+		<th>Koperasi + Pinj : " . rupiah($row['PINJAMAN']) . "</th>
+	</tr>
+	<tr>
+		<th>----------------------------------------------------------------------------------</th>
+	</tr>
+	<tr>
+		<th>Yang di Terima : " . rupiah($TotalSemua) . "</th>
 		<th> </th>
 	</tr>
 	<tr>
@@ -236,12 +250,16 @@ if (isset($_POST['gogo'])) {
 			if ($nik == $_POST['opt']) {
 				$DanaKesehatan = $row['TUNJ_KES'] + $row['JPK'];
 				$TotalTambah = $row['GAJI_DASAR'] + $row['TUNJ_JAB'] + $DanaKesehatan;
-				$TotalKurang = "";
-				$TotalSemua = "";
+				$TotalJHT = $row3['THT'] * $row['GAJI_DASAR'] / 100;
+				$TotalJmnPens = 1 * $row['GAJI_DASAR'] / 100;
+				if ($TotalJmnPens > 85124) {
+					$TotalJmnPens = 85124;
+				}
+				$TotalKurang = $TotalJHT + $row['JPK'] + $TotalJmnPens + $row2['PPH_21'];
+				$TotalSemua = $TotalTambah - $TotalKurang - $row['PINJAMAN'];
 
 				$html = "
-<table>
-				
+<table>		
 	<tr>
 		<th>===============================================</th>
 	</tr>
@@ -252,7 +270,7 @@ if (isset($_POST['gogo'])) {
 		<th>Nama : " . $row['NAMA'] . "</th>
 	</tr>
 	<tr>
-		<th>Status : " . $row['STATUS'] . "</th>
+		<th>Status : " . $row['KELUARGA'] . "</th>
 	</tr>
 	<tr>
 		<th>Pangkat : " . $row['PANGKAT'] . "</th>
@@ -267,19 +285,19 @@ if (isset($_POST['gogo'])) {
 		<th> --== PENDAPATAN ==-- </th>
 	</tr>
 	<tr>
-		<th>Gaji Pokok : " . $row['GAJI_DASAR'] . "</th>
+		<th>Gaji Pokok : " . rupiah($row['GAJI_DASAR']) . "</th>
 	</tr>
 	<tr>
-		<th>Dana Kesehatan: " . $DanaKesehatan . "</th>
+		<th>Dana Kesehatan: " . rupiah($DanaKesehatan) . "</th>
 	</tr>
 	<tr>
-		<th>Tunj.Jabatan : " . $row['TUNJ_JAB'] . "</th>
+		<th>Tunj.Jabatan : " . rupiah($row['TUNJ_JAB']) . "</th>
 	</tr>
 	<tr>
-		<th>PPH21 : " . $row2['PPH_21'] . "</th>
+		<th>PPH21 : " . rupiah($row2['PPH_21']) . "</th>
 	</tr>
 	<tr>
-		<th>*Total = " . $TotalTambah . "</th>
+		<th>*Total = " . rupiah($TotalTambah) . "</th>
 	</tr>
 	<tr>
 		<th>----------------------------------------------------------------------------------</th>
@@ -288,31 +306,31 @@ if (isset($_POST['gogo'])) {
 		<th>--== POTONGAN ==-- </th>
 	</tr>
 	<tr>
-		<th>JHT - " . $row3['THT'] . "% : " . $row2['THT'] . "</th>
+		<th>JHT - " . $row3['THT'] . "% : " . rupiah($TotalJHT) . "</th>
 	</tr>
 	<tr>
-		<th>BPJS Kesehatan : " . $row['JPK'] . "</th>
+		<th>BPJS Kesehatan : " . rupiah($row['JPK']) . "</th>
 	</tr>
 	<tr>
-		<th>Jmn Pensiun - 1% : </th>
+		<th>Jmn Pensiun - 1% : " . rupiah($TotalJmnPens) . "</th>
 	</tr>
 	<tr>
-		<th>PPH21 : " . $row2['PPH_21'] . "</th>
+		<th>PPH21 : " . rupiah($row2['PPH_21']) . "</th>
 	</tr>
 	<tr>
-		<th>*Total = " . $TotalKurang . "</th>
-	</tr>
-	<tr>
-		<th>----------------------------------------------------------------------------------</th>
-	</tr>
-	<tr>
-		<th>Koperasi + Pinj : </th>
+		<th>*Total = " . rupiah($TotalKurang) . "</th>
 	</tr>
 	<tr>
 		<th>----------------------------------------------------------------------------------</th>
 	</tr>
 	<tr>
-		<th>Yang di Terima : " . $TotalSemua . "</th>
+		<th>Koperasi + Pinj : " . rupiah($row['PINJAMAN']) . "</th>
+	</tr>
+	<tr>
+		<th>----------------------------------------------------------------------------------</th>
+	</tr>
+	<tr>
+		<th>Yang di Terima : " . rupiah($TotalSemua) . "</th>
 		<th> </th>
 	</tr>
 	<tr>

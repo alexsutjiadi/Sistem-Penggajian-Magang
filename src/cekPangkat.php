@@ -169,7 +169,7 @@ if (isset($_POST['hitungPPH'])) {
             $bonus = ($rowgaji['BONUS'] * $rowtabel['PERS3']) / 100;
         }
 
-        //echo $pph . "," . $ypph . "," . $tarif . "," . $pkp . "," . $ptkp . "," . $gaji_net . "," . $tht . "," . $biayaJabatan . "///<br>";
+        echo  "depT:".$rowgaji['DEPT']."pph:".$pph . ", ypph: " . $ypph . ", tarif: " . $tarif . ",pkp: " . $pkp . ",ptkp: " . $ptkp . ",gaji net: " . $gaji_net . ", tht:" . $tht . ", biaya jab: " . $biayaJabatan . "<br>";
 
         $npph = dbase_numrecords($dbpph);
         $ngaji =dbase_numrecords($dbgaji);
@@ -259,7 +259,7 @@ if (isset($_POST['hitungPPH'])) {
     dbase_close($dbpph1);
     dbase_close($dbptkp);
     dbase_close($dbtabel);
-    header("Location: ../menu/hitungPPH.php");
+    //header("Location: ../menu/hitungPPH.php");
     
 
 }
