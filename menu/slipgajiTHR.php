@@ -1,4 +1,4 @@
-<?php<?php
+<?php
 if (!isset($_SESSION)) {
 	session_start();
 }
@@ -16,7 +16,7 @@ $print = "";
 
 $pdf ->AddPage();
 
-$pdf ->SetFont('Helvetica','',8);
+$pdf ->SetFont('Helvetica','',7.4);
 $pdf->SetFillColor(255,255,255);
 $pdf->SetTextColor(0,0,0);
 
@@ -36,8 +36,15 @@ $row2 = dbase_get_record_with_names($db2, $i);
 
 $DanaKesehatan = $row['TUNJ_KES']+$row['JPK'];
 $TotalTambah = $row['GAJI_DASAR']+$row['TUNJ_JAB']+$DanaKesehatan;
-$TotalKurang = "";
-$TotalSemua = "";
+$TotalJHT = $row3['THT'] * $row['GAJI_DASAR']/100;
+$TotalJmnPens = 1 * $row['GAJI_DASAR']/100;
+if($TotalJmnPens>85124)
+{
+	$TotalJmnPens = 85124;
+}
+$TotalKurang = $TotalJHT+$row['JPK']+$TotalJmnPens+$row2['PPH_21'];
+$TotalTHR = $row['THR']-$row2['PPH_THR'];
+$TotalSemua = $TotalTambah+$TotalTHR-$TotalKurang-$row['PINJAMAN'];
 
 $html = "
 <table>
@@ -76,9 +83,6 @@ $html = "
 		<th>Tunj.Jabatan : ".$row['TUNJ_JAB']."</th>
 	</tr>
 	<tr>
-		<th>PPH21 : ".$row2['PPH_21']."</th>
-	</tr>
-	<tr>
 		<th>*Total = ".$TotalTambah."</th>
 	</tr>
 	<tr>
@@ -88,13 +92,13 @@ $html = "
 		<th>--== POTONGAN ==-- </th>
 	</tr>
 	<tr>
-		<th>JHT - ".$row3['THT']."% : ".$row2['THT']."</th>
+		<th>JHT - ".$row3['THT']."% : ".$TotalJHT."</th>
 	</tr>
 	<tr>
 		<th>BPJS Kesehatan : ".$row['JPK']."</th>
 	</tr>
 	<tr>
-		<th>Jmn Pensiun - 1% : </th>
+		<th>Jmn Pensiun - 1% : ".$TotalJmnPens."</th>
 	</tr>
 	<tr>
 		<th>PPH21 : ".$row2['PPH_21']."</th>
@@ -106,7 +110,16 @@ $html = "
 		<th>----------------------------------------------------------------------------------</th>
 	</tr>
 	<tr>
-		<th>Koperasi + Pinj : </th>
+		<th>Koperasi + Pinj : ".$row['PINJAMAN']."</th>
+	</tr>
+	<tr>
+		<th>----------------------------------------------------------------------------------</th>
+	</tr>
+	<tr>
+		<th>THR : ".$row['THR']."</th>
+	</tr>
+	<tr>
+		<th>Pajak THR : ".$row2['PPH_THR']."</th>
 	</tr>
 	<tr>
 		<th>----------------------------------------------------------------------------------</th>
@@ -131,245 +144,5 @@ $html = "
 	}
 }
 
-
-$pdf ->Output();
-include('library/tcpdf.php');
-
-$pdf = new TCPDF('p','mm','A4');
-
-$pdf ->setPrintHeader(false);
-
-
-$pdf ->AddPage();
-
-$pdf ->SetFont('Helvetica','',8);
-$html = "
-<table>
-	<tr>
-		<th>====================================</th>
-		<th>====================================</th>
-	</tr>
-	<tr>
-		<th>No.ID : </th>
-		<th>No.ID : </th>
-	</tr>
-	<tr>
-		<th>Nama : </th>
-		<th>Nama : </th>
-	</tr>
-	<tr>
-		<th>Status : </th>
-		<th>Status : </th>
-	</tr>
-	<tr>
-		<th>Pangkat : </th>
-		<th>Pangkat : </th>
-	</tr>
-	<tr>
-		<th>Bulan : </th>
-		<th>Bulan : </th>
-	</tr>
-	<tr>
-		<th>--------------------------------------------------------------</th>
-		<th>--------------------------------------------------------------</th>
-	</tr>
-	<tr>
-		<th> --== PENDAPATAN ==-- </th>
-		<th> --== PENDAPATAN ==-- </th>
-	</tr>
-	<tr>
-		<th>Gaji Pokok : </th>
-		<th>Gaji Pokok : </th>
-	</tr>
-	<tr>
-		<th>Dana : </th>
-		<th>Dana : </th>
-	</tr>
-	<tr>
-		<th>Tunj.Kesehatan : </th>
-		<th>Tunj.Kesehatan : </th>
-	</tr>
-	<tr>
-		<th>*Total = </th>
-		<th>*Total = </th>
-	</tr>
-	<tr>
-		<th>--------------------------------------------------------------</th>
-		<th>--------------------------------------------------------------</th>
-	</tr>
-	<tr>
-		<th> --== POTONGAN ==-- </th>
-		<th> --== POTONGAN ==-- </th>
-	</tr>
-	<tr>
-		<th>JHT - : </th>
-		<th>JHT - : </th>
-	</tr>
-	<tr>
-		<th>BPJS Kesehatan : </th>
-		<th>BPJS Kesehatan : </th>
-	</tr>
-	<tr>
-		<th>Jmn Pensiun - 1% : </th>
-		<th>Jmn Pensiun - 1% : </th>
-	</tr>
-	<tr>
-		<th>PPH21 : </th>
-		<th>PPH21 : </th>
-	</tr>
-	<tr>
-		<th>*Total = </th>
-		<th>*Total = </th>
-	</tr>
-	<tr>
-		<th>--------------------------------------------------------------</th>
-		<th>--------------------------------------------------------------</th>
-	</tr>
-	<tr>
-		<th>Koperasi + Pinj : </th>
-		<th>Koperasi + Pinj : </th>
-	</tr>
-	<tr>
-		<th>--------------------------------------------------------------</th>
-		<th>--------------------------------------------------------------</th>
-	</tr>
-	<tr>
-		<th>THR : </th>
-		<th>THR : </th>
-	</tr>
-	<tr>
-		<th>PPH THR : </th>
-		<th>PPH THR : </th>
-	</tr>
-	<tr>
-		<th></th>
-		<th></th>
-		</tr>
-	<tr>
-		<th>Yang di Terima : </th>
-		<th>Yang di Terima : </th>
-	</tr>
-	<tr>
-		<th>====================================</th>
-		<th>====================================</th>
-	</tr>
-	<tr>
-		<th></th>
-		<th></th>
-	</tr>
-</table>
-<table>
-	<tr>
-		<th>====================================</th>
-
-	</tr>
-	<tr>
-		<th>No.ID : </th>
-
-	</tr>
-	<tr>
-		<th>Nama : </th>
-
-	</tr>
-	<tr>
-		<th>Status : </th>
-
-	</tr>
-	<tr>
-		<th>Pangkat : </th>
-
-	</tr>
-	<tr>
-		<th>Bulan : </th>
-
-	</tr>
-	<tr>
-		<th>--------------------------------------------------------------</th>
-
-	</tr>
-	<tr>
-		<th> --== PENDAPATAN ==-- </th>
-
-	</tr>
-	<tr>
-		<th>Gaji Pokok : </th>
-
-	</tr>
-	<tr>
-		<th>Dana : </th>
-
-	</tr>
-	<tr>
-		<th>Tunj.Kesehatan : </th>
-
-	</tr>
-	<tr>
-		<th>*Total = </th>
-
-	</tr>
-	<tr>
-		<th>--------------------------------------------------------------</th>
-
-	</tr>
-	<tr>
-		<th> --== POTONGAN ==-- </th>
-
-	</tr>
-	<tr>
-		<th>JHT - : </th>
-
-	</tr>
-	<tr>
-		<th>BPJS Kesehatan : </th>
-
-	</tr>
-	<tr>
-		<th>Jmn Pensiun - 1% : </th>
-
-	</tr>
-	<tr>
-		<th>PPH21 : </th>
-
-	</tr>
-	<tr>
-		<th>*Total = </th>
-
-	</tr>
-	<tr>
-		<th>--------------------------------------------------------------</th>
-
-	</tr>
-	<tr>
-		<th>Koperasi + Pinj : </th>
-
-	</tr>
-	<tr>
-		<th>--------------------------------------------------------------</th>
-
-	</tr>
-	<tr>
-		<th>THR : </th>
-	</tr>
-	<tr>
-		<th>PPH THR : </th>
-	</tr>
-	<tr>
-		<th></th>
-	</tr>
-	<tr>
-		<th>Yang di Terima : </th>
-	</tr>
-	<tr>
-		<th>====================================</th>
-
-	</tr>
-	<tr>
-		<th></th>
-	</tr>
-</table>
-
-
-";
-$pdf ->WriteHTMLCell(190,0,'','',$html,0);
 
 $pdf ->Output();
