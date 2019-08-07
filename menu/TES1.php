@@ -34,10 +34,11 @@ $row = dbase_get_record_with_names($db, $i);
 $pangkat = $row['DEPT'];
 $pangkat1 = substr($pangkat,0,1);
 $datapertama = true;
+$print="";
 if($kode1 == $pangkat1){
 	if($datapertama==true){
 		$datapertama=false;
-		$html = <<<EOD
+		$print = <<<EOD
 			<table width="850" cellspacing="0" cellpadding="1" border="1">
 				<tr>
 					<td rowspan="2" width="15">No</td>
@@ -58,48 +59,53 @@ if($kode1 == $pangkat1){
 					<td>BCA(F)</td>
 					<td>BCA(NF)</td>
 				</tr>
-				<tr>
-					<td>$i</td>
-					<td>$row[NIK]</td>
-					<td>$row[NAMA]</td>
-					<td>$row[PANGKAT]</td>
-					<td></td>
-					<td>$row[TUNJ_JAB]</td>
-					<td>$row[TUNJ_KES]</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
+EOD;
+$print .= <<<EOD
+	<tr>
+		<td>$i</td>
+		<td>$row[NIK]</td>
+		<td>$row[NAMA]</td>
+		<td>$row[PANGKAT]</td>
+		<td></td>
+		<td>$row[TUNJ_JAB]</td>
+		<td>$row[TUNJ_KES]</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
 
 EOD;
 }
-	else{	
-			$html .= <<<EOD
-				<tr>
-					<td>$i</td>
-					<td>$row[NIK]</td>
-					<td>$row[NAMA]</td>
-					<td>$row[PANGKAT]</td>
-					<td></td>
-					<td>$row[TUNJ_JAB]</td>
-					<td>$row[TUNJ_KES]</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
+else{	
+$print .= <<<EOD
+	<tr>
+		<td>$i</td>
+		<td>$row[NIK]</td>
+		<td>$row[NAMA]</td>
+		<td>$row[PANGKAT]</td>
+		<td></td>
+		<td>$row[TUNJ_JAB]</td>
+		<td>$row[TUNJ_KES]</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+
 EOD;
 }
-}
 
+if($i==$ndata){
+$print .= "</table>";
 }
+}
+}
+$pdf->writeHTML($print, true, false, false, false, '');
 
-$pdf->writeHTML($html, true, false, false, false, '');
 }
 $pdf ->Output();
