@@ -56,12 +56,12 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 	$TotalGajiNetto = 0;
 	$TotalKolomExtra = 0;
 	$TotalYangditerima = 0;
-	$TotalBCAF = 0;
-	$TotalBCANF = 0;
+	$TotalBCA = 0;
 	$TotalTunai = 0;
 	for ($i = 1; $i <= $ndata; $i++) {
 		
 		$row = dbase_get_record_with_names($db, $i);
+		$kodebca = $row['KODE_BANK'];
 		$row3 = dbase_get_record_with_names($db3, $i);
 		$pangkat = $row['DEPT'];
 		$pangkat1 = substr($pangkat, 0, 1);
@@ -79,9 +79,15 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 			$TotalGajiNetto = (int)$TotalGajiNetto+(int)$GajiNetto;
 			$TotalKolomExtra = (int)$TotalKolomExtra+(int)$KolomExtra;
 			$TotalYangditerima = (int)$TotalYangditerima+(int)$Total;
-			$TotalBCAF = $TotalBCAF;
-			$TotalBCANF = $TotalBCANF;
-			$TotalTunai = $TotalTunai;
+			$transfer = 0;
+			$tunai = 0;
+			if ($kodebca == 1) {
+				$transfer = $Total;
+			}else{
+				$tunai = $Total;
+			}
+			$TotalBCA += $transfer;
+			$TotalTunai += $tunai;
 
 			$GajiBruto = rupiah($GajiBruto);
 			$GajiNetto = rupiah($GajiNetto);
@@ -89,9 +95,11 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 			$Total = rupiah($Total);
 			$row['TUNJ_JAB'] = rupiah($row['TUNJ_JAB']);
 			$row['TUNJ_KES'] = rupiah($row['TUNJ_KES']);
+			$transfer = rupiah($transfer);
+			$tunai = rupiah($tunai);
 			
-
-			if ($datapertama == true) {
+	$TotalBCA = (int)$TotalBCA+(int)$Total;
+	if ($datapertama == true) {
 				$datapertama = false;
 				$print .= <<<EOD
 							<h1>$namakode</h1>
@@ -106,7 +114,7 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 									<td rowspan="2" width="70">Gaji Netto</td>
 									<td rowspan="2" width="70">Pend.Lain/ Pinjaman</td>
 									<td rowspan="2" width="70">Yang Diterima</td>
-									<td rowspan="2" >Transfer BCA</td>
+									<td rowspan="2" width="70">Transfer BCA</td>
 									<td rowspan="2" width="70">Tunai</td>
 								</tr>
 								<tr>
@@ -126,8 +134,8 @@ EOD;
 						<td>$GajiNetto</td>
 						<td>$KolomExtra</td>
 						<td>$Total</td>
-						<td></td>
-						<td></td>
+						<td>$transfer</td>
+						<td>$tunai</td>
 					</tr>
 
 				EOD;
@@ -144,13 +152,14 @@ EOD;
 						<td>$GajiNetto</td>
 						<td>$KolomExtra</td>
 						<td>$Total</td>
-						<td></td>
-						<td></td>
+						<td>$transfer</td>
+						<td>$tunai</td>
 					</tr>
 					
 
 EOD;
 			}
+			
 		}
 		if ($i == $ndata && $datapertama == false) {
 			$TotalGajiBruto = rupiah($TotalGajiBruto);
@@ -159,8 +168,7 @@ EOD;
 			$TotalGajiNetto = rupiah($TotalGajiNetto);
 			$TotalKolomExtra = rupiah($TotalKolomExtra);
 			$TotalYangditerima = rupiah($TotalYangditerima);
-			$TotalBCAF = rupiah($TotalBCAF);
-			$TotalBCANF = rupiah($TotalBCANF);
+			$TotalBCA = rupiah($TotalBCA);
 			$TotalTunai = rupiah($TotalTunai);
 			$print .= <<<EOD
 				<tr>
@@ -171,8 +179,8 @@ EOD;
 						<td>$TotalGajiNetto</td>
 						<td>$TotalKolomExtra</td>
 						<td>$TotalYangditerima</td>
-						<td></td>
-						<td></td>
+						<td>$TotalBCA</td>
+						<td>$TotalTunai</td>
 					</tr>
 			</table>
 EOD;

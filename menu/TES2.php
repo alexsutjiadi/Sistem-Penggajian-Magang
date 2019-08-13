@@ -58,13 +58,14 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 	$TotalTHRBruto = 0;
 	$TotalKolomExtra = 0;
 	$TotalYangditerima = 0;
-	$TotalBCAF = 0;
-	$TotalBCANF = 0;
+	$TotalBCA = 0;
 	$TotalTunai = 0;
 	
 	for ($i = 1; $i <= $ndata; $i++) {
 		
 		$row = dbase_get_record_with_names($db, $i);
+		$kodebca = $row['KODE_BANK'];
+		$kolomkosong = 0;
 		$row3 = dbase_get_record_with_names($db3, $i);
 		$pangkat = $row['DEPT'];
 		$pangkat1 = substr($pangkat, 0, 1);
@@ -86,9 +87,16 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 			$TotalTHRBruto = (int)$TotalTHRBruto+(int)$BrutoTHR;
 			$TotalKolomExtra = (int)$TotalKolomExtra+(int)$KolomExtra;
 			$TotalYangditerima = (int)$TotalYangditerima+(int)$Total;
-			$TotalBCAF = $TotalBCAF;
-			$TotalBCANF = $TotalBCANF;
-			$TotalTunai = $TotalTunai;
+			$transfer = 0;
+			$tunai = 0;
+			
+			if ($kodebca==1) {
+				$transfer = $Total;
+			}else{
+				$tunai = $Total;
+			}
+			$TotalBCA = $TotalBCA + $transfer;
+			$TotalTunai = $TotalTunai + $tunai;
 
 			$BrutoTHR = rupiah($BrutoTHR);
 			$GajiBruto = rupiah($GajiBruto);
@@ -98,7 +106,9 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 			$row['TUNJ_JAB'] = rupiah($row['TUNJ_JAB']);
 			$row['TUNJ_KES'] = rupiah($row['TUNJ_KES']);
 			$row['THR'] = rupiah($row['THR']);
-
+			$kolomkosong = rupiah($kolomkosong);
+			$transfer = rupiah($transfer);
+			$tunai = rupiah($tunai);
 			if ($datapertama == true) {
 				$datapertama = false;
 				$print .= <<<EOD
@@ -139,11 +149,11 @@ EOD;
 						<td>$BrutoTHR</td>
 						<td>$KolomExtra</td>
 						<td>$Total</td>
-						<td></td>
-						<td></td>
+						<td>$transfer</td>
+						<td>$tunai</td>
 					</tr>
 
-				EOD;
+EOD;
 			} else {
 				$print .= <<<EOD
 					<tr>
@@ -159,13 +169,14 @@ EOD;
 						<td>$BrutoTHR</td>
 						<td>$KolomExtra</td>
 						<td>$Total</td>
-						<td></td>
-						<td></td>
+						<td>$transfer</td>
+						<td>$tunai</td>
 					</tr>
 					
 
 EOD;
-			}
+			
+}
 		}
 		if ($i == $ndata && $datapertama == false) {
 			$TotalGajiBruto = rupiah($TotalGajiBruto);
@@ -176,8 +187,7 @@ EOD;
 			$TotalTHRBruto = rupiah($TotalTHRBruto);
 			$TotalKolomExtra = rupiah($TotalKolomExtra);
 			$TotalYangditerima = rupiah($TotalYangditerima);
-			$TotalBCAF = rupiah($TotalBCAF);
-			$TotalBCANF = rupiah($TotalBCANF);
+			$TotalBCA = rupiah($TotalBCA);
 			$TotalTunai = rupiah($TotalTunai);
 			$print .= <<<EOD
 				<tr>
@@ -190,8 +200,8 @@ EOD;
 						<td>$TotalTHRBruto</td>
 						<td>$TotalKolomExtra</td>
 						<td>$TotalYangditerima</td>
-						<td></td>
-						<td></td>
+						<td>$TotalBCA</td>
+						<td>$TotalTunai</td>
 					</tr>
 			</table>
 EOD;
