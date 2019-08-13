@@ -62,9 +62,11 @@ if (isset($_POST['addNew'])) {
         }
 
 
-        $numberRecord = dbase_numrecords($db);
         //get no urut
-        $no = $numberRecord + 1;
+        $numberRecord = dbase_numrecords($db);
+        //get no urut trakir dari db
+        $no = dbase_get_record_with_names($db, $numberRecord);
+        $no = (int) $no['NO_URUT'] + 1;
         if ($no < 100) {
             $no = "0" . $no;
         }
@@ -75,10 +77,12 @@ if (isset($_POST['addNew'])) {
             $row = dbase_get_record_with_names($db, $i);
             $getKodeDept = substr($row['DEPT'], 0, 1);
             if ($getKodeDept == $dept) {
-                $noDept = $noDept + 1;
+                if ((int) substr($row['DEPT'], 3, 2) > $noDept) // cari no urut dept terbesar
+                    $noDept = (int) substr($row['DEPT'], 3, 2);
             }
         }
         //bkin dept code
+        $noDept += 1; //no urut sekarang (terbesar + 1)
         if ($noDept < 10) {
             $dept = $dept . "0-0" . $noDept;
         } else {
@@ -273,7 +277,7 @@ if (isset($_POST['addNew'])) {
                                             for ($i = 0; $i <= $nRecord; $i++) {
                                                 $row = dbase_get_record_with_names($db, $i)
                                                 ?>
-                                                <option value=<?php echo "'" . $row['KODE'] . "'" ?>><?php echo $row['NAMA'] ?> </option>
+                                            <option value=<?php echo "'" . $row['KODE'] . "'" ?>><?php echo $row['NAMA'] ?> </option>
                                             <?php }
                                             dbase_close($db); ?>
                                         </select>
