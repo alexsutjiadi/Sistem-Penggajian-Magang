@@ -169,11 +169,11 @@ if (isset($_POST['hitungPPH'])) {
             $bonus = ($rowgaji['BONUS'] * $rowtabel['PERS3']) / 100;
         }
 
-        echo  "depT:".$rowgaji['DEPT']."pph:".$pph . ", ypph: " . $ypph . ", tarif: " . $tarif . ",pkp: " . $pkp . ",ptkp: " . $ptkp . ",gaji net: " . $gaji_net . ", tht:" . $tht . ", biaya jab: " . $biayaJabatan . "<br>";
+        // echo  "depT:".$rowgaji['DEPT']."pph:".$pph . ", ypph: " . $ypph . ", tarif: " . $tarif . ",pkp: " . $pkp . ",ptkp: " . $ptkp . ",gaji net: " . $gaji_net . ", tht:" . $tht . ", biaya jab: " . $biayaJabatan . "<br>";
 
         $npph = dbase_numrecords($dbpph);
         $ngaji =dbase_numrecords($dbgaji);
-        if ($npph == 0) {
+        if ($npph != $ngaji) {
             dbase_add_record($dbpph, array(
                 $rowgaji['NO_URUT'],
                 $rowgaji['NIK'],
@@ -195,8 +195,9 @@ if (isset($_POST['hitungPPH'])) {
         } else {
             //update berdasarkan deptID
             for ($n = 1; $n <= $ngaji; $n++) {
-                $rowpph = dbase_get_record_with_names($dbpph, $n);
-                if ($rowpph['NO_URUT'] == $rowgaji['NO_URUT']) {
+                    $rowpph = dbase_get_record_with_names($dbpph, $n);
+                    if ($rowpph['NO_URUT'] == $rowgaji['NO_URUT']) {
+                        
                     unset($rowpph['deleted']);
 
                     $rowpph['NO_URUT'] = $rowgaji['NO_URUT'];
@@ -218,29 +219,9 @@ if (isset($_POST['hitungPPH'])) {
                     $rowpph = array_values($rowpph);
                     dbase_replace_record($dbpph,$rowpph,$n);
                     break;
+                    }
+                    
                 }
-                if ($n > $npph) {
-                    dbase_add_record($dbpph, array(
-                        $rowgaji['NO_URUT'],
-                        $rowgaji['NIK'],
-                        $rowgaji['DEPT'],
-                        $rowgaji['TUNJ_JAB'],
-                        $rowgaji['TUNJ_KES'],
-                        $ptkp,
-                        $jamsos,
-                        $rowgaji['JPK'],
-                        $biayaJabatan,
-                        $tht,
-                        $pkp,
-                        $pph,
-                        $rowgaji['THR'],
-                        $thr,
-                        $rowgaji['BONUS'],
-                        $bonus, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $bulan, $rowgaji['AKTIV'], 0
-                    ));
-                    break;
-                }
-            }
         }
     }
     $ini_array = parse_ini_file($_SESSION['pathKota'] . "init.ini");
@@ -259,7 +240,7 @@ if (isset($_POST['hitungPPH'])) {
     dbase_close($dbpph1);
     dbase_close($dbptkp);
     dbase_close($dbtabel);
-    //header("Location: ../menu/hitungPPH.php");
+    header("Location: ../menu/hitungPPH.php");
     
 
 }
