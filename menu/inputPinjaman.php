@@ -5,6 +5,7 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['pathKota'])) {
 	header("Location: ../pilihKota.php");
 }
+include "../src/main.php";
 //thr
 if (isset($_POST['edit'])) {
 	$nik = strtoupper($_POST['nik']);

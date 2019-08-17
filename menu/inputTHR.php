@@ -5,6 +5,7 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['pathKota'])) {
 	header("Location: ../pilihKota.php");
 }
+include "../src/main.php";
 //thr
 if (isset($_POST['edit'])) {
 	$thr = $_POST['thr'];
@@ -46,12 +47,6 @@ if (isset($_POST['editThr'])) {
 			dbase_close($db);
 		}
 	}
-}
-
-function rupiah($angka)
-{
-	$hasil = "Rp. " . number_format((int) $angka, 0, '', '.');
-	return $hasil;
 }
 
 //fetch data golongan dri db
@@ -159,298 +154,228 @@ if ($db) {
 </head>
 
 <body>
-	<div class="wrapper">
-		<!-- Sidebar  -->
-		<nav id="sidebar">
-			<div class="sidebar-header">
-				<button type="button" id="sidebarCollapse" class="btn btn-info">
-					<i class="fas fa-align-left"></i>
-				</button>
+	<?php printSideBar() ?>
+	<div id="content">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a>INPUT THR <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
 			</div>
-			<ul class="list-unstyled components">
-				<!-- <img src="img/rtn.jpg" /> -->
-				<li class="active">
-					<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-						Maintain Input MASTER
-					</a>
-					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li>
-							<a href='inputMaster.php'>Input Master</a>
-						</li>
-						<a href='payrollMasterFile.php'>Manage Master Gaji</a>
-						<li>
-							<a href='alamatDanNpwp.php'>Alamat & N.P.W.P</a>
-						</li>
-						<a href='masterBCA.php'>Master B.C.A</a>
-						<li>
-							<a href='showNamaGolongan.php'>Golongan</a>
-						</li>
-						<a href='inputGajiBaru.php'>Gaji Baru</a>
-						<li>
-							<a href='inputTunjanganJabatan.php'>Input Data Lain</a>
-						</li>
-					</ul>
-				</li>
-				<li class="active">
-					<a href="#pageSubTHRBONUS" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-						THR BONUS
-					</a>
-					<ul class="collapse list-unstyled" id="pageSubTHRBONUS">
-						<li>
-							<a href='inputTHR.php'>Input THR</a>
-						</li>
-						<li>
-							<a href='inputBonus.php'>Input Bonus</a>
-						</li>
-					</ul>
-				</li>
-				<li class="active">
-					<a href="#pageSubpangkat" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-						Manage Pangkat
-					</a>
-					<ul class="collapse list-unstyled" id="pageSubpangkat">
-						<li>
-							<a href='masterPangkatK1.php' class="w3-bar-item w3-button">K1 </a>
-						</li>
-						<li>
-							<a href='masterPangkatK2.php' class="w3-bar-item w3-button">K2 </a>
-						</li>
-						<li>
-							<a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
-						</li>
-						<li>
-							<a href='master4Bplus.php' class="w3-bar-item w3-button">4B - TM </a>
-						</li>
-				</li>
-			</ul>
-			<li class="active">
-				<a href="../pilihKota.php">Pilih Kota</a>
-			</li>
-			<li class="active">
-				<a href="hitungPPH.php">Hitung PPH</a>
-			</li>
 		</nav>
-		<div id="content">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
-					<a>INPUT THR <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
-				</div>
-			</nav>
-			<div class="tableButton">
-				<div style="margin-right: 120px">
-					<input type="button" tabindex="-1" name="buttonEditThr" value="Edit All Thr" id="buttonEditThr" data-condition="true" class="bEdit">
-				</div>
-				<table width="100%" cellspacing='0' id="myTable">
-					<thead>
-						<tr>
-							<th onclick="sortTable(0,'T')">DEPT</th>
-							<th onclick="sortTable(1,'T')">Nama</th>
-							<th onclick="sortTable(2,'N')">Gaji</th>
-							<th onclick="sortTable(3,'N')">Tunjangan Jabatan</th>
-							<th onclick="sortTable(4,'N')">THR</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						$totalThr = 0;
-						$i = 0;
-						for ($i = 1; $i <= $record_numbers; $i++) { ?>
-							<tr>
-								<?php $row = dbase_get_record_with_names($db, $i);
-								?>
-								<td>
-									<?php echo $row['DEPT']; ?>
-								</td>
-								<td>
-									<?php echo $row['NAMA']; ?>
-								</td>
-								<td>
-									<?php echo rupiah($row['GAJI_DASAR']); ?>
-								</td>
-								<td>
-									<?php echo rupiah($row['TUNJ_JAB']); ?>
-
-								</td>
-								<td class=<?php echo "tdThr" . $i ?> data-mode="thr" data-row=<?php echo $i ?>>
-									<?php echo rupiah($row['THR']); ?>
-								</td>
-								<td>
-									<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-									<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
-									<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK'] ?> id=<?php echo "pilihanBank" . $i; ?>>
-									<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
-									<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
-									<input type="hidden" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?>>
-									<input type="hidden" name="thr" value=<?php echo "'" . $row['THR'] . "'";
-																			$totalThr += (int)$row['THR']; ?> id=<?php echo "thr" . $i; ?>>
-									<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-
-								</td>
-							</tr>
-						<?php }
-						dbase_close($db); ?>
-					</tbody>
-					<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
-				</table>
+		<div class="tableButton">
+			<div style="margin-right: 120px">
+				<input type="button" tabindex="-1" name="buttonEditThr" value="Edit All Thr" id="buttonEditThr" data-condition="true" class="bEdit">
 			</div>
-			<p style="color:black;font-weight:bold;">Total THR yang dibayarkan : <?php echo $totalThr ?></p>
+			<table width="100%" cellspacing='0' id="myTable">
+				<thead>
+					<tr>
+						<th onclick="sortTable(0,'T')">DEPT</th>
+						<th onclick="sortTable(1,'T')">Nama</th>
+						<th onclick="sortTable(2,'N')">Gaji</th>
+						<th onclick="sortTable(3,'N')">Tunjangan Jabatan</th>
+						<th onclick="sortTable(4,'N')">THR</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					$totalThr = 0;
+					$i = 0;
+					for ($i = 1; $i <= $record_numbers; $i++) { ?>
+					<tr>
+						<?php $row = dbase_get_record_with_names($db, $i);
+							?>
+						<td>
+							<?php echo $row['DEPT']; ?>
+						</td>
+						<td>
+							<?php echo $row['NAMA']; ?>
+						</td>
+						<td>
+							<?php echo rupiah($row['GAJI_DASAR']); ?>
+						</td>
+						<td>
+							<?php echo rupiah($row['TUNJ_JAB']); ?>
 
-			<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<form action="" method="post">
-							<div class="modal-header">
-								<h5 class="modal-title">Add Jumlah THR</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
+						</td>
+						<td class=<?php echo "tdThr" . $i ?> data-mode="thr" data-row=<?php echo $i ?>>
+							<?php echo rupiah($row['THR']); ?>
+						</td>
+						<td>
+							<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+							<input type="hidden" name="total" value=<?php echo $row['GAJI_DASAR'] + $row['TUNJ_JAB'] ?> id=<?php echo "total" . $i; ?>>
+							<input type="hidden" name="pilihanBank" value=<?php echo $row['KODE_BANK'] ?> id=<?php echo "pilihanBank" . $i; ?>>
+							<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
+							<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
+							<input type="hidden" name="tunjangan_jab" value=<?php echo "'" . $row['TUNJ_JAB'] . "'"; ?> id=<?php echo "tunjangan_jab" . $i; ?>>
+							<input type="hidden" name="thr" value=<?php echo "'" . $row['THR'] . "'";
+																		$totalThr += (int) $row['THR']; ?> id=<?php echo "thr" . $i; ?>>
+							<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+
+						</td>
+					</tr>
+					<?php }
+					dbase_close($db); ?>
+				</tbody>
+				<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
+			</table>
+		</div>
+		<p style="color:black;font-weight:bold;">Total THR yang dibayarkan : <?php echo $totalThr ?></p>
+
+		<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form action="" method="post">
+						<div class="modal-header">
+							<h5 class="modal-title">Add Jumlah THR</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="col-lg-12">
+								<label for="nik">DEPT</label>
+								<input type="text" class="nik" name="nik" placeholder="" disabled>
+								<input type="hidden" id="rowId" class="rowId" name="rowId">
 							</div>
-							<div class="modal-body">
-								<div class="col-lg-12">
-									<label for="nik">DEPT</label>
-									<input type="text" class="nik" name="nik" placeholder="" disabled>
-									<input type="hidden" id="rowId" class="rowId" name="rowId">
-								</div>
-								<div class="col-lg-12">
-									<label for="nama">NAMA</label>
-									<input type="text" class="nama" name="nama" placeholder="" disabled>
-								</div>
-								<div class="col-lg-12">
-									<label for="gaji">GAJI</label>
-									<input type="text" class="gaji" name="gaji" placeholder="" disabled>
-								</div>
-								<div class="col-lg-12">
-									<label for="tunjangan_jab">TUNJANGAN JABATAN</label>
-									<input type="text" class="tunjangan_jab" name="tunjangan_jab" placeholder="" disabled>
-								</div>
-								<div class="col-lg-12">
-									<label for="total">TOTAL</label>
-									<input type="text" class="total" name="total" placeholder="" disabled>
-								</div>
-								<div class="col-lg-12">
-									<label for="kode">THR</label>
-									<input type="text" class="thr" name="thr" placeholder="">
-								</div>
-								<div class="col-lg-12">
-									<label for="pilihanBank">Pilihan Bank (1. BCA, 2. Tunai)</label>
-									<input type="text" class="pilihanBank" name="pilihanBank" placeholder="">
-								</div>
+							<div class="col-lg-12">
+								<label for="nama">NAMA</label>
+								<input type="text" class="nama" name="nama" placeholder="" disabled>
 							</div>
-							<div class="modal-footer">
-								<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<div class="col-lg-12">
+								<label for="gaji">GAJI</label>
+								<input type="text" class="gaji" name="gaji" placeholder="" disabled>
 							</div>
-						</form>
-					</div>
+							<div class="col-lg-12">
+								<label for="tunjangan_jab">TUNJANGAN JABATAN</label>
+								<input type="text" class="tunjangan_jab" name="tunjangan_jab" placeholder="" disabled>
+							</div>
+							<div class="col-lg-12">
+								<label for="total">TOTAL</label>
+								<input type="text" class="total" name="total" placeholder="" disabled>
+							</div>
+							<div class="col-lg-12">
+								<label for="kode">THR</label>
+								<input type="text" class="thr" name="thr" placeholder="">
+							</div>
+							<div class="col-lg-12">
+								<label for="pilihanBank">Pilihan Bank (1. BCA, 2. Tunai)</label>
+								<input type="text" class="pilihanBank" name="pilihanBank" placeholder="">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
-		<script>
-			$(document).on("click", ".btnUpdate", function() {
-				var clickId = $(this).data('id');
-				var nikValue = $("#nik" + clickId).val();
-				var namaValue = $("#nama" + clickId).val();
-				var gajiValue = $("#gaji" + clickId).val();
-				var tunjangan_jabValue = $("#tunjangan_jab" + clickId).val();
-				var thrValue = $("#thr" + clickId).val();
-				var total = $("#total" + clickId).val();
-				var pilihanBankValue = $("#pilihanBank" + clickId).val();
+	</div>
+	<script>
+		$(document).on("click", ".btnUpdate", function() {
+			var clickId = $(this).data('id');
+			var nikValue = $("#nik" + clickId).val();
+			var namaValue = $("#nama" + clickId).val();
+			var gajiValue = $("#gaji" + clickId).val();
+			var tunjangan_jabValue = $("#tunjangan_jab" + clickId).val();
+			var thrValue = $("#thr" + clickId).val();
+			var total = $("#total" + clickId).val();
+			var pilihanBankValue = $("#pilihanBank" + clickId).val();
 
-				$(".modal-body .nik").val(nikValue);
-				$(".modal-body .nama").val(namaValue);
-				$(".modal-body .gaji").val(gajiValue);
-				$(".modal-body .tunjangan_jab").val(tunjangan_jabValue);
-				$(".modal-body .thr").val(thrValue);
-				$(".modal-body .total").val(total);
-				$(".modal-body .rowId").val(clickId);
-				$(".modal-body .pilihanBank").val(pilihanBankValue);
-			});
+			$(".modal-body .nik").val(nikValue);
+			$(".modal-body .nama").val(namaValue);
+			$(".modal-body .gaji").val(gajiValue);
+			$(".modal-body .tunjangan_jab").val(tunjangan_jabValue);
+			$(".modal-body .thr").val(thrValue);
+			$(".modal-body .total").val(total);
+			$(".modal-body .rowId").val(clickId);
+			$(".modal-body .pilihanBank").val(pilihanBankValue);
+		});
 
-			function sortTable(n, mode) {
-				var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-				table = document.getElementById("myTable");
-				switching = true;
-				//Set the sorting direction to ascending:
-				dir = "asc";
-				/*Make a loop that will continue until
-				no switching has been done:*/
-				while (switching) {
-					//start by saying: no switching is done:
-					switching = false;
-					rows = table.rows;
-					/*Loop through all table rows (except the
-					first, which contains table headers):*/
-					for (i = 1; i < (rows.length - 1); i++) {
-						//start by saying there should be no switching:
-						shouldSwitch = false;
-						/*Get the two elements you want to compare,
-						one from current row and one from the next:*/
-						x = rows[i].getElementsByTagName("TD")[n];
-						y = rows[i + 1].getElementsByTagName("TD")[n];
-						/*check if the two rows should switch place,
-						based on the direction, asc or desc:*/
-						if (dir == "asc") {
-							if (mode == 'N') {
-								if (Number(x.innerHTML) > Number(y.innerHTML)) {
-									//if so, mark as a switch and break the loop:
-									shouldSwitch = true;
-									break;
-								}
-							} else {
-								if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-									//if so, mark as a switch and break the loop:
-									shouldSwitch = true;
-									break;
-								}
+		function sortTable(n, mode) {
+			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+			table = document.getElementById("myTable");
+			switching = true;
+			//Set the sorting direction to ascending:
+			dir = "asc";
+			/*Make a loop that will continue until
+			no switching has been done:*/
+			while (switching) {
+				//start by saying: no switching is done:
+				switching = false;
+				rows = table.rows;
+				/*Loop through all table rows (except the
+				first, which contains table headers):*/
+				for (i = 1; i < (rows.length - 1); i++) {
+					//start by saying there should be no switching:
+					shouldSwitch = false;
+					/*Get the two elements you want to compare,
+					one from current row and one from the next:*/
+					x = rows[i].getElementsByTagName("TD")[n];
+					y = rows[i + 1].getElementsByTagName("TD")[n];
+					/*check if the two rows should switch place,
+					based on the direction, asc or desc:*/
+					if (dir == "asc") {
+						if (mode == 'N') {
+							if (Number(x.innerHTML) > Number(y.innerHTML)) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
 							}
-
-						} else if (dir == "desc") {
-							if (mode == 'N') {
-								if (Number(x.innerHTML) < Number(y.innerHTML)) {
-									//if so, mark as a switch and break the loop:
-									shouldSwitch = true;
-									break;
-								}
-							} else {
-								if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-									//if so, mark as a switch and break the loop:
-									shouldSwitch = true;
-									break;
-								}
+						} else {
+							if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
 							}
 						}
-					}
-					if (shouldSwitch) {
-						/*If a switch has been marked, make the switch
-						and mark that a switch has been done:*/
-						rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-						switching = true;
-						//Each time a switch is done, increase this count by 1:
-						switchcount++;
-					} else {
-						/*If no switching has been done AND the direction is "asc",
-						set the direction to "desc" and run the while loop again.*/
-						if (switchcount == 0 && dir == "asc") {
-							dir = "desc";
-							switching = true;
+
+					} else if (dir == "desc") {
+						if (mode == 'N') {
+							if (Number(x.innerHTML) < Number(y.innerHTML)) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
+							}
+						} else {
+							if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
+							}
 						}
 					}
 				}
+				if (shouldSwitch) {
+					/*If a switch has been marked, make the switch
+					and mark that a switch has been done:*/
+					rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+					switching = true;
+					//Each time a switch is done, increase this count by 1:
+					switchcount++;
+				} else {
+					/*If no switching has been done AND the direction is "asc",
+					set the direction to "desc" and run the while loop again.*/
+					if (switchcount == 0 && dir == "asc") {
+						dir = "desc";
+						switching = true;
+					}
+				}
 			}
-		</script>
-		<!-- Popper.JS -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-		<!-- Bootstrap JS -->
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+		}
+	</script>
+	<!-- Popper.JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$('#sidebarCollapse').on('click', function() {
-					$('#sidebar').toggleClass('active');
-				});
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#sidebarCollapse').on('click', function() {
+				$('#sidebar').toggleClass('active');
 			});
-		</script>
+		});
+	</script>
 
 </body>
 

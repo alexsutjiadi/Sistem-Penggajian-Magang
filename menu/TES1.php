@@ -5,11 +5,7 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['pathKota'])) {
 	header("Location: ../pilihKota.php");
 }
-function rupiah($angka)
-{
-	$hasil = "Rp. " . number_format((int) $angka, 0, '', '.');
-	return $hasil;
-}
+include "../src/main.php";
 include('library/tcpdf.php');
 $pdf = new TCPDF('L', 'mm', 'F4');
 

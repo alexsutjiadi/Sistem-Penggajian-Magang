@@ -103,8 +103,8 @@ if (isset($_POST['hitungPPH'])) {
         $tunjkes = (int) $rowgaji['TUNJ_KES'];
         $jpk = (int) $rowgaji['JPK'];
         $pensiun = $gaji_dasar * 0.01; //1%gajipokok
-        if($pensiun>85124){
-            $pensiun=85124;
+        if ($pensiun > 85124) {
+            $pensiun = 85124;
         }
 
         $biayaJabatan = $gaji_dasar * $rowtabel['JAB'];
@@ -113,7 +113,7 @@ if (isset($_POST['hitungPPH'])) {
             $biayaJabatan = $rowtabel['JAB_MAX'];
         }
         $jht = ($gaji_dasar * $rowtabel['THT']) / 100; //2% gaji pokok
-        $tht = $jht+$pensiun;
+        $tht = $jht + $pensiun;
         $gaji_net = $gaji_dasar + ($tunjreg + $tunjjab + $tunjkes) - ($biayaJabatan + $tht + $jpk);
         $ygaji_net = $gaji_net * 12;
 
@@ -172,32 +172,86 @@ if (isset($_POST['hitungPPH'])) {
         // echo  "depT:".$rowgaji['DEPT']."pph:".$pph . ", ypph: " . $ypph . ", tarif: " . $tarif . ",pkp: " . $pkp . ",ptkp: " . $ptkp . ",gaji net: " . $gaji_net . ", tht:" . $tht . ", biaya jab: " . $biayaJabatan . "<br>";
 
         $npph = dbase_numrecords($dbpph);
-        $ngaji =dbase_numrecords($dbgaji);
+        $ngaji = dbase_numrecords($dbgaji);
         if ($npph != $ngaji) {
-            dbase_add_record($dbpph, array(
-                $rowgaji['NO_URUT'],
-                $rowgaji['NIK'],
-                $rowgaji['DEPT'],
-                $rowgaji['TUNJ_JAB'],
-                $rowgaji['TUNJ_KES'],
-                $ptkp,
-                $jamsos,
-                $rowgaji['JPK'],
-                $biayaJabatan,
-                $tht,
-                $pkp,
-                $pph,
-                $rowgaji['THR'],
-                $thr,
-                $rowgaji['BONUS'],
-                $bonus, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $bulan, $rowgaji['AKTIV'], 0
-            ));
+            if($npph!=0){
+                for ($n = 1; $n <= $ngaji; $n++) {
+                    if($n > $npph){
+                        dbase_add_record($dbpph, array(
+                            $rowgaji['NO_URUT'],
+                            $rowgaji['NIK'],
+                            $rowgaji['DEPT'],
+                            $rowgaji['TUNJ_JAB'],
+                            $rowgaji['TUNJ_KES'],
+                            $ptkp,
+                            $jamsos,
+                            $rowgaji['JPK'],
+                            $biayaJabatan,
+                            $tht,
+                            $pkp,
+                            $pph,
+                            $rowgaji['THR'],
+                            $thr,
+                            $rowgaji['BONUS'],
+                            $bonus, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $bulan, $rowgaji['AKTIV'], 0
+                        ));
+                    }else{
+                        $rowpph = dbase_get_record_with_names($dbpph, $n);
+                        if ($rowpph['NO_URUT'] == $rowgaji['NO_URUT']) {
+
+                            unset($rowpph['deleted']);
+
+                            $rowpph['NO_URUT'] = $rowgaji['NO_URUT'];
+                            $rowpph['TUNJ_JAB'] = $rowgaji['TUNJ_JAB'];
+                            $rowpph['TUNJ_KES'] = $rowgaji['TUNJ_KES'];
+                            $rowpph['PTKP'] = $ptkp;
+                            $rowpph['JAMSOS'] = $jamsos;
+                            $rowpph['JPK'] = $rowgaji['JPK'];
+                            $rowpph['JABAT'] = $biayaJabatan;
+                            $rowpph['THT'] = $tht;
+                            $rowpph['PKP'] = $pkp;
+                            $rowpph['PPH_21'] = $pph;
+                            $rowpph['THR'] = $rowgaji['THR'];
+                            $rowpph['PPH_THR'] = $thr;
+                            $rowpph['BONUS'] = $rowgaji['BONUS'];
+                            $rowpph['PPH_BONUS'] = $bonus;
+                            $rowpph['YTD_BLN'] = $bulan;
+                            $rowpph['AKTIV'] = $rowgaji['AKTIV'];
+                            $rowpph = array_values($rowpph);
+                            dbase_replace_record($dbpph, $rowpph, $n);
+                            break;
+                        }
+                    }
+                    
+                }
+            }else{
+                dbase_add_record($dbpph, array(
+                    $rowgaji['NO_URUT'],
+                    $rowgaji['NIK'],
+                    $rowgaji['DEPT'],
+                    $rowgaji['TUNJ_JAB'],
+                    $rowgaji['TUNJ_KES'],
+                    $ptkp,
+                    $jamsos,
+                    $rowgaji['JPK'],
+                    $biayaJabatan,
+                    $tht,
+                    $pkp,
+                    $pph,
+                    $rowgaji['THR'],
+                    $thr,
+                    $rowgaji['BONUS'],
+                    $bonus, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $bulan, $rowgaji['AKTIV'], 0
+                ));
+            }
+            
+
         } else {
             //update berdasarkan deptID
             for ($n = 1; $n <= $ngaji; $n++) {
-                    $rowpph = dbase_get_record_with_names($dbpph, $n);
-                    if ($rowpph['NO_URUT'] == $rowgaji['NO_URUT']) {
-                        
+                $rowpph = dbase_get_record_with_names($dbpph, $n);
+                if ($rowpph['NO_URUT'] == $rowgaji['NO_URUT']) {
+
                     unset($rowpph['deleted']);
 
                     $rowpph['NO_URUT'] = $rowgaji['NO_URUT'];
@@ -217,11 +271,10 @@ if (isset($_POST['hitungPPH'])) {
                     $rowpph['YTD_BLN'] = $bulan;
                     $rowpph['AKTIV'] = $rowgaji['AKTIV'];
                     $rowpph = array_values($rowpph);
-                    dbase_replace_record($dbpph,$rowpph,$n);
+                    dbase_replace_record($dbpph, $rowpph, $n);
                     break;
-                    }
-                    
                 }
+            }
         }
     }
     $ini_array = parse_ini_file($_SESSION['pathKota'] . "init.ini");
@@ -241,8 +294,6 @@ if (isset($_POST['hitungPPH'])) {
     dbase_close($dbptkp);
     dbase_close($dbtabel);
     header("Location: ../menu/hitungPPH.php");
-    
-
 }
 if (isset($_POST['clear'])) {
     $dbpph = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 2);

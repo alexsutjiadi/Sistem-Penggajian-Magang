@@ -5,7 +5,6 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['pathKota'])) {
     header("Location: ../pilihKota.php");
 }
-
 include "../src/main.php";
 
 ?>
@@ -32,18 +31,13 @@ include "../src/main.php";
 </head>
 
 <body>
-    <?php printSideBar()?>
+    <?php printSideBar();?>
     <div id="content">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a>HITUNG PPH</a>
+                <a>PPH Bonus</a>
             </div>
         </nav>
-        <form method="post" action="../src/cekPangkat.php">
-            <input type="submit" value="hitungPPH" name="hitungPPH">
-            <input type="submit" value="CLEAAR" name="clear">
-        </form>
-
         <?php
         $db = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 0);
         $dbgaji = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
@@ -55,10 +49,8 @@ include "../src/main.php";
                 <th>NO. DEPT</th>
                 <th>NIK</th>
                 <th>NAMA</th>
-                <th>PTKP</th>
-                <th>PKP</th>
-                <th>PPH21</th>
-                <th>BLN</th>
+                <th>BONUS</th>
+                <th>PPH BONUS</th>
             </tr>
             <?php
                 for ($i = 1; $i <= $ndata; $i++) { ?>
@@ -75,17 +67,12 @@ include "../src/main.php";
                     <?php echo $rowgaji['NAMA']; ?>
                 </td>
                 <td>
-                    <?php echo rupiah($row['PTKP']); ?>
+                    <?php echo rupiah($row['BONUS']); ?>
                 </td>
                 <td>
-                    <?php echo rupiah($row['PKP']); ?>
+                    <?php echo rupiah($row['PPH_BONUS']); ?>
                 </td>
-                <td>
-                    <?php echo rupiah($row['PPH_21']); ?>
-                </td>
-                <td>
-                    <?php echo $row['YTD_BLN']; ?>
-                </td>
+
             </tr>
             <?php }
             }
