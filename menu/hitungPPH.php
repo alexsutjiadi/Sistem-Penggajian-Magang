@@ -78,7 +78,7 @@ include "../src/main.php";
                     <?php echo rupiah($row['PTKP']); ?>
                 </td>
                 <td>
-                    <?php echo rupiah($row['PKP']); ?>
+                    <?php echo rupiah($row['PKP']/12); ?>
                 </td>
                 <td>
                     <?php echo rupiah($row['PPH_21']); ?>
