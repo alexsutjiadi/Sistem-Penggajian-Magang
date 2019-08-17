@@ -43,6 +43,12 @@ function printSideBar(){
                         <li>
                             <a href="inputBonus.php">Input Bonus</a>
                         </li>
+                        <li>
+                            <a href="pphTHR.php">PPH THR</a>
+                        </li>
+                        <li>
+                            <a href="pphBonus.php">PPH Bonus</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="active">
@@ -70,6 +76,33 @@ function printSideBar(){
             <li class="active">
                 <a href="hitungPPH.php">Hitung PPH</a>
             </li>
+            <li class="active">
+                <a href="clearfile.php">Clear File</a>
+            </li>
+            <li class="active">
+                    <a href="#pageSubLaporanBulan" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        Laporan Akhir Bulan
+                    </a>
+                    <ul class="collapse list-unstyled" id="pageSubLaporanBulan">
+                        <li>
+                            <a href="slipgaji.php" class="w3-bar-item w3-button">Slip Gaji</a>
+                        </li>
+                        <li>
+                            <a href="slipgajiTHR.php" class="w3-bar-item w3-button">Slip Gaji + THR </a>
+                        </li>
+                        <li>
+                            <a href="TES1.php" class="w3-bar-item w3-button">TES 1 </a>
+                        </li>
+                        <li>
+                            <a href="TES2.php" class="w3-bar-item w3-button">TES 2 </a>
+                        </li>
+                        <li>
+                            <a href="TES3.php" class="w3-bar-item w3-button">TES 3 </a>
+                        </li>
+                        <li>
+                            <a href="TES4.php" class="w3-bar-item w3-button">TES 4 </a>
+                        </li>
+                </li>
 
     </div>';
 }
