@@ -4,6 +4,7 @@ if (!isset($_SESSION)) {
     session_start();
     session_unset();
 }
+include "src/main.php";
 
 if (isset($_POST['LAMPUNG'])) {
     $_SESSION['pathKota'] = "../kota/B/";
@@ -70,113 +71,43 @@ if (isset($_SESSION['pathKota'])) {
 </head>
 
 <body>
-    <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-            <div class="sidebar-header">
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fas fa-align-left"></i>
-                </button>
+    <?php printSideBar() ?>
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a>PILIH KOTA</a>
             </div>
-            <ul class="list-unstyled components">
-                <!-- <img src="img/rtn.jpg" /> -->
-                <li class="active">
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        Maintain Input MASTER
-                    </a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a href='menu/inputMaster.php'>Input Master</a>
-                        </li>
-                        <a href='menu/payrollMasterFile.php'>Manage Master Gaji</a>
-                        <li>
-                            <a href='menu/alamatDanNpwp.php'>Alamat & N.P.W.P</a>
-                        </li>
-                        <a href='menu/masterBCA.php'>Master B.C.A</a>
-                        <li>
-                            <a href='menu/showNamaGolongan.php'>Golongan</a>
-                        </li>
-                        <a href='menu/inputGajiBaru.php'>Gaji Baru</a>
-                        <li>
-                            <a href='menu/inputTunjanganJabatan.php'>Input Data Lain</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="active">
-                    <a href="#pageSubTHRBONUS" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        THR BONUS
-                    </a>
-                    <ul class="collapse list-unstyled" id="pageSubTHRBONUS">
-                        <li>
-                            <a href='menu/inputTHR.php'>Input THR</a>
-                        </li>
-                        <li>
-                            <a href='menu/inputBonus.php'>Input Bonus</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="active">
-                    <a href="#pageSubpangkat" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        Manage Pangkat
-                    </a>
-                    <ul class="collapse list-unstyled" id="pageSubpangkat">
-                        <li>
-                            <a href='masterPangkatK1.php' class="w3-bar-item w3-button">K1 </a>
-                        </li>
-                        <li>
-                            <a href='masterPangkatK2.php' class="w3-bar-item w3-button">K2 </a>
-                        </li>
-                        <li>
-                            <a href='masterPangkatK3.php' class="w3-bar-item w3-button">K3 </a>
-                        </li>
-                        <li>
-                            <a href='master4Bplus.php' class="w3-bar-item w3-button">4B - TM </a>
-                        </li>
-                </li>
-            </ul>
-            <li class="active">
-                <a href="pilihKota.php">Pilih Kota</a>
-            </li>
-            <li class="active">
-                <a href="menu/hitungPPH.php">Hitung PPH</a>
-            </li>
         </nav>
-        <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <a>PILIH KOTA</a>
-                </div>
-            </nav>
-            <div>
-                <form action="" method="post">
-                    <button type="submit" class="button" style="vertical-align:middle" value="PUSAT" name="PUSAT">
-                        <span>PUSAT</span>
-                    </button>
-                    <button type="submit" class="button" style="vertical-align:middle" value="JAKARTA" name="JAKARTA">
-                        <span>JAKARTA</span>
-                    </button>
-                    <button type="submit" class="button" style="vertical-align:middle" value="SURABAYA" name="SURABAYA">
-                        <span>SURABAYA</span>
-                    </button>
-                    <button type="submit" class="button" style="vertical-align:middle" value="MAKASSAR" name="MAKASSAR">
-                        <span>MAKASSAR</span>
-                    </button>
-                    <br>
-                    <button type="submit" class="button" style="vertical-align:middle" value="LAMPUNG" name="LAMPUNG">
-                        <span>LAMPUNG</span>
-                    </button>
-                    <button type="submit" class="button" style="vertical-align:middle" value="SEMARANG" name="SEMARANG">
-                        <span>SEMARANG</span>
-                    </button>
-                    <button type="submit" class="button" style="vertical-align:middle" value="MEDAN" name="MEDAN">
-                        <span>MEDAN</span>
-                    </button>
-                    <button type="submit" class="button" style="vertical-align:middle" value="PALEMBANG" name="PALEMBANG">
-                        <span>PALEMBANG</span>
-                    </button>
-                </form>
-            </div>
+        <div>
+            <form action="" method="post">
+                <button type="submit" class="button" style="vertical-align:middle" value="PUSAT" name="PUSAT">
+                    <span>PUSAT</span>
+                </button>
+                <button type="submit" class="button" style="vertical-align:middle" value="JAKARTA" name="JAKARTA">
+                    <span>JAKARTA</span>
+                </button>
+                <button type="submit" class="button" style="vertical-align:middle" value="SURABAYA" name="SURABAYA">
+                    <span>SURABAYA</span>
+                </button>
+                <button type="submit" class="button" style="vertical-align:middle" value="MAKASSAR" name="MAKASSAR">
+                    <span>MAKASSAR</span>
+                </button>
+                <br>
+                <button type="submit" class="button" style="vertical-align:middle" value="LAMPUNG" name="LAMPUNG">
+                    <span>LAMPUNG</span>
+                </button>
+                <button type="submit" class="button" style="vertical-align:middle" value="SEMARANG" name="SEMARANG">
+                    <span>SEMARANG</span>
+                </button>
+                <button type="submit" class="button" style="vertical-align:middle" value="MEDAN" name="MEDAN">
+                    <span>MEDAN</span>
+                </button>
+                <button type="submit" class="button" style="vertical-align:middle" value="PALEMBANG" name="PALEMBANG">
+                    <span>PALEMBANG</span>
+                </button>
+            </form>
         </div>
+    </div>
     </div>
 
 
@@ -191,6 +122,7 @@ if (isset($_SESSION['pathKota'])) {
         $(document).ready(function() {
             $('#sidebarCollapse').on('click', function() {
                 $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
             });
         });
     </script>

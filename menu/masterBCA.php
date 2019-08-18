@@ -85,58 +85,58 @@ if ($db) {
 </head>
 
 <body>
-	<?php printSideBar()?>
-		<div id="content">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
-					<a>MASTER BCA <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
-				</div>
-			</nav>
-			<table width="100%" border="1" id="myTable">
-				<tr>
-					<th onclick="sortTable(0)">NO. DEPT</th>
-					<th onclick="sortTable(1)">NAMA</th>
-					<th onclick="sortTable(2)">REKENING</th>
-					<th colspan="2"></th>
-					<p>
-						<?php
-						date_default_timezone_set("Asia/Jakarta");
-						echo "Last Modified " . date(" H:i:s - d M Y", filemtime($_SESSION['pathKota'] . "BCA.DBF"))
-						?>
-					</p>
-				</tr>
-				<?php
-				for ($i = 1; $i <= $record_numbers; $i++) { ?>
-					<tr>
-						<?php $row = dbase_get_record_with_names($db, $i); ?>
-						<td>
-							<?php echo $row['NO_INDUK'] ?>
-						</td>
-						<td>
-							<?php echo $row['NAMA'] ?>
-						</td>
-						<td>
-							<?php echo substr($row['NO_REK'], 0, 4) . " - " . substr($row['NO_REK'], 4, 3) . " - " . substr($row['NO_REK'], 7, 3); ?>
-						</td>
-						<td>
-							<input type="hidden" name="rekening" value=<?php echo $row['NO_REK'] ?> id=<?php echo "rekening" . $i; ?>>
-							<input type="hidden" name="seq" value=<?php echo $row['SEQ']; ?> id=<?php echo "seq" . $i; ?>>
-							<input type="hidden" name="pemilik" value=<?php echo $row['PEMILIK']; ?> id=<?php echo "pemilik" . $i; ?>>
-							<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
-							<input type="hidden" name="dept" value=<?php echo $row['NO_INDUK']; ?> id=<?php echo "dept" . $i; ?> disabled>
-							<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-						</td>
-						<td>
-							<form action="" method="post">
-								<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
-								<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
-							</form>
-						</td>
-					</tr>
-				<?php }
-				dbase_close($db); ?>
-			</table>
-		</div>
+	<?php printSideBar() ?>
+	<div id="content">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a>MASTER BCA <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
+			</div>
+		</nav>
+		<table width="100%" border="1" id="myTable">
+			<tr>
+				<th onclick="sortTable(0)">NO. DEPT</th>
+				<th onclick="sortTable(1)">NAMA</th>
+				<th onclick="sortTable(2)">REKENING</th>
+				<th colspan="2"></th>
+				<p>
+					<?php
+					date_default_timezone_set("Asia/Jakarta");
+					echo "Last Modified " . date(" H:i:s - d M Y", filemtime($_SESSION['pathKota'] . "BCA.DBF"))
+					?>
+				</p>
+			</tr>
+			<?php
+			for ($i = 1; $i <= $record_numbers; $i++) { ?>
+			<tr>
+				<?php $row = dbase_get_record_with_names($db, $i); ?>
+				<td>
+					<?php echo $row['NO_INDUK'] ?>
+				</td>
+				<td>
+					<?php echo $row['NAMA'] ?>
+				</td>
+				<td>
+					<?php echo substr($row['NO_REK'], 0, 4) . " - " . substr($row['NO_REK'], 4, 3) . " - " . substr($row['NO_REK'], 7, 3); ?>
+				</td>
+				<td>
+					<input type="hidden" name="rekening" value=<?php echo $row['NO_REK'] ?> id=<?php echo "rekening" . $i; ?>>
+					<input type="hidden" name="seq" value=<?php echo $row['SEQ']; ?> id=<?php echo "seq" . $i; ?>>
+					<input type="hidden" name="pemilik" value=<?php echo $row['PEMILIK']; ?> id=<?php echo "pemilik" . $i; ?>>
+					<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
+					<input type="hidden" name="dept" value=<?php echo $row['NO_INDUK']; ?> id=<?php echo "dept" . $i; ?> disabled>
+					<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+				</td>
+				<td>
+					<form action="" method="post">
+						<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
+						<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
+					</form>
+				</td>
+			</tr>
+			<?php }
+			dbase_close($db); ?>
+		</table>
+	</div>
 	</div>
 
 	<div class="row justify-content-center">
@@ -319,6 +319,7 @@ if ($db) {
 		$(document).ready(function() {
 			$('#sidebarCollapse').on('click', function() {
 				$('#sidebar').toggleClass('active');
+				$('#content').toggleClass('active');
 			});
 		});
 	</script>

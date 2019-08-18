@@ -334,115 +334,115 @@ if ($db) {
 </head>
 
 <body>
-    <?php printSideBar()?>
-        <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <a>GAJI BARU <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
-                </div>
-            </nav>
-            <div class="tableButton">
-                <div style="margin-right: 200px">
-                    <input type="button" tabindex="-1" name="buttonEditGaji" value="Edit All Gaji" id="buttonEditGaji" data-condition="true" class="bEdit">
-                    <input type="button" tabindex="-1" name="buttonEditTunjangan" value="Edit All Tunjangan" id="buttonEditTunjangan" data-condition="true" class="bEdit">
-                </div>
-                <table width="100%" border="1" id="myTable">
-                    <tr>
-                        <th onclick="sortTable(0)">NO. DEPT</th>
-                        <th onclick="sortTable(1)">NO. URUT</th>
-                        <th onclick="sortTable(2)">NAMA</th>
-                        <th onclick="sortTable(3)">GAJI DASAR</th>
-                        <th onclick="sortTable(4)">TUNJANGAN REGIONAL</th>
-                        <th></th>
-                    </tr>
-                    <?php
-                    $i = 0;
-                    for ($i = 1; $i <= $record_numbers; $i++) { ?>
-                        <tr>
-                            <?php $row = dbase_get_record_with_names($db, $i); ?>
-                            <td>
-                                <?php echo $row['DEPT']; ?>
-                            </td>
-                            <td>
-                                <?php echo $row['NO_URUT'] ?>
-                            </td>
-                            <td>
-                                <?php echo $row['NAMA']; ?>
-                            </td>
-                            <td class=<?php echo "tdGaji" . $i ?> data-mode="gaji" data-row=<?php echo $i ?>>
-                                <?php echo rupiah($row['GAJI_DASAR']); ?>
-                            </td>
-                            <td class=<?php echo "tdTunjangan" . $i ?> data-mode="tunjangan" data-row=<?php echo $i ?>>
-                                <?php echo rupiah($row['TUNJ_REG']); ?>
-                            </td>
-                            <td>
-                                <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-                                <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?>>
-                                <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
-                                <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
-                                <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
-                                <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
-                                <input type="hidden" name="jamsosflg" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsosflg" . $i ?>>
-                                <input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-                            </td>
-                        </tr>
-                    <?php }
-                    dbase_close($db); ?>
-                    <input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
-                    <input type="hidden" name="kodeKota" id="kodeKota" value=<?php echo $_SESSION['kodeKota'] ?>>
-                </table>
+    <?php printSideBar() ?>
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a>GAJI BARU <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
             </div>
+        </nav>
+        <div class="tableButton">
+            <div style="margin-right: 200px">
+                <input type="button" tabindex="-1" name="buttonEditGaji" value="Edit All Gaji" id="buttonEditGaji" data-condition="true" class="bEdit">
+                <input type="button" tabindex="-1" name="buttonEditTunjangan" value="Edit All Tunjangan" id="buttonEditTunjangan" data-condition="true" class="bEdit">
+            </div>
+            <table width="100%" border="1" id="myTable">
+                <tr>
+                    <th onclick="sortTable(0)">NO. DEPT</th>
+                    <th onclick="sortTable(1)">NO. URUT</th>
+                    <th onclick="sortTable(2)">NAMA</th>
+                    <th onclick="sortTable(3)">GAJI DASAR</th>
+                    <th onclick="sortTable(4)">TUNJANGAN REGIONAL</th>
+                    <th></th>
+                </tr>
+                <?php
+                $i = 0;
+                for ($i = 1; $i <= $record_numbers; $i++) { ?>
+                <tr>
+                    <?php $row = dbase_get_record_with_names($db, $i); ?>
+                    <td>
+                        <?php echo $row['DEPT']; ?>
+                    </td>
+                    <td>
+                        <?php echo $row['NO_URUT'] ?>
+                    </td>
+                    <td>
+                        <?php echo $row['NAMA']; ?>
+                    </td>
+                    <td class=<?php echo "tdGaji" . $i ?> data-mode="gaji" data-row=<?php echo $i ?>>
+                        <?php echo rupiah($row['GAJI_DASAR']); ?>
+                    </td>
+                    <td class=<?php echo "tdTunjangan" . $i ?> data-mode="tunjangan" data-row=<?php echo $i ?>>
+                        <?php echo rupiah($row['TUNJ_REG']); ?>
+                    </td>
+                    <td>
+                        <input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+                        <input type="hidden" name="no" value=<?php echo $row['NO_URUT'] ?> id=<?php echo "no" . $i ?>>
+                        <input type="hidden" name="dept" value=<?php echo $row['DEPT']; ?> id=<?php echo "dept" . $i; ?>>
+                        <input type="hidden" name="pangkat" value=<?php echo $row['PANGKAT']; ?> id=<?php echo "pangkat" . $i; ?>>
+                        <input type="hidden" name="gajiDasar" value=<?php echo $row['GAJI_DASAR']; ?> id=<?php echo "gajiDasar" . $i; ?>>
+                        <input type="hidden" name="tunjReg" value=<?php echo $row['TUNJ_REG']; ?> id=<?php echo "tunjReg" . $i; ?>>
+                        <input type="hidden" name="jamsosflg" value=<?php echo $row['JAMSOSFLG']; ?> id=<?php echo "jamsosflg" . $i ?>>
+                        <input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+                    </td>
+                </tr>
+                <?php }
+                dbase_close($db); ?>
+                <input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
+                <input type="hidden" name="kodeKota" id="kodeKota" value=<?php echo $_SESSION['kodeKota'] ?>>
+            </table>
+        </div>
 
-            <div id="mdl-update" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">INPUT GAJI BARU</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="" method="POST" id="formId">
-                            <div class="modal-body">
-                                <div class="col-lg-12">
-                                    <label for="no">NOMER URUT</label>
-                                    <input type="text" class="no" name="no" placeholder="" disabled>
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="dept">NO. DEPT</label>
-                                    <input type="text" class="dept" name="dept" placeholder="" disabled>
-                                    <input type="hidden" class="rowId" name="rowId" id="rowId">
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="nama">NAMA</label>
-                                    <input type="text" class="nama" name="nama" placeholder="" disabled>
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="pangkat">PANGKAT</label>
-                                    <input type="text" class="pangkat" name="pangkat" id="pangkatId" placeholder="">
-                                    <!-- <input type="hidden" class="pangkatValue" name="pangkatValue" id="pangkatValue"> -->
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="gajiDasar">GAJI DASAR</label>
-                                    <input type="text" class="gajiDasar" name="gajiDasar" id="gajiId" placeholder="">
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="tunjReg">TUNJANGAN REGIONAL</label>
-                                    <input type="text" class="tunjReg" name="tunjReg" placeholder="">
-                                    <input type="hidden" id="jamsosflg" name="jamsosflg" class="jamsosflg">
-                                    <input type="hidden" id="tunjKes" name="tunjKes" class="tunjKes">
-                                    <input type="hidden" id="premi" name="premi" class="premi">
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </form>
+        <div id="mdl-update" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">INPUT GAJI BARU</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                    <form action="" method="POST" id="formId">
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <label for="no">NOMER URUT</label>
+                                <input type="text" class="no" name="no" placeholder="" disabled>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="dept">NO. DEPT</label>
+                                <input type="text" class="dept" name="dept" placeholder="" disabled>
+                                <input type="hidden" class="rowId" name="rowId" id="rowId">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="nama">NAMA</label>
+                                <input type="text" class="nama" name="nama" placeholder="" disabled>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="pangkat">PANGKAT</label>
+                                <input type="text" class="pangkat" name="pangkat" id="pangkatId" placeholder="">
+                                <!-- <input type="hidden" class="pangkatValue" name="pangkatValue" id="pangkatValue"> -->
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="gajiDasar">GAJI DASAR</label>
+                                <input type="text" class="gajiDasar" name="gajiDasar" id="gajiId" placeholder="">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="tunjReg">TUNJANGAN REGIONAL</label>
+                                <input type="text" class="tunjReg" name="tunjReg" placeholder="">
+                                <input type="hidden" id="jamsosflg" name="jamsosflg" class="jamsosflg">
+                                <input type="hidden" id="tunjKes" name="tunjKes" class="tunjKes">
+                                <input type="hidden" id="premi" name="premi" class="premi">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <script>
         $(document).on("click", ".btnUpdate", function() {
@@ -539,6 +539,7 @@ if ($db) {
         $(document).ready(function() {
             $('#sidebarCollapse').on('click', function() {
                 $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
             });
         });
     </script>

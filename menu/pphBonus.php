@@ -31,7 +31,7 @@ include "../src/main.php";
 </head>
 
 <body>
-    <?php printSideBar();?>
+    <?php printSideBar(); ?>
     <div id="content">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -89,6 +89,7 @@ include "../src/main.php";
             $(document).ready(function() {
                 $('#sidebarCollapse').on('click', function() {
                     $('#sidebar').toggleClass('active');
+                    $('#content').toggleClass('active');
                 });
             });
         </script>

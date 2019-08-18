@@ -16,19 +16,19 @@ function printSideBar(){
                     </a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
                             <li>
-                                <a href="inputMaster.php">Input Master</a>
+                                <a href="/penggajianMagang/menu/inputMaster.php">Input Master</a>
                             </li>
-                            <a href="payrollMasterFile.php">Manage Master Gaji</a>
+                            <a href="/penggajianMagang/menu/payrollMasterFile.php">Manage Master Gaji</a>
                             <li>
-                                <a href="alamatDanNpwp.php">Alamat & N.P.W.P</a>
+                                <a href="/penggajianMagang/menu/alamatDanNpwp.php">Alamat & N.P.W.P</a>
                             </li>
-                            <a href="masterBCA.php">Master B.C.A</a>
+                            <a href="/penggajianMagang/menu/masterBCA.php">Master B.C.A</a>
                             <li>
-                                <a href="showNamaGolongan.php">Golongan</a>
+                                <a href="/penggajianMagang/menu/showNamaGolongan.php">Golongan</a>
                             </li>
-                            <a href="inputGajiBaru.php">Gaji Baru</a>
+                            <a href="/penggajianMagang/menu/inputGajiBaru.php">Gaji Baru</a>
                             <li>
-                                <a href="inputTunjanganJabatan.php">Input Data Lain</a>
+                                <a href="/penggajianMagang/menu/inputTunjanganJabatan.php">Input Data Lain</a>
                             </li>
                         </ul>
                 </li>
@@ -38,16 +38,16 @@ function printSideBar(){
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubTHRBONUS">
                         <li>
-                            <a href="inputTHR.php">Input THR</a>
+                            <a href="/penggajianMagang/menu/inputTHR.php">Input THR</a>
                         </li>
                         <li>
-                            <a href="inputBonus.php">Input Bonus</a>
+                            <a href="/penggajianMagang/menu/inputBonus.php">Input Bonus</a>
                         </li>
                         <li>
-                            <a href="pphTHR.php">PPH THR</a>
+                            <a href="/penggajianMagang/menu/pphTHR.php">PPH THR</a>
                         </li>
                         <li>
-                            <a href="pphBonus.php">PPH Bonus</a>
+                            <a href="/penggajianMagang/menu/pphBonus.php">PPH Bonus</a>
                         </li>
                     </ul>
                 </li>
@@ -57,27 +57,27 @@ function printSideBar(){
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubpangkat">
                         <li>
-                            <a href="masterPangkatK1.php" class="w3-bar-item w3-button">K1 </a>
+                            <a href="/penggajianMagang/menu/masterPangkatK1.php" class="w3-bar-item w3-button">K1 </a>
                         </li>
                         <li>
-                            <a href="masterPangkatK2.php" class="w3-bar-item w3-button">K2 </a>
+                            <a href="/penggajianMagang/menu/masterPangkatK2.php" class="w3-bar-item w3-button">K2 </a>
                         </li>
                         <li>
-                            <a href="masterPangkatK3.php" class="w3-bar-item w3-button">K3 </a>
+                            <a href="/penggajianMagang/menu/masterPangkatK3.php" class="w3-bar-item w3-button">K3 </a>
                         </li>
                         <li>
-                            <a href="master4Bplus.php" class="w3-bar-item w3-button">4B - TM </a>
+                            <a href="/penggajianMagang/menu/master4Bplus.php" class="w3-bar-item w3-button">4B - TM </a>
                         </li>
                 </li>
             </ul>
             <li class="active">
-                <a href="../pilihKota.php">Pilih Kota</a>
+                <a href="/penggajianMagang/pilihKota.php">Pilih Kota</a>
             </li>
             <li class="active">
-                <a href="hitungPPH.php">Hitung PPH</a>
+                <a href="/penggajianMagang/menu/hitungPPH.php">Hitung PPH</a>
             </li>
             <li class="active">
-                <a href="clearfile.php">Clear File</a>
+                <a href="/penggajianMagang/menu/clearfile.php">Clear File</a>
             </li>
             <li class="active">
                     <a href="#pageSubLaporanBulan" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -85,22 +85,22 @@ function printSideBar(){
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubLaporanBulan">
                         <li>
-                            <a href="slipgaji.php" class="w3-bar-item w3-button">Slip Gaji</a>
+                            <a href="/penggajianMagang/menu/slipgaji.php" class="w3-bar-item w3-button">Slip Gaji</a>
                         </li>
                         <li>
-                            <a href="slipgajiTHR.php" class="w3-bar-item w3-button">Slip Gaji + THR </a>
+                            <a href="/penggajianMagang/menu/slipgajiTHR.php" class="w3-bar-item w3-button">Slip Gaji + THR </a>
                         </li>
                         <li>
-                            <a href="TES1.php" class="w3-bar-item w3-button">TES 1 </a>
+                            <a href="/penggajianMagang/menu/TES1.php" class="w3-bar-item w3-button">TES 1 </a>
                         </li>
                         <li>
-                            <a href="TES2.php" class="w3-bar-item w3-button">TES 2 </a>
+                            <a href="/penggajianMagang/menu/TES2.php" class="w3-bar-item w3-button">TES 2 </a>
                         </li>
                         <li>
-                            <a href="TES3.php" class="w3-bar-item w3-button">TES 3 </a>
+                            <a href="/penggajianMagang/menu/TES3.php" class="w3-bar-item w3-button">TES 3 </a>
                         </li>
                         <li>
-                            <a href="TES4.php" class="w3-bar-item w3-button">TES 4 </a>
+                            <a href="/penggajianMagang/menu/TES4.php" class="w3-bar-item w3-button">TES 4 </a>
                         </li>
                 </li>
 

@@ -261,7 +261,6 @@ if (isset($_POST['gogo'])) {
 				}
 				$count++;
 			}
-			
 		}
 	} else if ($_POST['mode'] == 3) {
 		$count = 1;
@@ -407,44 +406,46 @@ if (isset($_POST['gogo'])) {
 </head>
 
 <body>
-	<?php printSideBar()?>
-		<div id="content">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
-					<a>SLIP GAJI </a>
-				</div>
-			</nav>
-			<form action="" method="post">
-				<input type="radio" name="mode" value="1">ALL<br>
-				<input type="radio" name="mode" class="rad" value="2">Group<br>
-				<input type="radio" name="mode" class="rad" value="3">Individu<br>
-				<div id="optional">
-				</div>
-				<input type="submit" name="gogo" value="SUBMIT">
+	<?php printSideBar() ?>
+	<div id="content">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a>SLIP GAJI </a>
+			</div>
+		</nav>
+		<form action="" method="post">
+			<input type="radio" name="mode" value="1">ALL<br>
+			<input type="radio" name="mode" class="rad" value="2">Group<br>
+			<input type="radio" name="mode" class="rad" value="3">Individu<br>
+			<div id="optional">
+			</div>
+			<input type="submit" name="gogo" value="SUBMIT">
 
-			</form>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-			<!-- Bootstrap JS -->
-			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+		</form>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+		<!-- Bootstrap JS -->
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
-			<script type="text/javascript">
-				$(document).ready(function() {
-					$('#sidebarCollapse').on('click', function() {
-						$('#sidebar').toggleClass('active');
-					});
-					$("input[type=radio][name=mode]").change(function() {
-						var mode = parseInt($(this).val());
-						if (mode == 2) {
-							$("#optional").html("<h5>DEPT: </h5><input type='text' name='opt'>");
-						} else if (mode == 3) {
-							$("#optional").html("<h5>NIK: </h5><input type='text' name='opt'>");
-						} else if (mode == 1) {
-							$("#optional").html('');
-						}
-
-					});
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#sidebarCollapse').on('click', function() {
+					$('#sidebar').toggleClass('active');
+					$('#content').toggleClass('active');
 				});
-			</script>
+				$("input[type=radio][name=mode]").change(function() {
+					var mode = parseInt($(this).val());
+					if (mode == 2) {
+						$("#optional").html("<h5>DEPT: </h5><input type='text' name='opt'>");
+					} else if (mode == 3) {
+						$("#optional").html("<h5>NIK: </h5><input type='text' name='opt'>");
+					} else if (mode == 1) {
+						$("#optional").html('');
+					}
+
+				});
+			});
+		</script>
+
 </body>
 
 </html>

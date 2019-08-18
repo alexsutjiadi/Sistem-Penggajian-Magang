@@ -32,79 +32,80 @@ include "../src/main.php";
 </head>
 
 <body>
-    <?php printSideBar()?>
-    <div id="content">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a>HITUNG PPH</a>
-            </div>
-        </nav>
-        <form method="post" action="../src/cekPangkat.php">
-            <input type="submit" value="hitungPPH" name="hitungPPH">
-            <input type="submit" value="CLEAAR" name="clear">
-        </form>
+        <?php printSideBar() ?>
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a>HITUNG PPH</a>
+                </div>
+            </nav>
+            <form method="post" action="../src/cekPangkat.php">
+                <input type="submit" value="hitungPPH" name="hitungPPH">
+                <input type="submit" value="CLEAAR" name="clear">
+            </form>
 
-        <?php
-        $db = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 0);
-        $dbgaji = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
-        $ndata = dbase_numrecords($db);
-        if ($ndata != 0) {
-            ?>
-        <table width="100%" border="1" id="myTable">
-            <tr>
-                <th>NO. DEPT</th>
-                <th>NIK</th>
-                <th>NAMA</th>
-                <th>PTKP</th>
-                <th>PKP</th>
-                <th>PPH21</th>
-                <th>BLN</th>
-            </tr>
             <?php
-                for ($i = 1; $i <= $ndata; $i++) { ?>
-            <tr>
-                <?php $row = dbase_get_record_with_names($db, $i);
-                        $rowgaji = dbase_get_record_with_names($dbgaji, $i); ?>
-                <td>
-                    <?php echo $row['DEPT']; ?>
-                </td>
-                <td>
-                    <?php echo $row['NIK'] ?>
-                </td>
-                <td>
-                    <?php echo $rowgaji['NAMA']; ?>
-                </td>
-                <td>
-                    <?php echo rupiah($row['PTKP']); ?>
-                </td>
-                <td>
-                    <?php echo rupiah($row['PKP']/12); ?>
-                </td>
-                <td>
-                    <?php echo rupiah($row['PPH_21']); ?>
-                </td>
-                <td>
-                    <?php echo $row['YTD_BLN']; ?>
-                </td>
-            </tr>
-            <?php }
-            }
-            dbase_close($db);
-            dbase_close($dbgaji) ?>
+            $db = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 0);
+            $dbgaji = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
+            $ndata = dbase_numrecords($db);
+            if ($ndata != 0) {
+                ?>
+            <table width="100%" border="1" id="myTable">
+                <tr>
+                    <th>NO. DEPT</th>
+                    <th>NIK</th>
+                    <th>NAMA</th>
+                    <th>PTKP</th>
+                    <th>PKP</th>
+                    <th>PPH21</th>
+                    <th>BLN</th>
+                </tr>
+                <?php
+                    for ($i = 1; $i <= $ndata; $i++) { ?>
+                <tr>
+                    <?php $row = dbase_get_record_with_names($db, $i);
+                            $rowgaji = dbase_get_record_with_names($dbgaji, $i); ?>
+                    <td>
+                        <?php echo $row['DEPT']; ?>
+                    </td>
+                    <td>
+                        <?php echo $row['NIK'] ?>
+                    </td>
+                    <td>
+                        <?php echo $rowgaji['NAMA']; ?>
+                    </td>
+                    <td>
+                        <?php echo rupiah($row['PTKP']); ?>
+                    </td>
+                    <td>
+                        <?php echo rupiah($row['PKP'] / 12); ?>
+                    </td>
+                    <td>
+                        <?php echo rupiah($row['PPH_21']); ?>
+                    </td>
+                    <td>
+                        <?php echo $row['YTD_BLN']; ?>
+                    </td>
+                </tr>
+                <?php }
+                }
+                dbase_close($db);
+                dbase_close($dbgaji) ?>
 
 
-        </table>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-        <!-- Bootstrap JS -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+            </table>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+            <!-- Bootstrap JS -->
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#sidebarCollapse').on('click', function() {
-                    $('#sidebar').toggleClass('active');
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#sidebarCollapse').on('click', function() {
+                        $('#sidebar').toggleClass('active');
+                        $('#content').toggleClass('active');
+                    });
                 });
-            });
-        </script>
+            </script>
 </body>
 
 </html>

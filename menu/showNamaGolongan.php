@@ -79,84 +79,84 @@ if ($db) {
 </head>
 
 <body>
-	<?php printSideBar()?>
-		<div id="content">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
-					<a>SHOW NAMA GOLONGAN <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
-				</div>
-			</nav>
-			<table width="100%" border="1" id="myTable">
-				<tr>
-					<th onclick="sortTable(0)">KODE</th>
-					<th onclick="sortTable(1)">NAMA GOLONGAN</th>
-					<th colspan="2"></th>
-				</tr>
+	<?php printSideBar() ?>
+	<div id="content">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a>SHOW NAMA GOLONGAN <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
+			</div>
+		</nav>
+		<table width="100%" border="1" id="myTable">
+			<tr>
+				<th onclick="sortTable(0)">KODE</th>
+				<th onclick="sortTable(1)">NAMA GOLONGAN</th>
+				<th colspan="2"></th>
+			</tr>
 
-				<?php
-				for ($i = 1; $i <= $record_numbers; $i++) { ?>
-					<tr>
-						<?php $row = dbase_get_record_with_names($db, $i); ?>
-						<td>
-							<?php echo $row['KODE']; ?>
-						</td>
-						<td>
-							<?php echo $row['NAMA'] ?> </td>
-						<td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-						</td>
-						<td>
-							<form action="" method="post">
-								<input type="hidden" name="kode" value=<?php echo $row['KODE']; ?> id=<?php echo "kode" . $i; ?>>
-								<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-								<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
-								<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
-							</form>
-						</td>
-					</tr>
-				<?php }
-				dbase_close($db); ?>
-				<tr>
-					<td>
-						<form action="" method="POST"><input type="text" name="addKode">
-					</td>
-					<td><input type="text" name="addNama"></td>
-					<td colspan="2">
-						<center><input type="submit" name="add" value="ADD"></center>
-						</form>
-					</td>
-				</tr>
-
-			</table>
-		</div>
-		<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
+			<?php
+			for ($i = 1; $i <= $record_numbers; $i++) { ?>
+			<tr>
+				<?php $row = dbase_get_record_with_names($db, $i); ?>
+				<td>
+					<?php echo $row['KODE']; ?>
+				</td>
+				<td>
+					<?php echo $row['NAMA'] ?> </td>
+				<td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+				</td>
+				<td>
 					<form action="" method="post">
-						<div class="modal-header">
-							<h5 class="modal-title">Update Data Golongan</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="col-lg-12">
-								<label for="kode">KODE</label>
-								<input type="text" class="kode" name="kode" placeholder="">
-								<input type="hidden" name="rowId" class="rowId" value="">
-							</div>
-							<div class="col-lg-12">
-								<label for="nama">NAMA GOLONGAN</label>
-								<input type="text" class="nama" name="nama" placeholder="">
-							</div>
-						</div>
-						<div class="modal-footer">
-							<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						</div>
+						<input type="hidden" name="kode" value=<?php echo $row['KODE']; ?> id=<?php echo "kode" . $i; ?>>
+						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+						<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
+						<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
 					</form>
-				</div>
+				</td>
+			</tr>
+			<?php }
+			dbase_close($db); ?>
+			<tr>
+				<td>
+					<form action="" method="POST"><input type="text" name="addKode">
+				</td>
+				<td><input type="text" name="addNama"></td>
+				<td colspan="2">
+					<center><input type="submit" name="add" value="ADD"></center>
+					</form>
+				</td>
+			</tr>
+
+		</table>
+	</div>
+	<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<form action="" method="post">
+					<div class="modal-header">
+						<h5 class="modal-title">Update Data Golongan</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="col-lg-12">
+							<label for="kode">KODE</label>
+							<input type="text" class="kode" name="kode" placeholder="">
+							<input type="hidden" name="rowId" class="rowId" value="">
+						</div>
+						<div class="col-lg-12">
+							<label for="nama">NAMA GOLONGAN</label>
+							<input type="text" class="nama" name="nama" placeholder="">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</form>
 			</div>
 		</div>
+	</div>
 	</div>
 
 	<script>
@@ -223,6 +223,7 @@ if ($db) {
 		$(document).ready(function() {
 			$('#sidebarCollapse').on('click', function() {
 				$('#sidebar').toggleClass('active');
+				$('#content').toggleClass('active');
 			});
 		});
 	</script>

@@ -152,201 +152,202 @@ if ($db) {
 </head>
 
 <body>
-	<?php printSideBar()?>
-		<div id="content">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
-					<a>INPUT BONUS <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
-				</div>
-			</nav>
-			<div class="tableButton">
-				<div style="margin-right: 120px">
-					<input type="button" tabindex="-1" name="buttonEditBonus" value="Edit All Bonus" id="buttonEditBonus" data-condition="true" class="bEdit">
-				</div>
-				<table width="100%" cellspacing='0' id="myTable">
-
-					<tr>
-						<th onclick="sortTable(0.'T')">DEPT</th>
-						<th onclick="sortTable(1,'T')">Nama</th>
-						<th onclick="sortTable(2,'N')">Gaji</th>
-						<th onclick="sortTable(3,'N')">BONUS</th>
-						<th></th>
-					</tr>
-
-					<?php
-					$i = 0;
-					$totalBonus = 0;
-					for ($i = 1; $i <= $record_numbers; $i++) { ?>
-						<tr>
-							<?php $row = dbase_get_record_with_names($db, $i); ?>
-							<td>
-								<?php echo $row['DEPT'] ?>
-							</td>
-							<td>
-								<?php echo $row['NAMA'] ?>
-							</td>
-							<td>
-								<?php echo rupiah($row['GAJI_DASAR']) ?>
-							</td>
-							<td class=<?php echo "tdBonus" . $i ?> data-mode="bonus" data-row=<?php echo $i ?>>
-								<?php echo rupiah($row['BONUS']) ?>
-							</td>
-							<td>
-								<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-								<input type="hidden" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'";
-																		$totalBonus += (int)$row['BONUS'] ?> id=<?php echo "bonus" . $i; ?>>
-								<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
-								<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
-								<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-							</td>
-						</tr>
-					<?php }
-					dbase_close($db); ?>
-					<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
-				</table>
+	<?php printSideBar() ?>
+	<div id="content">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a>INPUT BONUS <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
 			</div>
-			<p style="color:black;font-weight:bold;">Total Bonus Yang dibayarkan : <?php echo rupiah($totalBonus) ?></p>
+		</nav>
+		<div class="tableButton">
+			<div style="margin-right: 120px">
+				<input type="button" tabindex="-1" name="buttonEditBonus" value="Edit All Bonus" id="buttonEditBonus" data-condition="true" class="bEdit">
+			</div>
+			<table width="100%" cellspacing='0' id="myTable">
 
-			<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<form action="" method="post">
-							<div class="modal-header">
-								<h5 class="modal-title">Masukan Bonus Karywan</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
+				<tr>
+					<th onclick="sortTable(0.'T')">DEPT</th>
+					<th onclick="sortTable(1,'T')">Nama</th>
+					<th onclick="sortTable(2,'N')">Gaji</th>
+					<th onclick="sortTable(3,'N')">BONUS</th>
+					<th></th>
+				</tr>
+
+				<?php
+				$i = 0;
+				$totalBonus = 0;
+				for ($i = 1; $i <= $record_numbers; $i++) { ?>
+				<tr>
+					<?php $row = dbase_get_record_with_names($db, $i); ?>
+					<td>
+						<?php echo $row['DEPT'] ?>
+					</td>
+					<td>
+						<?php echo $row['NAMA'] ?>
+					</td>
+					<td>
+						<?php echo rupiah($row['GAJI_DASAR']) ?>
+					</td>
+					<td class=<?php echo "tdBonus" . $i ?> data-mode="bonus" data-row=<?php echo $i ?>>
+						<?php echo rupiah($row['BONUS']) ?>
+					</td>
+					<td>
+						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+						<input type="hidden" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'";
+																	$totalBonus += (int) $row['BONUS'] ?> id=<?php echo "bonus" . $i; ?>>
+						<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
+						<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
+						<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+					</td>
+				</tr>
+				<?php }
+				dbase_close($db); ?>
+				<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
+			</table>
+		</div>
+		<p style="color:black;font-weight:bold;">Total Bonus Yang dibayarkan : <?php echo rupiah($totalBonus) ?></p>
+
+		<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form action="" method="post">
+						<div class="modal-header">
+							<h5 class="modal-title">Masukan Bonus Karywan</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="col-lg-12">
+								<label for="nik">NIK</label>
+								<input type="text" class="nik" name="nik" placeholder="" disabled>
+								<input type="hidden" class="rowId" name="rowId">
 							</div>
-							<div class="modal-body">
-								<div class="col-lg-12">
-									<label for="nik">NIK</label>
-									<input type="text" class="nik" name="nik" placeholder="" disabled>
-									<input type="hidden" class="rowId" name="rowId">
-								</div>
-								<div class="col-lg-12">
-									<label for="nama">NAMA</label>
-									<input type="text" class="nama" name="nama" placeholder="" disabled>
-								</div>
-								<div class="col-lg-12">
-									<label for="gaji">GAJI</label>
-									<input type="text" class="gaji" name="gaji" placeholder="" disabled>
-								</div>
-								<div class="col-lg-12">
-									<label for="bonus">BONUS</label>
-									<input type="text" class="bonus" name="bonus" placeholder="">
-								</div>
-								<div class="col-lg-12">
-									<label for="pphBonus">PPH BONUS</label>
-									<input type="text" class="pphBonus" name="pphBonus" placeholder="">
-								</div>
+							<div class="col-lg-12">
+								<label for="nama">NAMA</label>
+								<input type="text" class="nama" name="nama" placeholder="" disabled>
 							</div>
-							<div class="modal-footer">
-								<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<div class="col-lg-12">
+								<label for="gaji">GAJI</label>
+								<input type="text" class="gaji" name="gaji" placeholder="" disabled>
 							</div>
-						</form>
-					</div>
+							<div class="col-lg-12">
+								<label for="bonus">BONUS</label>
+								<input type="text" class="bonus" name="bonus" placeholder="">
+							</div>
+							<div class="col-lg-12">
+								<label for="pphBonus">PPH BONUS</label>
+								<input type="text" class="pphBonus" name="pphBonus" placeholder="">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn btn-primary" val="" id="edit" name="edit" value="SAVE CHANGE">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
-		<script>
-			$(document).on("click", ".btnUpdate", function() {
-				var clickId = $(this).data('id');
-				var nikValue = $("#nik" + clickId).val();
-				var namaValue = $("#nama" + clickId).val();
-				var gajiValue = $("#gaji" + clickId).val();
-				var bonusValue = $("#bonus" + clickId).val();
-				$(".modal-body .nik").val(nikValue);
-				$(".modal-body .nama").val(namaValue);
-				$(".modal-body .gaji").val(gajiValue);
-				$(".modal-body .bonus").val(bonusValue);
-				$(".modal-body .rowId").val(clickId);
-			});
+	</div>
+	<script>
+		$(document).on("click", ".btnUpdate", function() {
+			var clickId = $(this).data('id');
+			var nikValue = $("#nik" + clickId).val();
+			var namaValue = $("#nama" + clickId).val();
+			var gajiValue = $("#gaji" + clickId).val();
+			var bonusValue = $("#bonus" + clickId).val();
+			$(".modal-body .nik").val(nikValue);
+			$(".modal-body .nama").val(namaValue);
+			$(".modal-body .gaji").val(gajiValue);
+			$(".modal-body .bonus").val(bonusValue);
+			$(".modal-body .rowId").val(clickId);
+		});
 
-			function sortTable(n, mode) {
-				var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-				table = document.getElementById("myTable");
-				switching = true;
-				//Set the sorting direction to ascending:
-				dir = "asc";
-				/*Make a loop that will continue until
-				no switching has been done:*/
-				while (switching) {
-					//start by saying: no switching is done:
-					switching = false;
-					rows = table.rows;
-					/*Loop through all table rows (except the
-					first, which contains table headers):*/
-					for (i = 1; i < (rows.length - 1); i++) {
-						//start by saying there should be no switching:
-						shouldSwitch = false;
-						/*Get the two elements you want to compare,
-						one from current row and one from the next:*/
-						x = rows[i].getElementsByTagName("TD")[n];
-						y = rows[i + 1].getElementsByTagName("TD")[n];
-						/*check if the two rows should switch place,
-						based on the direction, asc or desc:*/
-						if (dir == "asc") {
-							if (mode == 'N') {
-								if (Number(x.innerHTML) > Number(y.innerHTML)) {
-									//if so, mark as a switch and break the loop:
-									shouldSwitch = true;
-									break;
-								}
-							} else {
-								if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-									//if so, mark as a switch and break the loop:
-									shouldSwitch = true;
-									break;
-								}
+		function sortTable(n, mode) {
+			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+			table = document.getElementById("myTable");
+			switching = true;
+			//Set the sorting direction to ascending:
+			dir = "asc";
+			/*Make a loop that will continue until
+			no switching has been done:*/
+			while (switching) {
+				//start by saying: no switching is done:
+				switching = false;
+				rows = table.rows;
+				/*Loop through all table rows (except the
+				first, which contains table headers):*/
+				for (i = 1; i < (rows.length - 1); i++) {
+					//start by saying there should be no switching:
+					shouldSwitch = false;
+					/*Get the two elements you want to compare,
+					one from current row and one from the next:*/
+					x = rows[i].getElementsByTagName("TD")[n];
+					y = rows[i + 1].getElementsByTagName("TD")[n];
+					/*check if the two rows should switch place,
+					based on the direction, asc or desc:*/
+					if (dir == "asc") {
+						if (mode == 'N') {
+							if (Number(x.innerHTML) > Number(y.innerHTML)) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
 							}
-
-						} else if (dir == "desc") {
-							if (mode == 'N') {
-								if (Number(x.innerHTML) < Number(y.innerHTML)) {
-									//if so, mark as a switch and break the loop:
-									shouldSwitch = true;
-									break;
-								}
-							} else {
-								if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-									//if so, mark as a switch and break the loop:
-									shouldSwitch = true;
-									break;
-								}
+						} else {
+							if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
 							}
 						}
-					}
-					if (shouldSwitch) {
-						/*If a switch has been marked, make the switch
-						and mark that a switch has been done:*/
-						rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-						switching = true;
-						//Each time a switch is done, increase this count by 1:
-						switchcount++;
-					} else {
-						/*If no switching has been done AND the direction is "asc",
-						set the direction to "desc" and run the while loop again.*/
-						if (switchcount == 0 && dir == "asc") {
-							dir = "desc";
-							switching = true;
+
+					} else if (dir == "desc") {
+						if (mode == 'N') {
+							if (Number(x.innerHTML) < Number(y.innerHTML)) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
+							}
+						} else {
+							if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+								//if so, mark as a switch and break the loop:
+								shouldSwitch = true;
+								break;
+							}
 						}
 					}
 				}
+				if (shouldSwitch) {
+					/*If a switch has been marked, make the switch
+					and mark that a switch has been done:*/
+					rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+					switching = true;
+					//Each time a switch is done, increase this count by 1:
+					switchcount++;
+				} else {
+					/*If no switching has been done AND the direction is "asc",
+					set the direction to "desc" and run the while loop again.*/
+					if (switchcount == 0 && dir == "asc") {
+						dir = "desc";
+						switching = true;
+					}
+				}
 			}
-		</script>
-		<!-- Popper.JS -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-		<!-- Bootstrap JS -->
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+		}
+	</script>
+	<!-- Popper.JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$('#sidebarCollapse').on('click', function() {
-					$('#sidebar').toggleClass('active');
-				});
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#sidebarCollapse').on('click', function() {
+				$('#sidebar').toggleClass('active');
+				$('#content').toggleClass('active');
 			});
-		</script>
+		});
+	</script>
 </body>
 
 </html>

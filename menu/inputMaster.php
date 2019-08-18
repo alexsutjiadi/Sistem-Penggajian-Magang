@@ -173,193 +173,194 @@ if (isset($_POST['addNew'])) {
 </head>
 
 <body>
-    <?php printSideBar()?>
-        <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <a>INPUT MASTER <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
-                </div>
-            </nav>
-            <div class="form-style-3">
-                <font face="Berlin Sans FB">
-                    <form action="" method="post">
-                        <fieldset>
-                            <legend>Input New</legend>
-                            <tr>
-                                <label>
-                                    <td>
-                                        <span>Nama:</span>
-                                        <input type="text" name="nama" placeholder="Nama..." />
-                                    </td>
-                                    <td>
-                                        <span>NIK:</span>
-                                        <input type="text" name="nik" placeholder="NIK..." />
-                                    </td>
-                                </label>
-                            </tr>
-                            <tr>
-                                <label>
-                                    <td>
-                                        <span>Dept:</span>
-                                        <select name="dept">
-                                            <option selected="true" value="">-</option>
-                                            <?php
-                                            $db = dbase_open($_SESSION['pathKota'] . "GOLONGAN.DBF", 0);
-                                            $nRecord = dbase_numrecords($db);
-                                            for ($i = 0; $i <= $nRecord; $i++) {
-                                                $row = dbase_get_record_with_names($db, $i)
-                                                ?>
-                                            <option value=<?php echo "'" . $row['KODE'] . "'" ?>><?php echo $row['NAMA'] ?> </option>
-                                            <?php }
-                                            dbase_close($db); ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <span>Alamat:</span>
-                                        <input type="text" name="alamat" placeholder="Alamat..." />
-                                    </td>
-                                </label>
-                            </tr>
-                            <tr>
-                                <label>
-                                    <td>
-                                        <span>NPWP:</span>
-                                        <input type="string" name="npwp" placeholder="NPWP..." />
-                                    </td>
-                                    <td>
-                                        <span>Jabatan:</span>
-                                        <select name="jabatan">
-                                            <option selected="true" value="">-</option>
-                                            <option value="MANAGER">MANAGER</option>
-                                            <option value="STAFF">STAFF</option>
-                                            <option value="STAFF">DIREKSI</option>
-                                        </select>
-                                    </td>
-                                </label>
-                            </tr>
-                            <tr>
-                                <label>
-                                    <td>
-                                        <span>Kota Lahir:</span>
-                                        <input type="text" name="kotaLahir" placeholder="Kota Lahir..." />
-                                    </td>
-                                    <td>
-                                        <span>Tgl Lahir:</span>
-                                        <input type="date" name="tglLahir" />
-                                    </td>
-                                </label>
-                            </tr>
-                            <tr>
-                                <label>
-                                    <td>
-                                        <span>Status:</span>
-                                        <select name="status">
-                                            <option selected="true" value="">-</option>
-                                            <option value="K">KAWIN</option>
-                                            <option value="T">BELUM KAWIN</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <span>Jenis Kelamin:</span>
-                                        <select name="jenisKelamin">
-                                            <option selected="true" value="">-</option>
-                                            <option value="Pria">Pria</option>
-                                            <option value="Wanita">Wanita</option>
-                                        </select>
-                                    </td>
-                                </label>
-                            </tr>
-                            <tr>
-                                <label>
-                                    <td>
-                                        <span>Keluarga:</span>
-                                        <select name="keluarga">
-                                            <option selected="true" value="">-</option>
-                                            <option value="TK-">TK-</option>
-                                            <option value="TK1">TK1</option>
-                                            <option value="TK2">TK2</option>
-                                            <option value="TK3">TK3</option>
-                                            <option value="K/-">K/-</option>
-                                            <option value="K/1">K/1</option>
-                                            <option value="K/2">K/2</option>
-                                            <option value="K/3">K/3</option>
-                                            <option value="K/4">K/4</option>
-                                            <option value="K/5">K/5</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <span>Kode Bank:</span>
-                                        <select name="kodeBank">
-                                            <option selected="true" value="">-</option>
-                                            <option value="1">1 (B.C.A)</option>
-                                        </select>
-                                    </td>
-                                </label>
-                            </tr>
-                            <tr>
-                                <label>
-                                    <td>
-                                        <span>Kota:</span>
-                                        <select name="kotaAsal" id="kotaId">
-                                            <option selected="true" value="">-</option>
-                                            <option value="V">JAKARTA (V)</option>
-                                            <option value="H0">PUSAT (H0)</option>
-                                            <option value="S">SURABAYA (S)</option>
-                                            <option value="R">SEMARANG (R)</option>
-                                            <option value="B">LAMPUNG (B)</option>
-                                            <option value="Y">MEDAN (Y)</option>
-                                            <option value="U">MAKASSAR (U)</option>
-                                            <option value="W">PALEMBANG (W)</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <span>Gaji Dasar:</span>
-                                        <input type="text" name="gaji" id="gajiId" placeholder="Rp..." />
-                                    </td>
-                                </label>
-                            </tr>
-                            <tr>
-                                <label>
-                                    <td>
-                                        <span>Pangkat:</span>
-                                        <input type="text" name="pangkat" id="pangkatId" placeholder="Pangkat..." />
-                                    </td>
-                                    <td>
-                                        <span>Tgl Masuk:</span>
-                                        <input type="date" name="tglMasuk" />
-                                    </td>
-                                </label>
-                            </tr>
-                            <label>
-                                <span>Tgl Aktif:</span>
-                                <input type="date" name="tglAktif" />
-
-                            </label>
-                            <br>
-                            <label>
-                                <input type="submit" name="addNew" value="ADD NEW" />
-                            </label>
-                        </fieldset>
-
-                    </form>
-                </font>
+    <?php printSideBar() ?>
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a>INPUT MASTER <?php echo " (" . $_SESSION['kota'] . ")" ?></a>
             </div>
+        </nav>
+        <div class="form-style-3">
+            <font face="Berlin Sans FB">
+                <form action="" method="post">
+                    <fieldset>
+                        <legend>Input New</legend>
+                        <tr>
+                            <label>
+                                <td>
+                                    <span>Nama:</span>
+                                    <input type="text" name="nama" placeholder="Nama..." />
+                                </td>
+                                <td>
+                                    <span>NIK:</span>
+                                    <input type="text" name="nik" placeholder="NIK..." />
+                                </td>
+                            </label>
+                        </tr>
+                        <tr>
+                            <label>
+                                <td>
+                                    <span>Dept:</span>
+                                    <select name="dept">
+                                        <option selected="true" value="">-</option>
+                                        <?php
+                                        $db = dbase_open($_SESSION['pathKota'] . "GOLONGAN.DBF", 0);
+                                        $nRecord = dbase_numrecords($db);
+                                        for ($i = 0; $i <= $nRecord; $i++) {
+                                            $row = dbase_get_record_with_names($db, $i)
+                                            ?>
+                                        <option value=<?php echo "'" . $row['KODE'] . "'" ?>><?php echo $row['NAMA'] ?> </option>
+                                        <?php }
+                                        dbase_close($db); ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span>Alamat:</span>
+                                    <input type="text" name="alamat" placeholder="Alamat..." />
+                                </td>
+                            </label>
+                        </tr>
+                        <tr>
+                            <label>
+                                <td>
+                                    <span>NPWP:</span>
+                                    <input type="string" name="npwp" placeholder="NPWP..." />
+                                </td>
+                                <td>
+                                    <span>Jabatan:</span>
+                                    <select name="jabatan">
+                                        <option selected="true" value="">-</option>
+                                        <option value="MANAGER">MANAGER</option>
+                                        <option value="STAFF">STAFF</option>
+                                        <option value="STAFF">DIREKSI</option>
+                                    </select>
+                                </td>
+                            </label>
+                        </tr>
+                        <tr>
+                            <label>
+                                <td>
+                                    <span>Kota Lahir:</span>
+                                    <input type="text" name="kotaLahir" placeholder="Kota Lahir..." />
+                                </td>
+                                <td>
+                                    <span>Tgl Lahir:</span>
+                                    <input type="date" name="tglLahir" />
+                                </td>
+                            </label>
+                        </tr>
+                        <tr>
+                            <label>
+                                <td>
+                                    <span>Status:</span>
+                                    <select name="status">
+                                        <option selected="true" value="">-</option>
+                                        <option value="K">KAWIN</option>
+                                        <option value="T">BELUM KAWIN</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span>Jenis Kelamin:</span>
+                                    <select name="jenisKelamin">
+                                        <option selected="true" value="">-</option>
+                                        <option value="Pria">Pria</option>
+                                        <option value="Wanita">Wanita</option>
+                                    </select>
+                                </td>
+                            </label>
+                        </tr>
+                        <tr>
+                            <label>
+                                <td>
+                                    <span>Keluarga:</span>
+                                    <select name="keluarga">
+                                        <option selected="true" value="">-</option>
+                                        <option value="TK-">TK-</option>
+                                        <option value="TK1">TK1</option>
+                                        <option value="TK2">TK2</option>
+                                        <option value="TK3">TK3</option>
+                                        <option value="K/-">K/-</option>
+                                        <option value="K/1">K/1</option>
+                                        <option value="K/2">K/2</option>
+                                        <option value="K/3">K/3</option>
+                                        <option value="K/4">K/4</option>
+                                        <option value="K/5">K/5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span>Kode Bank:</span>
+                                    <select name="kodeBank">
+                                        <option selected="true" value="">-</option>
+                                        <option value="1">1 (B.C.A)</option>
+                                    </select>
+                                </td>
+                            </label>
+                        </tr>
+                        <tr>
+                            <label>
+                                <td>
+                                    <span>Kota:</span>
+                                    <select name="kotaAsal" id="kotaId">
+                                        <option selected="true" value="">-</option>
+                                        <option value="V">JAKARTA (V)</option>
+                                        <option value="H0">PUSAT (H0)</option>
+                                        <option value="S">SURABAYA (S)</option>
+                                        <option value="R">SEMARANG (R)</option>
+                                        <option value="B">LAMPUNG (B)</option>
+                                        <option value="Y">MEDAN (Y)</option>
+                                        <option value="U">MAKASSAR (U)</option>
+                                        <option value="W">PALEMBANG (W)</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span>Gaji Dasar:</span>
+                                    <input type="text" name="gaji" id="gajiId" placeholder="Rp..." />
+                                </td>
+                            </label>
+                        </tr>
+                        <tr>
+                            <label>
+                                <td>
+                                    <span>Pangkat:</span>
+                                    <input type="text" name="pangkat" id="pangkatId" placeholder="Pangkat..." />
+                                </td>
+                                <td>
+                                    <span>Tgl Masuk:</span>
+                                    <input type="date" name="tglMasuk" />
+                                </td>
+                            </label>
+                        </tr>
+                        <label>
+                            <span>Tgl Aktif:</span>
+                            <input type="date" name="tglAktif" />
 
+                        </label>
+                        <br>
+                        <label>
+                            <input type="submit" name="addNew" value="ADD NEW" />
+                        </label>
+                    </fieldset>
 
+                </form>
+            </font>
         </div>
 
-        <!-- Popper.JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-        <!-- Bootstrap JS -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#sidebarCollapse').on('click', function() {
-                    $('#sidebar').toggleClass('active');
-                });
+    </div>
+
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#sidebarCollapse').on('click', function() {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
             });
-        </script>
+        });
+    </script>
 </body>
 
 </html>
