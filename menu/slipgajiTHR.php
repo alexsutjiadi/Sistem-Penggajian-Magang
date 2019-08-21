@@ -20,17 +20,17 @@ if (isset($_POST['gogo'])) {
 	$pdf->SetTextColor(0, 0, 0);
 
 
-	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
-	$db2 = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 0);
-	$db3 = dbase_open($_SESSION['pathKota'] . 'TABEL.DBF', 0);
+	$dbgaji = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
+	$dbpph = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 0);
+	$dbtabel = dbase_open($_SESSION['pathKota'] . 'TABEL.DBF', 0);
 
-	$ndata = dbase_numrecords($db);
-	$row3 = dbase_get_record_with_names($db3, 1);
+	$ngaji = dbase_numrecords($dbgaji);
+	$row3 = dbase_get_record_with_names($dbtabel, 1);
 
 	if ($_POST['mode'] == 1) {
-		for ($i = 1; $i <= $ndata; $i++) {
-			$row = dbase_get_record_with_names($db, $i);
-			$row2 = dbase_get_record_with_names($db2, $i);
+		for ($i = 1; $i <= $ngaji; $i++) {
+			$row = dbase_get_record_with_names($dbgaji, $i);
+			$row2 = dbase_get_record_with_names($dbpph, $i);
 
 
 			$DanaKesehatan = $row['TUNJ_KES'] + $row['JPK'];
@@ -142,9 +142,9 @@ if (isset($_POST['gogo'])) {
 		}
 	} else if ($_POST['mode'] == 2) {
 		$count = 1;
-		for ($i = 1; $i <= $ndata; $i++) {
-			$row = dbase_get_record_with_names($db, $i);
-			$row2 = dbase_get_record_with_names($db2, $i);
+		for ($i = 1; $i <= $ngaji; $i++) {
+			$row = dbase_get_record_with_names($dbgaji, $i);
+			$row2 = dbase_get_record_with_names($dbpph, $i);
 			$dept = $row['DEPT'];
 			$sub_dept = substr($dept, 0, 1);
 
@@ -264,9 +264,9 @@ if (isset($_POST['gogo'])) {
 		}
 	} else if ($_POST['mode'] == 3) {
 		$count = 1;
-		for ($i = 1; $i <= $ndata; $i++) {
-			$row = dbase_get_record_with_names($db, $i);
-			$row2 = dbase_get_record_with_names($db2, $i);
+		for ($i = 1; $i <= $ngaji; $i++) {
+			$row = dbase_get_record_with_names($dbgaji, $i);
+			$row2 = dbase_get_record_with_names($dbpph, $i);
 
 			if ($row['NIK'] == $_POST['opt']) {
 				$DanaKesehatan = $row['TUNJ_KES'] + $row['JPK'];
@@ -387,7 +387,7 @@ if (isset($_POST['gogo'])) {
 <html>
 
 <head>
-	<title>SLIP GAJI</title>
+	<title>SLIP GAJI THR</title>
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -410,15 +410,19 @@ if (isset($_POST['gogo'])) {
 	<div id="content">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a>SLIP GAJI </a>
+				<a>SLIP GAJI THR</a>
 			</div>
 		</nav>
 		<form action="" method="post">
+			<h5>Tanggal Cetak :</h5>
+			<input type="date" name="mode"><br>
+			<br>
 			<input type="radio" name="mode" value="1">ALL<br>
 			<input type="radio" name="mode" class="rad" value="2">Group<br>
 			<input type="radio" name="mode" class="rad" value="3">Individu<br>
 			<div id="optional">
 			</div>
+			<br>
 			<input type="submit" name="gogo" value="SUBMIT">
 
 		</form>

@@ -91,16 +91,16 @@ function printSideBar(){
                             <a href="/penggajianMagang/menu/slipgajiTHR.php" class="w3-bar-item w3-button">Slip Gaji + THR </a>
                         </li>
                         <li>
-                            <a href="/penggajianMagang/menu/TES1.php" class="w3-bar-item w3-button">TES 1 </a>
+                            <a href="/penggajianMagang/menu/FullReport.php" class="w3-bar-item w3-button">Full Report </a>
                         </li>
                         <li>
-                            <a href="/penggajianMagang/menu/TES2.php" class="w3-bar-item w3-button">TES 2 </a>
+                            <a href="/penggajianMagang/menu/FullReportTHR.php" class="w3-bar-item w3-button">Full Report + THR </a>
                         </li>
                         <li>
-                            <a href="/penggajianMagang/menu/TES3.php" class="w3-bar-item w3-button">TES 3 </a>
+                            <a href="/penggajianMagang/menu/ReportSummary.php" class="w3-bar-item w3-button">Report Summary </a>
                         </li>
                         <li>
-                            <a href="/penggajianMagang/menu/TES4.php" class="w3-bar-item w3-button">TES 4 </a>
+                            <a href="/penggajianMagang/menu/ReportSummaryTHR.php" class="w3-bar-item w3-button">Report Summary + THR </a>
                         </li>
                 </li>
 
