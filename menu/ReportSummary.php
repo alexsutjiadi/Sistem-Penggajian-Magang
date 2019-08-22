@@ -7,6 +7,14 @@ if (!isset($_SESSION['pathKota'])) {
 }
 include "../src/main.php";
 if (isset($_POST['gogo'])) {
+    $init = parse_ini_file($_SESSION['pathKota'] . "init.ini");
+    $hitungPPH = $init['hitung_pph'];
+    if ($hitungPPH == 0) {
+        $message = "Hitung PPH Terlebih Dahulu";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+        header("Refresh:0");
+        return;
+    }
 include('library/tcpdf.php');
 $pdf = new TCPDF('L', 'mm', 'F4');
 

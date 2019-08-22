@@ -97,10 +97,10 @@ function printSideBar(){
                             <a href="/penggajianMagang/menu/FullReportTHR.php" class="w3-bar-item w3-button">Full Report + THR </a>
                         </li>
                         <li>
-                            <a href="/penggajianMagang/menu/ReportSummary.php" class="w3-bar-item w3-button">Report Summary </a>
+                            <a href="/penggajianMagang/menu/ReportSummary.php" class="w3-bar-item w3-button">Summary Report </a>
                         </li>
                         <li>
-                            <a href="/penggajianMagang/menu/ReportSummaryTHR.php" class="w3-bar-item w3-button">Report Summary + THR </a>
+                            <a href="/penggajianMagang/menu/ReportSummaryTHR.php" class="w3-bar-item w3-button">Summary Report + THR </a>
                         </li>
                 </li>
 
