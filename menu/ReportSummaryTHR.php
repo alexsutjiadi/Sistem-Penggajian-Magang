@@ -15,13 +15,17 @@ if (isset($_POST['gogo'])) {
         header("Refresh:0");
         return;
     }
+    if (!$_POST['mode']) {
+        $_POST['mode'] = date('Y-m-d');
+    }
+
     require_once('library/tcpdf.php');
 
     $pdf = new TCPDF('L', 'mm', 'F4', true, 'UTF-8', false);
 
     $init = parse_ini_file($_SESSION['pathKota'] . "init.ini");
     $bulan = $init['posisi_bulan'];
-    $tahun = date('Y',strtotime($_POST['mode']));
+    $tahun = date('Y', strtotime($_POST['mode']));
     if ($bulan == 1) {
         $bulan = "January";
     } else if ($bulan == 2) {
@@ -47,9 +51,9 @@ if (isset($_POST['gogo'])) {
     } else if ($bulan == 12) {
         $bulan = "December";
     }
-    $bulan .= " - ".$tahun;
+    $bulan .= " - " . $tahun;
 
-    $pdf->SetHeaderData('logo.png', 80, '                SUMMARY DAFTAR GAJI (' . $_SESSION['kodeKota'] . ')', 'Cetak : ' . date('d-m-Y',strtotime($_POST['mode'])) . '   Periode: ' . $bulan);
+    $pdf->SetHeaderData('logo.png', 80, '                SUMMARY DAFTAR GAJI (' . $_SESSION['kodeKota'] . ')', 'Cetak : ' . date('d-m-Y', strtotime($_POST['mode'])) . '   Periode: ' . $bulan);
     $pdf->SetFont('Helvetica', '', 9);
     $pdf->SetFillColor(255, 255, 255);
     $pdf->SetTextColor(0, 0, 0);
@@ -63,7 +67,7 @@ if (isset($_POST['gogo'])) {
     $ngol = dbase_numrecords($db2);
     $pph = dbase_numrecords($db3);
     $print = "";
-    $no_urut = 0;
+    $no_urut = 1;
     $SuperTotalGajiBruto = 0;
     $SuperTotalTunjJab = 0;
     $SuperTotalTunjKes = 0;
@@ -126,7 +130,6 @@ EOD;
 
 
             if ($kode1 == $pangkat1) {
-                $no_urut++;
                 $datapertama = false;
                 $GajiBruto = $row['GAJI_DASAR'] + $row['TUNJ_REG'] + $row['TUNJ_JAB'] + $row['TUNJ_KES'];
                 $GajiNetto = $GajiBruto - ($row3['JABAT'] + $row3['THT'] + $row['JPK']);
@@ -168,6 +171,7 @@ EOD;
                 $tunai = rupiah($tunai);
             }
             if ($i == $ndata && $datapertama == false) {
+                
                 $SuperTotalGajiBruto = (int) $SuperTotalGajiBruto + (int) $TotalGajiBruto;
                 $SuperTotalTunjJab = (int) $SuperTotalTunjJab + (int) $TotalTunjJab;
                 $SuperTotalTunjKes = (int) $SuperTotalTunjKes + (int) $TotalTunjKes;
@@ -190,8 +194,6 @@ EOD;
                 $TotalBCA = rupiah($TotalBCA);
                 $TotalTunai = rupiah($TotalTunai);
 
-
-
                 $print .= <<<EOD
                     <tr>
                         <td>$no_urut</td>
@@ -208,6 +210,7 @@ EOD;
                         <td>$TotalTunai</td>
                     </tr>
 EOD;
+                $no_urut++;
             }
         }
     }

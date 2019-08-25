@@ -15,95 +15,117 @@ if (isset($_POST['gogo'])) {
 		header("Refresh:0");
 		return;
 	}
-include('library/tcpdf.php');
-$pdf = new TCPDF('L', 'mm', 'F4');
+	if (!$_POST['mode']) {
+		$_POST['mode'] = date('Y-m-d');
+	}
+	require_once('library/tcpdf.php');
 
-class MYPDF extends TCPDF {
+	$pdf = new TCPDF('L', 'mm', 'F4', true, 'UTF-8', false);
 
-    //Page header
-    public function Header() {
-        // Set font
-        $this->SetFont('helvetica', 'B', 20);
-        // Title
-        $this->Cell(0, 15, '<< DAFTAR GAJI >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-    }
-}
+	$init = parse_ini_file($_SESSION['pathKota'] . "init.ini");
+	$bulan = $init['posisi_bulan'];
+	$tahun = date('Y', strtotime($_POST['mode']));
+	if ($bulan == 1) {
+		$bulan = "January";
+	} else if ($bulan == 2) {
+		$bulan = "February";
+	} else if ($bulan == 3) {
+		$bulan = "March";
+	} else if ($bulan == 4) {
+		$bulan = "April";
+	} else if ($bulan == 5) {
+		$bulan = "May";
+	} else if ($bulan == 6) {
+		$bulan = "June";
+	} else if ($bulan == 7) {
+		$bulan = "July";
+	} else if ($bulan == 8) {
+		$bulan = "August";
+	} else if ($bulan == 9) {
+		$bulan = "September";
+	} else if ($bulan == 10) {
+		$bulan = "October";
+	} else if ($bulan == 11) {
+		$bulan = "November";
+	} else if ($bulan == 12) {
+		$bulan = "December";
+	}
+	$bulan .= " - " . $tahun;
 
-$pdf->AddPage();
+	$pdf->SetHeaderData('logo.png', 80, '                FULL REPORT DAFTAR GAJI (' . $_SESSION['kodeKota'] . ')', 'Cetak : ' . date('d-m-Y', strtotime($_POST['mode'])) . '   Periode: ' . $bulan);
+	$pdf->SetFont('Helvetica', '', 9);
+	$pdf->SetFillColor(255, 255, 255);
+	$pdf->SetTextColor(0, 0, 0);
 
-$pdf->SetFont('Helvetica', '', 7.4);
-$pdf->SetFillColor(255, 255, 255);
-$pdf->SetTextColor(0, 0, 0);
+	$pdf->AddPage();
+	$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
+	$db2 = dbase_open($_SESSION['pathKota'] . 'GOLONGAN.DBF', 0);
+	$db3 = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 0);
+
+	$ndata = dbase_numrecords($db);
+	$ngol = dbase_numrecords($db2);
+	$pph = dbase_numrecords($db3);
+	$No_urut = 0;
+
+	for ($gol = 1; $gol <= $ngol; $gol++) {
+		$print = "";
+		$row2 = dbase_get_record_with_names($db2, $gol);
+		$kode = $row2['KODE'];
+		$namakode = $row2['NAMA'];
+		$kode1 = substr($kode, 0, 1);
+		$datapertama = true;
+		$TotalGajiBruto = 0;
+		$TotalTunjJab = 0;
+		$TotalTunjKes = 0;
+		$TotalGajiNetto = 0;
+		$TotalKolomExtra = 0;
+		$TotalYangditerima = 0;
+		$TotalBCA = 0;
+		$TotalTunai = 0;
+		for ($i = 1; $i <= $ndata; $i++) {
+
+			$row = dbase_get_record_with_names($db, $i);
+			$kodebca = $row['KODE_BANK'];
+			$row3 = dbase_get_record_with_names($db3, $i);
+			$pangkat = $row['DEPT'];
+			$pangkat1 = substr($pangkat, 0, 1);
 
 
-$db = dbase_open($_SESSION['pathKota'] . 'GAJI.DBF', 0);
-$db2 = dbase_open($_SESSION['pathKota'] . 'GOLONGAN.DBF', 0);
-$db3 = dbase_open($_SESSION['pathKota'] . 'PPH.DBF', 0);
+			if ($kode1 == $pangkat1) {
+				$No_urut++;
+				$GajiBruto = $row['GAJI_DASAR'] + $row['TUNJ_REG'] + $row['TUNJ_JAB'] + $row['TUNJ_KES'];
+				$GajiNetto = $GajiBruto - ($row3['JABAT'] + $row3['THT'] + $row['JPK']);
+				$KolomExtra = $row['EXTRA_LAIN'] - $row['PINJAMAN'];
+				$Total = $GajiNetto - $KolomExtra;
+				$TotalGajiBruto = (int) $TotalGajiBruto + (int) $GajiBruto;
+				$TotalTunjJab = (int) $TotalTunjJab + (int) $row['TUNJ_JAB'];
+				$TotalTunjKes = (int) $TotalTunjKes + (int) $row['TUNJ_KES'];
+				$TotalGajiNetto = (int) $TotalGajiNetto + (int) $GajiNetto;
+				$TotalKolomExtra = (int) $TotalKolomExtra + (int) $KolomExtra;
+				$TotalYangditerima = (int) $TotalYangditerima + (int) $Total;
+				$transfer = 0;
+				$tunai = 0;
+				if ($kodebca == 1) {
+					$transfer = $Total;
+				} else {
+					$tunai = $Total;
+				}
+				$TotalBCA += $transfer;
+				$TotalTunai += $tunai;
 
-$ndata = dbase_numrecords($db);
-$ngol = dbase_numrecords($db2);
-$pph = dbase_numrecords($db3);
-$No_urut = 0;
+				$GajiBruto = rupiah($GajiBruto);
+				$GajiNetto = rupiah($GajiNetto);
+				$KolomExtra = rupiah($KolomExtra);
+				$Total = rupiah($Total);
+				$row['TUNJ_JAB'] = rupiah($row['TUNJ_JAB']);
+				$row['TUNJ_KES'] = rupiah($row['TUNJ_KES']);
+				$transfer = rupiah($transfer);
+				$tunai = rupiah($tunai);
 
-for ($gol = 1; $gol <= $ngol; $gol++) {
-	$print = "";
-	$row2 = dbase_get_record_with_names($db2, $gol);
-	$kode = $row2['KODE'];
-	$namakode = $row2['NAMA'];
-	$kode1 = substr($kode, 0, 1);
-	$datapertama = true;
-	$TotalGajiBruto = 0;
-	$TotalTunjJab = 0;
-	$TotalTunjKes = 0;
-	$TotalGajiNetto = 0;
-	$TotalKolomExtra = 0;
-	$TotalYangditerima = 0;
-	$TotalBCA = 0;
-	$TotalTunai = 0;
-	for ($i = 1; $i <= $ndata; $i++) {
-		
-		$row = dbase_get_record_with_names($db, $i);
-		$kodebca = $row['KODE_BANK'];
-		$row3 = dbase_get_record_with_names($db3, $i);
-		$pangkat = $row['DEPT'];
-		$pangkat1 = substr($pangkat, 0, 1);
-
-		
-		if ($kode1 == $pangkat1) {
-			$No_urut++;
-			$GajiBruto = $row['GAJI_DASAR'] + $row['TUNJ_REG'] + $row['TUNJ_JAB'] + $row['TUNJ_KES'];
-			$GajiNetto = $GajiBruto-($row3['JABAT'] + $row3['THT'] + $row['JPK']);
-			$KolomExtra = $row['EXTRA_LAIN']-$row['PINJAMAN'];
-			$Total = $GajiNetto-$KolomExtra;
-			$TotalGajiBruto = (int)$TotalGajiBruto + (int)$GajiBruto;
-			$TotalTunjJab = (int)$TotalTunjJab+(int)$row['TUNJ_JAB'];
-			$TotalTunjKes = (int)$TotalTunjKes+(int)$row['TUNJ_KES'];
-			$TotalGajiNetto = (int)$TotalGajiNetto+(int)$GajiNetto;
-			$TotalKolomExtra = (int)$TotalKolomExtra+(int)$KolomExtra;
-			$TotalYangditerima = (int)$TotalYangditerima+(int)$Total;
-			$transfer = 0;
-			$tunai = 0;
-			if ($kodebca == 1) {
-				$transfer = $Total;
-			}else{
-				$tunai = $Total;
-			}
-			$TotalBCA += $transfer;
-			$TotalTunai += $tunai;
-
-			$GajiBruto = rupiah($GajiBruto);
-			$GajiNetto = rupiah($GajiNetto);
-			$KolomExtra = rupiah($KolomExtra);
-			$Total = rupiah($Total);
-			$row['TUNJ_JAB'] = rupiah($row['TUNJ_JAB']);
-			$row['TUNJ_KES'] = rupiah($row['TUNJ_KES']);
-			$transfer = rupiah($transfer);
-			$tunai = rupiah($tunai);
-			
-	$TotalBCA = (int)$TotalBCA+(int)$Total;
-	if ($datapertama == true) {
-				$datapertama = false;
-				$print .= <<<EOD
+				$TotalBCA = (int) $TotalBCA + (int) $Total;
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>$namakode</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -124,7 +146,7 @@ for ($gol = 1; $gol <= $ngol; $gol++) {
 									<td>Kesehatan</td>
 								</tr>
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$No_urut</td>
 						<td>$row[NIK]</td>
@@ -141,8 +163,8 @@ EOD;
 					</tr>
 
 				EOD;
-			} else {
-				$print .= <<<EOD
+				} else {
+					$print .= <<<EOD
 					<tr>
 						<td>$No_urut</td>
 						<td>$row[NIK]</td>
@@ -160,19 +182,18 @@ EOD;
 					
 
 EOD;
+				}
 			}
-			
-		}
-		if ($i == $ndata && $datapertama == false) {
-			$TotalGajiBruto = rupiah($TotalGajiBruto);
-			$TotalTunjJab = rupiah($TotalTunjJab);
-			$TotalTunjKes = rupiah($TotalTunjKes);
-			$TotalGajiNetto = rupiah($TotalGajiNetto);
-			$TotalKolomExtra = rupiah($TotalKolomExtra);
-			$TotalYangditerima = rupiah($TotalYangditerima);
-			$TotalBCA = rupiah($TotalBCA);
-			$TotalTunai = rupiah($TotalTunai);
-			$print .= <<<EOD
+			if ($i == $ndata && $datapertama == false) {
+				$TotalGajiBruto = rupiah($TotalGajiBruto);
+				$TotalTunjJab = rupiah($TotalTunjJab);
+				$TotalTunjKes = rupiah($TotalTunjKes);
+				$TotalGajiNetto = rupiah($TotalGajiNetto);
+				$TotalKolomExtra = rupiah($TotalKolomExtra);
+				$TotalYangditerima = rupiah($TotalYangditerima);
+				$TotalBCA = rupiah($TotalBCA);
+				$TotalTunai = rupiah($TotalTunai);
+				$print .= <<<EOD
 				<tr>
 						<td colspan="4" align="center">Total</td>
 						<td>$TotalGajiBruto</td>
@@ -186,12 +207,12 @@ EOD;
 					</tr>
 			</table>
 EOD;
+			}
 		}
+
+		$pdf->writeHTML($print, true, false, false, false, '');
 	}
-	
-	$pdf->writeHTML($print, true, false, false, false, '');
-}
-$pdf->Output();
+	$pdf->Output();
 }
 ?>
 <!DOCTYPE html>
@@ -228,7 +249,7 @@ $pdf->Output();
 			<h5>Tanggal Cetak :</h5>
 			<input type="date" name="mode">
 			<div id="optional">
-	</div>
+			</div>
 			<br>
 			<input type="submit" name="gogo" value="SUBMIT">
 
@@ -256,7 +277,7 @@ $pdf->Output();
 				});
 			});
 		</script>
-		
+
 </body>
 
 </html>
