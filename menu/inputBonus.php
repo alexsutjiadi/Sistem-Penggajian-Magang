@@ -147,7 +147,7 @@ if ($db) {
 			}
 			// click 1 kolom
 			editPerKolom();
-		})
+		});
 	</script>
 </head>
 
