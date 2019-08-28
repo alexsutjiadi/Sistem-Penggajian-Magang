@@ -281,7 +281,7 @@ if ($db) {
                     <br><input type="text" name="val" /> \
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
-					<input type="submit" name="editTunjJab"> \
+					<input type="submit" value="Submit" name="editTunjJab"> \
                 <input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}

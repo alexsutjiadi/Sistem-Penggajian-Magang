@@ -56,7 +56,7 @@ include "../src/main.php";
                     $("#buttonEdit").val("SAVE");
                     $("#buttonEdit").data("condition", false);
                     alert(totalRow);
-                    //$("#myTable").off("click");
+                    $("#myTable").off("click");
                     for (var i = 1; i <= totalRow; i++) {
                         (function(i) {
                             var sebelum = $(".tdBonus" + i).text();
@@ -70,9 +70,9 @@ include "../src/main.php";
                     //alert(totalRow);
                     $("#buttonEdit").val("Edit All");
                     $("#buttonEdit").data("condition", true);
-                    // $("#myTable").on("click", "td", function() {
-                    //     editPerKolom();
-                    // });
+                    $("#myTable").on("click", "td", function() {
+                        editPerKolom();
+                    });
 
                     for (var i = 1; i <= totalRow; i++) {
                         (function(i) {
@@ -95,6 +95,32 @@ include "../src/main.php";
 
                 }
             });
+
+            function editPerKolom() {
+                // click 1 kolom
+                $("#myTable").on("click", "td", function() {
+                    // alert($(this).data("row"));
+                    // alert($(this).data("mode"));
+                    // alert($(this).text());
+
+                    //tunjangan jabatan click
+                    if ($(this).data("flag") == "aktif") {
+                        $("#myTable").off("click");
+                        var form = '<form action="" method="POST"> \
+					' + $(this).text() + ' \
+                    <br><input type="text" name="val" /> \
+					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
+                    <br /> \
+					<input type="submit" value="Submit" name="editBonus"> \
+					<input type="submit" value="Cancel" name=""> \
+                	</form>';
+                        $(this).html(form);
+                    }
+
+                });
+            }
+            // click 1 kolom
+            editPerKolom();
         });
     </script>
 </head>
@@ -131,7 +157,14 @@ include "../src/main.php";
                     for ($i = 1; $i <= $ndata; $i++) { ?>
                 <tr>
                     <?php $row = dbase_get_record_with_names($db, $i);
-                            $rowgaji = dbase_get_record_with_names($dbgaji, $i); ?>
+                            $rowgaji = dbase_get_record_with_names($dbgaji, $i);
+                            $flag = $rowgaji['AKTIV'];
+                            if ($flag == 'Y') {
+                                $flag = "aktif";
+                            } else {
+                                $flag = "keluar";
+                            }
+                            ?>
                     <td>
                         <?php echo $row['DEPT']; ?>
                     </td>
@@ -144,7 +177,7 @@ include "../src/main.php";
                     <td>
                         <?php echo rupiah($row['THR']); ?>
                     </td>
-                    <td class=<?php echo "tdBonus" . $i ?>>
+                    <td class=<?php echo "tdBonus" . $i ?> data-row=<?php echo $i ?> data-flag=<?php echo $flag ?>>
                         <?php echo rupiah($row['PPH_THR']); ?>
                     </td>
 
