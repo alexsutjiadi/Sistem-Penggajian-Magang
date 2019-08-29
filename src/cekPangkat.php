@@ -247,7 +247,7 @@ if (isset($_POST['hitungPPH'])) {
             
 
         } else {
-            //update berdasarkan deptID
+            //update berdasarkan no urut
             for ($n = 1; $n <= $ngaji; $n++) {
                 $rowpph = dbase_get_record_with_names($dbpph, $n);
                 if ($rowpph['NO_URUT'] == $rowgaji['NO_URUT']) {

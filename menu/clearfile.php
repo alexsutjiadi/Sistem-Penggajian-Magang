@@ -18,7 +18,80 @@ if (isset($_POST['month'])) {
         $dbpph = dbase_open($_SESSION['pathKota'] . "PPH.DBF", 2);
         $dbgaji = dbase_open($_SESSION['pathKota'] . "GAJI.DBF", 2);
         $dbwaktu = dbase_open($_SESSION['pathKota'] . "WAKTU_MASUK.DBF", 2);
+        $dbnrekap = dbase_open($_SESSION['pathKota'] . "NREKAP.DBF", 2);
 
+        //pindahin data ke nrekap.dbf
+        //gaji
+        $ngaji = dbase_numrecords($dbgaji);
+        $bln_gaji = 'GAJI' . $nposisi;
+        for ($i = 1; $i <= $ngaji; $i++) {
+            $nrekap = dbase_numrecords($dbnrekap);
+            if ($nrekap == 0) {
+                $rowgaji = dbase_get_record_with_names($dbgaji, $i);
+                dbase_add_record($dbnrekap, array(
+                    $rowgaji['NO_URUT'],
+                    $rowgaji['NAMA'],
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                ));
+                $edit = dbase_get_record_with_names($dbnrekap, 1);
+                unset($edit['deleted']);
+                $edit[$bln_gaji] = $rowgaji['GAJI_DASAR'];
+                $edit = array_values($edit);
+                dbase_replace_record($dbnrekap, $edit, 1);
+            } else {
+                for ($j = 1; $j <= $nrekap; $j++) {
+                    $rowgaji = dbase_get_record_with_names($dbgaji, $i);
+                    $rowrekap = dbase_get_record_with_names($dbnrekap, $j);
+                    if ($rowgaji['NO_URUT'] == $rowrekap['NO_URUT']) {
+                        unset($rowrekap['deleted']);
+                        $rowrekap[$bln_gaji] = $rowgaji['GAJI_DASAR'];
+                        $rowrekap = array_values($rowrekap);
+                        dbase_replace_record($dbnrekap, $rowrekap, $j);
+                        break;
+                    } else {
+                        if ($j == $nrekap) {
+                            dbase_add_record($dbnrekap, array(
+                                $rowgaji['NO_URUT'],
+                                $rowgaji['NAMA'],
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                            ));
+                            $n = dbase_numrecords($dbnrekap);
+                            $edit = dbase_get_record_with_names($dbnrekap, $n);
+                            unset($edit['deleted']);
+                            $edit[$bln_gaji] = $rowgaji['GAJI_DASAR'];
+                            $edit = array_values($edit);
+                            dbase_replace_record($dbnrekap, $edit, $j);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        //pph+thr
+        $nrekap = dbase_numrecords($dbnrekap);
+        $npph = dbase_numrecords($dbpph);
+        $bln_pph = 'PPH' . $nposisi;
+        $bln_thr = 'THR' . $nposisi;
+        for ($i = 1; $i <= $npph; $i++) {
+            for ($j = 1; $j <= $nrekap; $j++) {
+                $rowpph = dbase_get_record_with_names($dbpph, $i);
+                $rowrekap = dbase_get_record_with_names($dbnrekap, $j);
+                if ($rowpph['NO_URUT'] == $rowrekap['NO_URUT']) {
+                    unset($rowrekap['deleted']);
+                    $rowrekap[$bln_pph] = $rowpph['PPH_21'];
+                    $rowrekap[$bln_thr] = $rowpph['THR'];
+                    $rowrekap = array_values($rowrekap);
+                    dbase_replace_record($dbnrekap, $rowrekap, $j);
+                    break;
+                }
+            }
+        }
+
+        //clear
         $ngaji = dbase_numrecords($dbgaji);
         for ($i = 1; $i <= $ngaji; $i++) {
             $rowgaji = dbase_get_record_with_names($dbgaji, $i);
@@ -82,12 +155,13 @@ if (isset($_POST['month'])) {
         fwrite($myfile, $txt);
         fclose($myfile);
         echo "<script type='text/javascript'>alert('berhasil');</script>";
+        dbase_close($dbgaji);
+        dbase_close($dbpph);
+        dbase_close($dbwaktu);
+        dbase_close($dbnrekap);
     } else {
         echo "<script type='text/javascript'>alert('Lakukan perhitungan pph dahulu');</script>";
     }
-    dbase_close($dbgaji);
-    dbase_close($dbpph);
-    dbase_close($dbwaktu);
 }
 
 if (isset($_POST['ytd'])) {
@@ -116,7 +190,7 @@ if (isset($_POST['ytd'])) {
             $rowgaji = dbase_get_record_with_names($dbgaji, $i);
             $rowpph = dbase_get_record_with_names($dbpph, $i);
             $rowwaktu = dbase_get_record_with_names($dbwaktu, $i);
-            $rowpph1 = dbase_get_record_with_names($dbpph1, $i);
+            // $rowpph1 = dbase_get_record_with_names($dbpph1, $i);
 
             dbase_add_record($dbpph1, array($rowpph['NO_URUT'], 0, 0, 0, $rowpph['YTD_JABAT'], $rowpph['YTD_PKP'], $rowpph['YTD_PPH']));
             unset($rowpph['deleted']);
@@ -136,6 +210,62 @@ if (isset($_POST['ytd'])) {
             $rowpph['YTD_BONUS'] = 0;
             $rowpph['YTD_TJAB'] = 0;
         }
+        // nrekap.dbf bikin baru
+        $def = array(
+            array("NO_URUT", "C", 3),
+            array("NAMA", "C", 30),
+            array("GAJI1", "N", 10, 0),
+            array("THR1", "N", 10, 0),
+            array("PPH1", "N", 10, 0),
+            //2
+            array("GAJI2", "N", 10, 0),
+            array("THR2", "N", 10, 0),
+            array("PPH2", "N", 10, 0),
+            //3
+            array("GAJI3", "N", 10, 0),
+            array("THR3", "N", 10, 0),
+            array("PPH3", "N", 10, 0),
+            //4
+            array("GAJI4", "N", 10, 0),
+            array("THR4", "N", 10, 0),
+            array("PPH4", "N", 10, 0),
+            //5
+            array("GAJI5", "N", 10, 0),
+            array("THR5", "N", 10, 0),
+            array("PPH5", "N", 10, 0),
+            //6
+            array("GAJI6", "N", 10, 0),
+            array("THR6", "N", 10, 0),
+            array("PPH6", "N", 10, 0),
+            //7
+            array("GAJI7", "N", 10, 0),
+            array("THR7", "N", 10, 0),
+            array("PPH7", "N", 10, 0),
+            //8
+            array("GAJI8", "N", 10, 0),
+            array("THR8", "N", 10, 0),
+            array("PPH8", "N", 10, 0),
+            //9
+            array("GAJI9", "N", 10, 0),
+            array("THR9", "N", 10, 0),
+            array("PPH9", "N", 10, 0),
+            //10
+            array("GAJI10", "N", 10, 0),
+            array("THR10", "N", 10, 0),
+            array("PPH10", "N", 10, 0),
+            //11
+            array("GAJI11", "N", 10, 0),
+            array("THR11", "N", 10, 0),
+            array("PPH11", "N", 10, 0),
+            //12
+            array("GAJI12", "N", 10, 0),
+            array("THR12", "N", 10, 0),
+            array("PPH12", "N", 10, 0)
+        );
+        if (!dbase_create($_SESSION['pathKota'] . 'NREKAP.DBF', $def)) {
+            echo "Error, can't create the database\n";
+        }
+
         $ncount = 0;
         echo "<script type='text/javascript'>alert('berhasil');</script>";
     }
