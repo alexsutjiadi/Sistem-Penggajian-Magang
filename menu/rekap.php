@@ -7,14 +7,6 @@ if (!isset($_SESSION['pathKota'])) {
 }
 include "../src/main.php";
 if (isset($_POST['gogo'])) {
-	$init = parse_ini_file($_SESSION['pathKota'] . "init.ini");
-	$hitungPPH = $init['hitung_pph'];
-	if ($hitungPPH == 0) {
-		$message = "Hitung PPH Terlebih Dahulu";
-		echo "<script type='text/javascript'>alert('$message');</script>";
-		header("Refresh:0");
-		return;
-	}
 	if (!$_POST['mode']) {
 		$_POST['mode'] = date('Y-m-d');
 	}
@@ -23,36 +15,9 @@ if (isset($_POST['gogo'])) {
 	$pdf = new TCPDF('L', 'mm', 'F4', true, 'UTF-8', false);
 
 	//$init = parse_ini_file($_SESSION['pathKota'] . "init.ini");
-	$bulan = $init['posisi_bulan'];
-	$tahun = date('Y', strtotime($_POST['mode']));
-	if ($bulan == 1) {
-		$bulan = "January";
-	} else if ($bulan == 2) {
-		$bulan = "February";
-	} else if ($bulan == 3) {
-		$bulan = "March";
-	} else if ($bulan == 4) {
-		$bulan = "April";
-	} else if ($bulan == 5) {
-		$bulan = "May";
-	} else if ($bulan == 6) {
-		$bulan = "June";
-	} else if ($bulan == 7) {
-		$bulan = "July";
-	} else if ($bulan == 8) {
-		$bulan = "August";
-	} else if ($bulan == 9) {
-		$bulan = "September";
-	} else if ($bulan == 10) {
-		$bulan = "October";
-	} else if ($bulan == 11) {
-		$bulan = "November";
-	} else if ($bulan == 12) {
-		$bulan = "December";
-	}
-	$bulan .= " - " . $tahun;
+	
 
-	$pdf->SetHeaderData('logo.png', 80, '                FULL REPORT DAFTAR GAJI (' . $_SESSION['kodeKota'] . ')', 'Cetak : ' . date('d-m-Y', strtotime($_POST['mode'])) . '   Periode: ' . $bulan);
+	$pdf->SetHeaderData('logo.png', 80, 'REKAP (' . $_SESSION['kodeKota'] . ')', 'Cetak : ' . date('d-m-Y', strtotime($_POST['mode'])) );
 	$pdf->SetFont('Helvetica', '', 9);
 	$pdf->SetFillColor(255, 255, 255);
 	$pdf->SetTextColor(0, 0, 0);
@@ -62,19 +27,17 @@ if (isset($_POST['gogo'])) {
 
 	$ndata = dbase_numrecords($db);
 	$No_urut = 0;
-	
-	for($bln = 1; $bln <= 12;$bln++)
-	 {
+
+	for ($bln = 1; $bln <= 12; $bln++) {
 		$print = "";
 		$datapertama = true;
-		
-		for ($gol = 1; $gol <= $ndata; $gol++)
-		{
+
+		for ($gol = 1; $gol <= $ndata; $gol++) {
 			$row = dbase_get_record_with_names($db, $gol);
-			if($bln==1){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+			if ($bln == 1) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -87,7 +50,7 @@ if (isset($_POST['gogo'])) {
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -97,11 +60,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -111,12 +71,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==2){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) { 
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 2) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -129,7 +91,7 @@ else if($bln==2){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -139,11 +101,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -153,12 +112,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==3){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 3) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -171,7 +132,7 @@ else if($bln==3){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -181,11 +142,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -195,12 +153,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==4){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 4) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -213,7 +173,7 @@ else if($bln==4){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -223,11 +183,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -237,12 +194,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==5){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 5) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -255,7 +214,7 @@ else if($bln==5){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -265,11 +224,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -279,12 +235,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==6){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 6) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -297,7 +255,7 @@ else if($bln==6){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -307,11 +265,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -321,12 +276,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==7){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 7) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -339,7 +296,7 @@ else if($bln==7){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -349,11 +306,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -363,12 +317,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==8){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 8) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -381,7 +337,7 @@ else if($bln==8){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -391,11 +347,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -405,12 +358,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==9){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 9) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -423,7 +378,7 @@ else if($bln==9){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -433,11 +388,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -447,12 +399,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==10){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 10) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -465,7 +419,7 @@ else if($bln==10){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -475,11 +429,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -489,12 +440,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==11){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 11) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -507,7 +460,7 @@ else if($bln==11){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -517,11 +470,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -531,12 +481,14 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-else if($bln==12){
-			if($datapertama == true){
-				$datapertama = false;
-				$print .= <<<EOD
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			} else if ($bln == 12) {
+				if ($datapertama == true) {
+					$datapertama = false;
+					$print .= <<<EOD
 							<h1>Bulan $bln</h1>
 							<table width="100%" border="1">
 								<tr>
@@ -549,7 +501,7 @@ else if($bln==12){
 		
 			
 EOD;
-				$print .= <<<EOD
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -559,11 +511,8 @@ EOD;
 					</tr>
 
 EOD;
-				
-	
-}
-else if($datapertama == false){
-	$print .= <<<EOD
+				} else if ($datapertama == false) {
+					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
 						<td>$row[NAMA]</td>
@@ -573,9 +522,12 @@ else if($datapertama == false){
 					</tr>
 
 EOD;
-}
-}
-}
+					if ($gol == $ndata) {
+						$print .= "</table>";
+					}
+				}
+			}
+		}
 		$pdf->writeHTML($print, true, false, false, false, '');
 	}
 

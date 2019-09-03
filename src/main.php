@@ -79,6 +79,9 @@ function printSideBar(){
             <li class="active">
                 <a href="/penggajianMagang/menu/clearfile.php">Clear File</a>
             </li>
+             <li class="active">
+                <a href="/penggajianMagang/menu/rekap.php">Rekap</a>
+            </li>
             <li class="active">
                     <a href="#pageSubLaporanBulan" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         Laporan Akhir Bulan
