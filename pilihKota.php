@@ -47,7 +47,7 @@ if (isset($_POST['MEDAN'])) {
     $_SESSION['kodeKota'] = "Y";
 }
 if (isset($_SESSION['pathKota'])) {
-    header("Location: index.php");
+    header("Location: menu/payrollMasterFile.php");
 }
 ?>
 <html>
