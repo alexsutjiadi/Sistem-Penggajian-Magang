@@ -41,7 +41,7 @@ include "../src/main.php";
             </nav>
             <form method="post" action="../src/cekPangkat.php">
                 <input type="submit" value="hitungPPH" name="hitungPPH">
-                <input type="submit" value="CLEAAR" name="clear">
+                <!-- <input type="submit" value="CLEAAR" name="clear"> -->
             </form>
 
             <?php
