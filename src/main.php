@@ -115,4 +115,32 @@ function rupiah($angka)
     $hasil = "Rp. " . number_format((int) $angka, 0, '', '.');
     return $hasil;
 }
-?>
+
+
+function sortDbf($dbf, $field){ // $dbf->lokasi+nama dbf, $field -> sort berdasar field mana
+    $db=dbase_open($dbf, 2);
+    $n = dbase_numrecords($db);
+
+    for($i = 1; $i<=$n; $i++){
+        for($j=$i+1;$j<=$n;$j++){
+            $rowi = dbase_get_record_with_names($db, $i);
+            $rowj = dbase_get_record_with_names($db, $j);
+
+            if($rowi[$field] > $rowj[$field]){
+                unset($rowi['deleted']);
+                unset($rowj['deleted']);
+
+                $temp = $rowi;
+                $rowi = $rowj;
+                $rowj = $temp;
+
+                $rowi = array_values($rowi);
+                $rowj = array_values($rowj);
+
+                dbase_replace_record($db, $rowi, $i);
+                dbase_replace_record($db, $rowj, $j);
+            }
+        }
+    }
+    dbase_close($db);
+}

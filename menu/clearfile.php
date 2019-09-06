@@ -161,6 +161,10 @@ if (isset($_POST['month'])) {
         dbase_close($dbpph);
         dbase_close($dbwaktu);
         dbase_close($dbnrekap);
+
+        //sort nrekap.dbf
+        sortDbf($_SESSION['pathKota'] . 'NREKAP.DBF',"NO_URUT");
+        
     } else {
         echo "<script type='text/javascript'>alert('Lakukan perhitungan pph dahulu');</script>";
     }
