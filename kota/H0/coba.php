@@ -4,6 +4,7 @@
 $def = array(
     array("NO_URUT", "C", 3),
     array("NAMA", "C", 30),
+    array("DEPT", "C", 5),
     array("GAJI1", "N", 10, 0),
     array("THR1", "N", 10, 0),
     array("PPH1", "N", 10, 0),

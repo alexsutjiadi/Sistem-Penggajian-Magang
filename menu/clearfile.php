@@ -26,11 +26,12 @@ if (isset($_POST['month'])) {
         $bln_gaji = 'GAJI' . $nposisi;
         for ($i = 1; $i <= $ngaji; $i++) {
             $nrekap = dbase_numrecords($dbnrekap);
-            if ($nrekap == 0 ||$i > $nrekap) {
+            if ($nrekap == 0 || $i > $nrekap) {
                 $rowgaji = dbase_get_record_with_names($dbgaji, $i);
                 dbase_add_record($dbnrekap, array(
                     $rowgaji['NO_URUT'],
                     $rowgaji['NAMA'],
+                    $rowgaji['DEPT'],
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -55,6 +56,7 @@ if (isset($_POST['month'])) {
                             dbase_add_record($dbnrekap, array(
                                 $rowgaji['NO_URUT'],
                                 $rowgaji['NAMA'],
+                                $rowgaji['DEPT'],
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -214,6 +216,7 @@ if (isset($_POST['ytd'])) {
         $def = array(
             array("NO_URUT", "C", 3),
             array("NAMA", "C", 30),
+            array("DEPT", "C", 5),
             array("GAJI1", "N", 10, 0),
             array("THR1", "N", 10, 0),
             array("PPH1", "N", 10, 0),
