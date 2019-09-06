@@ -95,37 +95,46 @@ if ($db) {
 
 			<?php
 			for ($i = 1; $i <= $record_numbers; $i++) { ?>
-			<tr>
-				<?php $row = dbase_get_record_with_names($db, $i); ?>
-				<td>
-					<?php echo $row['KODE']; ?>
-				</td>
-				<td>
-					<?php echo $row['NAMA'] ?> </td>
-				<td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-				</td>
-				<td>
-					<form action="" method="post">
-						<input type="hidden" name="kode" value=<?php echo $row['KODE']; ?> id=<?php echo "kode" . $i; ?>>
-						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
-						<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
-						<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
-					</form>
-				</td>
-			</tr>
+				<tr>
+					<?php $row = dbase_get_record_with_names($db, $i); ?>
+					<td>
+						<?php echo $row['KODE']; ?>
+					</td>
+					<td>
+						<?php echo $row['NAMA'] ?> </td>
+					<td> <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
+					</td>
+					<td>
+						<form action="" method="post">
+							<input type="hidden" name="kode" value=<?php echo $row['KODE']; ?> id=<?php echo "kode" . $i; ?>>
+							<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
+							<input type="hidden" name="idDelete" value=<?php echo $i; ?>>
+							<input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
+						</form>
+					</td>
+				</tr>
 			<?php }
 			dbase_close($db); ?>
-			<tr>
-				<td>
-					<form action="" method="POST"><input type="text" name="addKode">
-				</td>
-				<td><input type="text" name="addNama"></td>
-				<td colspan="2">
-					<center><input type="submit" name="add" value="ADD"></center>
-					</form>
-				</td>
-			</tr>
-
+		</table>
+		<br>
+		<table width="100%" border="1">
+			<form action="" method="POST">
+				<tr>
+					<th>
+						KODE
+					</th>
+					<th>NAMA GOLONGAN</th>
+					<th rowspan="2">
+						<center><input type="submit" name="add" value="ADD"></center>
+					</th>
+				</tr>
+				<tr>
+					<th>
+						<input type="text" name="addKode">
+					</th>
+					<th><input type="text" name="addNama"></th>
+				</tr>
+			</form>
 		</table>
 	</div>
 	<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
