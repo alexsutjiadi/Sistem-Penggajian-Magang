@@ -55,9 +55,9 @@ include "../src/main.php";
                     <th>NO. DEPT</th>
                     <th>NIK</th>
                     <th>NAMA</th>
-                    <th>PTKP</th>
-                    <th>PKP</th>
-                    <th>PPH21</th>
+                    <th>PTKP (Bulan)</th>
+                    <th>PKP (Bulan)</th>
+                    <th>PPH21 (Bulan)</th>
                     <th>BLN</th>
                 </tr>
                 <?php

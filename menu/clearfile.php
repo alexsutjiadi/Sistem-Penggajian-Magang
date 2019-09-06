@@ -26,7 +26,7 @@ if (isset($_POST['month'])) {
         $bln_gaji = 'GAJI' . $nposisi;
         for ($i = 1; $i <= $ngaji; $i++) {
             $nrekap = dbase_numrecords($dbnrekap);
-            if ($nrekap == 0) {
+            if ($nrekap == 0 ||$i > $nrekap) {
                 $rowgaji = dbase_get_record_with_names($dbgaji, $i);
                 dbase_add_record($dbnrekap, array(
                     $rowgaji['NO_URUT'],
@@ -35,13 +35,13 @@ if (isset($_POST['month'])) {
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 ));
-                $edit = dbase_get_record_with_names($dbnrekap, 1);
+                $edit = dbase_get_record_with_names($dbnrekap, $i);
                 unset($edit['deleted']);
                 $edit[$bln_gaji] = $rowgaji['GAJI_DASAR'];
                 $edit = array_values($edit);
-                dbase_replace_record($dbnrekap, $edit, 1);
+                dbase_replace_record($dbnrekap, $edit, $i);
             } else {
-                for ($j = 1; $j <= $nrekap; $j++) {
+                for ($j = 1; $j <= $ngaji; $j++) {
                     $rowgaji = dbase_get_record_with_names($dbgaji, $i);
                     $rowrekap = dbase_get_record_with_names($dbnrekap, $j);
                     if ($rowgaji['NO_URUT'] == $rowrekap['NO_URUT']) {
@@ -51,7 +51,7 @@ if (isset($_POST['month'])) {
                         dbase_replace_record($dbnrekap, $rowrekap, $j);
                         break;
                     } else {
-                        if ($j == $nrekap) {
+                        if ($j > $nrekap) {
                             dbase_add_record($dbnrekap, array(
                                 $rowgaji['NO_URUT'],
                                 $rowgaji['NAMA'],
