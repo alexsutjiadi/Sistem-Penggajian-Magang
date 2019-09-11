@@ -30,10 +30,48 @@ if (isset($_POST['gogo'])) {
 
 	for ($bln = 1; $bln <= 12; $bln++) {
 		$print = "";
-		$datapertama = true;
+		$datapertama = true;	
 
 		for ($gol = 1; $gol <= $ndata; $gol++) {
 			$row = dbase_get_record_with_names($db, $gol);
+			$row['GAJI1'] = rupiah($row['GAJI1']);
+			$row['GAJI2'] = rupiah($row['GAJI2']);
+			$row['GAJI3'] = rupiah($row['GAJI3']);
+			$row['GAJI4'] = rupiah($row['GAJI4']);
+			$row['GAJI5'] = rupiah($row['GAJI5']);
+			$row['GAJI6'] = rupiah($row['GAJI6']);
+			$row['GAJI7'] = rupiah($row['GAJI7']);
+			$row['GAJI8'] = rupiah($row['GAJI8']);
+			$row['GAJI9'] = rupiah($row['GAJI9']);
+			$row['GAJI10'] = rupiah($row['GAJI10']);
+			$row['GAJI11'] = rupiah($row['GAJI11']);
+			$row['GAJI12'] = rupiah($row['GAJI12']);
+			$row['THR1'] = rupiah($row['THR1']);
+			$row['THR2'] = rupiah($row['THR2']);
+			$row['THR3'] = rupiah($row['THR3']);
+			$row['THR4'] = rupiah($row['THR4']);
+			$row['THR5'] = rupiah($row['THR5']);
+			$row['THR6'] = rupiah($row['THR6']);
+			$row['THR7'] = rupiah($row['THR7']);
+			$row['THR8'] = rupiah($row['THR8']);
+			$row['THR9'] = rupiah($row['THR9']);
+			$row['THR10'] = rupiah($row['THR10']);
+			$row['THR11'] = rupiah($row['THR11']);
+			$row['THR12'] = rupiah($row['THR12']);
+			$row['PPH1'] = rupiah($row['PPH1']);
+			$row['PPH2'] = rupiah($row['PPH2']);
+			$row['PPH3'] = rupiah($row['PPH3']);
+			$row['PPH4'] = rupiah($row['PPH4']);
+			$row['PPH5'] = rupiah($row['PPH5']);
+			$row['PPH6'] = rupiah($row['PPH6']);
+			$row['PPH7'] = rupiah($row['PPH7']);
+			$row['PPH8'] = rupiah($row['PPH8']);
+			$row['PPH9'] = rupiah($row['PPH9']);
+			$row['PPH10'] = rupiah($row['PPH10']);
+			$row['PPH11'] = rupiah($row['PPH11']);
+			$row['PPH12'] = rupiah($row['PPH12']);
+
+
 			if ($bln == 1) {
 				if ($datapertama == true) {
 					$datapertama = false;
@@ -42,6 +80,7 @@ if (isset($_POST['gogo'])) {
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -53,6 +92,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI1]</td>
 						<td>$row[THR1]</td>
@@ -64,6 +104,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI1]</td>
 						<td>$row[THR1]</td>
@@ -83,6 +124,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -94,6 +136,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI2]</td>
 						<td>$row[THR2]</td>
@@ -105,6 +148,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI2]</td>
 						<td>$row[THR2]</td>
@@ -124,6 +168,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -135,6 +180,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI3]</td>
 						<td>$row[THR3]</td>
@@ -146,6 +192,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI3]</td>
 						<td>$row[THR3]</td>
@@ -165,6 +212,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -176,6 +224,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI4]</td>
 						<td>$row[THR4]</td>
@@ -187,6 +236,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI4]</td>
 						<td>$row[THR4]</td>
@@ -206,6 +256,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -217,6 +268,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI5]</td>
 						<td>$row[THR5]</td>
@@ -228,6 +280,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI5]</td>
 						<td>$row[THR5]</td>
@@ -247,6 +300,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -258,6 +312,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI6]</td>
 						<td>$row[THR6]</td>
@@ -269,6 +324,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI6]</td>
 						<td>$row[THR6]</td>
@@ -288,6 +344,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -299,6 +356,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI7]</td>
 						<td>$row[THR7]</td>
@@ -310,6 +368,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI7]</td>
 						<td>$row[THR7]</td>
@@ -329,6 +388,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -340,6 +400,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI8]</td>
 						<td>$row[THR8]</td>
@@ -351,6 +412,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI8]</td>
 						<td>$row[THR8]</td>
@@ -370,6 +432,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -381,6 +444,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI9]</td>
 						<td>$row[THR9]</td>
@@ -392,6 +456,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI9]</td>
 						<td>$row[THR9]</td>
@@ -411,6 +476,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -422,6 +488,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI10]</td>
 						<td>$row[THR10]</td>
@@ -433,6 +500,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI10]</td>
 						<td>$row[THR10]</td>
@@ -452,6 +520,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -463,6 +532,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI11]</td>
 						<td>$row[THR11]</td>
@@ -474,6 +544,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI11]</td>
 						<td>$row[THR11]</td>
@@ -493,6 +564,7 @@ EOD;
 							<table width="100%" border="1">
 								<tr>
 									<td>No</td>
+									<td>Dept</td>
 									<td>Nama</td>
 									<td>Gaji</td>
 									<td>THR</td>
@@ -504,6 +576,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI12]</td>
 						<td>$row[THR12]</td>
@@ -515,6 +588,7 @@ EOD;
 					$print .= <<<EOD
 					<tr>
 						<td>$row[NO_URUT]</td>
+						<td>$row[DEPT]</td>
 						<td>$row[NAMA]</td>
 						<td>$row[GAJI12]</td>
 						<td>$row[THR12]</td>
