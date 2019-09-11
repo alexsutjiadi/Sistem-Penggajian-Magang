@@ -33,6 +33,24 @@ function printSideBar(){
                         </ul>
                 </li>
                 <li class="active">
+                    <a href="#pageSubpangkat" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        Manage Pangkat
+                    </a>
+                    <ul class="collapse list-unstyled" id="pageSubpangkat">
+                        <li>
+                            <a href="/penggajianMagang/menu/masterPangkatK1.php" class="w3-bar-item w3-button">K1 </a>
+                        </li>
+                        <li>
+                            <a href="/penggajianMagang/menu/masterPangkatK2.php" class="w3-bar-item w3-button">K2 </a>
+                        </li>
+                        <li>
+                            <a href="/penggajianMagang/menu/masterPangkatK3.php" class="w3-bar-item w3-button">K3 </a>
+                        </li>
+                        <li>
+                            <a href="/penggajianMagang/menu/master4Bplus.php" class="w3-bar-item w3-button">4B - TM </a>
+                        </li>
+                </li>
+                <li class="active">
                     <a href="#pageSubTHRBONUS" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         THR BONUS
                     </a>
@@ -51,36 +69,9 @@ function printSideBar(){
                         </li>
                     </ul>
                 </li>
-                <li class="active">
-                    <a href="#pageSubpangkat" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        Manage Pangkat
-                    </a>
-                    <ul class="collapse list-unstyled" id="pageSubpangkat">
-                        <li>
-                            <a href="/penggajianMagang/menu/masterPangkatK1.php" class="w3-bar-item w3-button">K1 </a>
-                        </li>
-                        <li>
-                            <a href="/penggajianMagang/menu/masterPangkatK2.php" class="w3-bar-item w3-button">K2 </a>
-                        </li>
-                        <li>
-                            <a href="/penggajianMagang/menu/masterPangkatK3.php" class="w3-bar-item w3-button">K3 </a>
-                        </li>
-                        <li>
-                            <a href="/penggajianMagang/menu/master4Bplus.php" class="w3-bar-item w3-button">4B - TM </a>
-                        </li>
-                </li>
             </ul>
             <li class="active">
-                <a href="/penggajianMagang/pilihKota.php">Pilih Kota</a>
-            </li>
-            <li class="active">
                 <a href="/penggajianMagang/menu/hitungPPH.php">Hitung PPH</a>
-            </li>
-            <li class="active">
-                <a href="/penggajianMagang/menu/clearfile.php">Clear File</a>
-            </li>
-             <li class="active">
-                <a href="/penggajianMagang/menu/rekap.php">Rekap</a>
             </li>
             <li class="active">
                     <a href="#pageSubLaporanBulan" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -105,8 +96,17 @@ function printSideBar(){
                         <li>
                             <a href="/penggajianMagang/menu/ReportSummaryTHR.php" class="w3-bar-item w3-button">Summary Report + THR </a>
                         </li>
+                        </ul>
                 </li>
-
+            <li class="active">
+                <a href="/penggajianMagang/menu/clearfile.php">Clear File</a>
+            </li>
+             <li class="active">
+                <a href="/penggajianMagang/menu/rekap.php">Rekap</a>
+            </li>
+            <li class="active">
+                <a href="/penggajianMagang/pilihKota.php">Pilih Kota</a>
+            </li>
     </div>';
 }
 
