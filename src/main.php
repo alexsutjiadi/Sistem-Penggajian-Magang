@@ -50,7 +50,8 @@ function printSideBar(){
                             <a href="/penggajianMagang/menu/master4Bplus.php" class="w3-bar-item w3-button">4B - TM </a>
                         </li>
                 </li>
-                <li class="active">
+            </ul>
+            <li class="active">
                     <a href="#pageSubTHRBONUS" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         THR BONUS
                     </a>
@@ -69,7 +70,6 @@ function printSideBar(){
                         </li>
                     </ul>
                 </li>
-            </ul>
             <li class="active">
                 <a href="/penggajianMagang/menu/hitungPPH.php">Hitung PPH</a>
             </li>
