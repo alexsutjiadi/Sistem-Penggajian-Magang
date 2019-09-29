@@ -136,8 +136,6 @@ if ($db) {
 			<?php }
 			dbase_close($db); ?>
 		</table>
-	</div>
-	</div>
 
 	<div class="row justify-content-center">
 		<div class="col-4">
