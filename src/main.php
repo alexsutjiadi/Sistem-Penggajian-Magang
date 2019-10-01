@@ -12,7 +12,7 @@ function printSideBar(){
                 <!-- <img src="img/rtn.jpg" /> -->
                 <li class="active">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        Maintain Input MASTER
+                        MANAGE MASTER DATA
                     </a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
                             <li>
