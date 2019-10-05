@@ -121,7 +121,7 @@ if ($db) {
 				<td>
 					<input type="hidden" name="rekening" value=<?php echo $row['NO_REK'] ?> id=<?php echo "rekening" . $i; ?>>
 					<input type="hidden" name="seq" value=<?php echo $row['SEQ']; ?> id=<?php echo "seq" . $i; ?>>
-					<input type="hidden" name="pemilik" value=<?php echo $row['PEMILIK']; ?> id=<?php echo "pemilik" . $i; ?>>
+					<input type="hidden" name="pemilik" value=<?php echo "'".$row['PEMILIK']."'"; ?> id=<?php echo "pemilik" . $i; ?>>
 					<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?> disabled>
 					<input type="hidden" name="dept" value=<?php echo $row['NO_INDUK']; ?> id=<?php echo "dept" . $i; ?> disabled>
 					<input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
