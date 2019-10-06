@@ -108,12 +108,12 @@ if ($db) {
                     <input type="hidden" value="<?php echo $row['MAX'] ?>" id=<?php echo "max" . $i; ?>>
                     <input type="submit" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
                 </td>
-                <td>
+                <!-- <td>
                     <form action="" method="post">
                         <input type="hidden" name="idDelete" value=<?php echo $i; ?>>
                         <input type="submit" onclick="return isValidForm()" name="delete" class="btnDelete" value="DELETE">
                     </form>
-                </td>
+                </td> -->
             </tr>
             <?php }
             dbase_close($db); ?>
