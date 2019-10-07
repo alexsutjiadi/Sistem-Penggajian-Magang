@@ -294,7 +294,7 @@ if ($db) {
                     <br><input type="text" name="val" /> \
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
-					<input type="submit" name="editExtra"> \
+					<input type="submit" value="Submit" name="editExtra"> \
                 <input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
@@ -307,7 +307,7 @@ if ($db) {
                     <br><input type="text" name="val" /> \
 					<input type="hidden" name="rowId" value="' + $(this).data("row") + '"> \
                     <br /> \
-					<input type="submit" name="editPinjaman"> \
+					<input type="submit" value="Submit" name="editPinjaman"> \
                 <input type="submit" value="Cancel"></form>';
 						$(this).html(form);
 					}
