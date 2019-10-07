@@ -55,7 +55,7 @@ include "../src/main.php";
                     var totalRow = $(".totalRow").val();
                     $("#buttonEdit").val("SAVE");
                     $("#buttonEdit").data("condition", false);
-                    alert(totalRow);
+                    //alert(totalRow);
                     $("#myTable").off("click");
                     for (var i = 1; i <= totalRow; i++) {
                         (function(i) {
