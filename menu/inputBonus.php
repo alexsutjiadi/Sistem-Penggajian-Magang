@@ -160,7 +160,7 @@ if ($db) {
 			</div>
 		</nav>
 		<div class="tableButton">
-			<div style="margin-right: 120px">
+			<div style="margin-right: 20px">
 				<input type="button" tabindex="-1" name="buttonEditBonus" value="Edit All Bonus" id="buttonEditBonus" data-condition="true" class="bEdit">
 			</div>
 			<table width="100%" cellspacing='0' id="myTable">
@@ -170,7 +170,7 @@ if ($db) {
 					<th onclick="sortTable(1,'T')">Nama</th>
 					<th onclick="sortTable(2,'N')">Gaji</th>
 					<th onclick="sortTable(3,'N')">BONUS</th>
-					<th></th>
+					
 				</tr>
 
 				<?php
@@ -191,14 +191,14 @@ if ($db) {
 					<td class=<?php echo "tdBonus" . $i ?> data-mode="bonus" data-row=<?php echo $i ?>>
 						<?php echo rupiah($row['BONUS']) ?>
 					</td>
-					<td>
+					<!-- <td> -->
 						<input type="hidden" name="nama" value=<?php echo "'" . $row['NAMA'] . "'"; ?> id=<?php echo "nama" . $i; ?>>
 						<input type="hidden" name="bonus" value=<?php echo "'" . $row['BONUS'] . "'";
 																	$totalBonus += (int) $row['BONUS'] ?> id=<?php echo "bonus" . $i; ?>>
 						<input type="hidden" name="gaji" value=<?php echo "'" . $row['GAJI_DASAR'] . "'"; ?> id=<?php echo "gaji" . $i; ?>>
 						<input type="hidden" name="nik" value=<?php echo $row['DEPT']; ?> id=<?php echo "nik" . $i; ?>>
-						<input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=<?php echo $i; ?>>
-					</td>
+						<!-- <input type="submit" tabindex="-1" class="btnUpdate" data-toggle="modal" data-target="#mdl-update" value="EDIT" name="modal" data-id=//php echo $i; ?>> -->
+					<!-- </td> -->
 				</tr>
 				<?php }
 				dbase_close($db); ?>
