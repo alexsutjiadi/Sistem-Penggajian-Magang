@@ -5,6 +5,7 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['pathKota'])) {
   header("Location: pilihKota.php");
 }
+header("Location: menu/payrollMasterFile.php");
 include "src/main.php"
 ?>
 <html>

@@ -74,7 +74,7 @@ if (isset($_POST['addNew'])) {
         }
 
         //get no urut di deptnya
-        $noDept = 1;
+        $noDept = 0;
         for ($i = 1; $i <= $numberRecord; $i++) {
             $row = dbase_get_record_with_names($db, $i);
             $getKodeDept = substr($row['DEPT'], 0, 1);
