@@ -219,7 +219,7 @@ if ($db) {
 				<input type="hidden" name="totalRow" class="totalRow" value=<?php echo $i ?>>
 			</table>
 		</div>
-		<p style="color:black;font-weight:bold;">Total THR yang dibayarkan : <?php echo $totalThr ?></p>
+		<p style="color:black;font-weight:bold;">Total THR yang dibayarkan : <?php echo rupiah($totalThr) ?></p>
 
 		<div id="mdl-update" class="modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
